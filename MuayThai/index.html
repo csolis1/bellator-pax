@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muay Thai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Syne:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red:          #e40a2a;
+    --black:        #000000;
+    --gold:         #c9a84c;
+    --white:        #ffffff;
+    --body-copy:    #e40a2a;
+    --caption-col:  #b3001a;
+  }
+
+  html, body {
+    background: var(--black);
+    color: var(--body-copy);
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── SPLIT WRAPPER ───────────────────────────────── */
+  .split {
+    display: flex;
+    align-items: flex-start;
+    min-height: 100vh;
+  }
+
+  /* ── LEFT PANEL ──────────────────────────────────── */
+  .left {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 44%;
+    flex-shrink: 0;
+    background: var(--red);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2.8rem;
+    overflow: hidden;
+  }
+
+  /* subtle grain */
+  .left::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+  .left > * { position: relative; z-index: 1; }
+
+  /* gold corner marks */
+  .cm { position: absolute; width: 16px; height: 16px; z-index: 2; }
+  .cm.tl { top:13px; left:13px;  border-top:1px solid rgba(201,168,76,.38); border-left:1px solid rgba(201,168,76,.38); }
+  .cm.tr { top:13px; right:13px; border-top:1px solid rgba(201,168,76,.38); border-right:1px solid rgba(201,168,76,.38); }
+  .cm.bl { bottom:13px; left:13px;  border-bottom:1px solid rgba(201,168,76,.38); border-left:1px solid rgba(201,168,76,.38); }
+  .cm.br { bottom:13px; right:13px; border-bottom:1px solid rgba(201,168,76,.38); border-right:1px solid rgba(201,168,76,.38); }
+
+  /* ── LEFT TOP ────────────────────────────────────── */
+  .left-top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .sak-yant {
+    width: 100px;
+    height: auto;
+    margin-bottom: 1.6rem;
+  }
+
+  /* Title fill */
+  .title-block { width: 100%; overflow: hidden; }
+
+  .title-line {
+    display: block;
+    white-space: nowrap;
+    font-family: 'Syne', sans-serif;
+    font-weight: 200;
+    line-height: 0.88;
+    color: var(--white);
+    letter-spacing: -0.02em;
+    transform: scaleX(1.03);
+    transform-origin: left center;
+  }
+
+  .thai-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+    text-align: center;
+    display: block;
+    margin-top: 1.3rem;
+  }
+
+  .gold-rule {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold) 25%, var(--gold) 75%, transparent);
+    margin: 1.2rem 0;
+    opacity: 0.6;
+  }
+
+  .excerpt { text-align: center; }
+  .excerpt .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    color: rgba(255,255,255,.5);
+    letter-spacing: 0.18em;
+    display: block;
+    margin-bottom: 0.55rem;
+  }
+  .excerpt p {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: rgba(255,255,255,.8);
+    line-height: 1.55;
+  }
+
+  /* ── LEFT BOTTOM ─────────────────────────────────── */
+  .left-bottom { display: flex; flex-direction: column; gap: 0.25rem; }
+  .contact-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    color: rgba(255,255,255,.38);
+    letter-spacing: 0.12em;
+    margin-bottom: 0.1rem;
+  }
+  .left-bottom a {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.63rem;
+    color: rgba(255,255,255,.52);
+    text-decoration: none;
+    letter-spacing: 0.06em;
+  }
+  .left-bottom a:hover { opacity: .65; }
+  .social-row { display: flex; gap: .9rem; margin-top: .25rem; }
+  .social-row a {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    color: rgba(255,255,255,.38);
+    letter-spacing: 0.1em;
+    text-decoration: none;
+  }
+
+  /* ── RIGHT PANEL ─────────────────────────────────── */
+  .right {
+    flex: 1;
+    background: var(--black);
+    min-height: 100vh;
+    padding: 3rem 3rem 3rem 3.4rem;
+  }
+
+  .subheading {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.38rem;
+    font-weight: 400;
+    color: var(--body-copy);
+    line-height: 1.35;
+    display: block;
+  }
+
+  .contact-row {
+    display: grid;
+    grid-template-columns: 3fr 4fr 2fr;
+    gap: 1rem;
+    font-family: 'Syne', sans-serif;
+    font-size: 1.05rem;
+    color: var(--body-copy);
+  }
+  .contact-row a { color: var(--body-copy); text-decoration: none; }
+  .contact-row a:hover { opacity: .65; }
+  .soc-r { display: flex; gap: .7rem; }
+  .soc-link {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--caption-col);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(179,0,26,.3);
+    padding-bottom: 1px;
+  }
+  .soc-link:hover { opacity: .65; }
+
+  .spacer-title { height: 5rem; }
+
+  hr {
+    border: 0;
+    height: 1px;
+    background: rgba(127,127,127,0.4);
+  }
+  .hr-g {
+    border: 0;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(201,168,76,.22) 0%, rgba(127,127,127,.28) 100%);
+  }
+
+  .br  { display: block; height: 1rem; }
+  .br2 { display: block; height: 2rem; }
+
+  /* ── SECTION GRID ─────────────────────────────────── */
+  .col-set {
+    display: grid;
+    grid-template-columns: 6fr 5fr 1fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  .caption {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--caption-col);
+    line-height: 1.2;
+    display: block;
+  }
+  .sec-num {
+    color: var(--gold);
+  }
+
+  .h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.70rem;
+    font-weight: 200;
+    color: var(--body-copy);
+    line-height: 1.75;
+    display: block;
+    text-decoration: none;
+  }
+
+  p, .btext {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 400;
+    color: var(--body-copy);
+    line-height: 1.35;
+  }
+
+  a { color: var(--body-copy); text-decoration: none; }
+  a:hover { opacity: .65; }
+
+  .img-box {
+    width: 100%;
+    aspect-ratio: 16/10;
+    background: rgba(228,10,42,.04);
+    border: 1px solid rgba(228,10,42,.1);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .img-box::before, .img-box::after {
+    content: ''; position: absolute;
+    width: 9px; height: 9px;
+    border-color: rgba(201,168,76,.18); border-style: solid;
+  }
+  .img-box::before { top:6px; left:6px; border-width:1px 0 0 1px; }
+  .img-box::after  { bottom:6px; right:6px; border-width:0 1px 1px 0; }
+  .img-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.58rem;
+    color: rgba(228,10,42,.22);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    text-align: center;
+    padding: 1rem;
+  }
+
+  /* CSS slideshow */
+  .slide-deck { display: grid; width: 100%; }
+  .slide-deck .slide { grid-area: 1/1; opacity: 0; animation: fslide 16s infinite; }
+  .slide-deck .slide:nth-child(1) { animation-delay: 0s; }
+  .slide-deck .slide:nth-child(2) { animation-delay: 4s; }
+  .slide-deck .slide:nth-child(3) { animation-delay: 8s; }
+  .slide-deck .slide:nth-child(4) { animation-delay: 12s; }
+  @keyframes fslide {
+    0%  { opacity:1; } 20% { opacity:1; }
+    25% { opacity:0; } 95% { opacity:0; } 100% { opacity:1; }
+  }
+
+  .footer-txt {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--caption-col);
+  }
+
+  @media (max-width: 860px) {
+    .split { flex-direction: column; }
+    .left  { position: relative; width: 100%; height: auto; min-height: 100svh; }
+    .right { padding: 2rem 1.6rem; }
+    .col-set { grid-template-columns: 1fr; gap: 1.2rem; }
+    .col-set > *:last-child { display: none; }
+    .contact-row { grid-template-columns: 1fr 1fr; }
+    .subheading { font-size: 1.1rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="split">
+
+  <!-- ╔══════════════════════════════════════════╗ -->
+  <!-- ║  LEFT — sticky red panel                 ║ -->
+  <!-- ╚══════════════════════════════════════════╝ -->
+  <div class="left">
+    <div class="cm tl"></div>
+    <div class="cm tr"></div>
+    <div class="cm bl"></div>
+    <div class="cm br"></div>
+
+    <div class="left-top">
+
+      <!-- Sak Yant yantra SVG -->
+      <svg class="sak-yant" viewBox="0 0 160 230" xmlns="http://www.w3.org/2000/svg" fill="none">
+        <!-- Unalome (spiral path → enlightenment) -->
+        <path d="M80 4 Q73 12 80 20 Q87 28 80 35 Q76 39 80 43" stroke="#c9a84c" stroke-width="1.1" stroke-linecap="round"/>
+        <line x1="80" y1="43" x2="80" y2="52" stroke="#c9a84c" stroke-width="0.8" stroke-linecap="round"/>
+
+        <!-- Outer pointed diamond (elongated) -->
+        <path d="M80,54 L150,125 L80,222 L10,125 Z" stroke="#c9a84c" stroke-width="1.2" opacity="0.9"/>
+        <!-- Inner diamond -->
+        <path d="M80,68 L136,125 L80,208 L24,125 Z" stroke="#c9a84c" stroke-width="0.55" opacity="0.6"/>
+        <!-- Innermost diamond -->
+        <path d="M80,84 L120,125 L80,192 L40,125 Z" stroke="#c9a84c" stroke-width="0.35" opacity="0.38"/>
+
+        <!-- 5 rows of Khmer-style script (Hah Taew) -->
+        <line x1="42" y1="108" x2="118" y2="108" stroke="#c9a84c" stroke-width="0.65" opacity="0.72"/>
+        <line x1="38" y1="119" x2="122" y2="119" stroke="#c9a84c" stroke-width="0.65" opacity="0.72"/>
+        <line x1="38" y1="130" x2="122" y2="130" stroke="#c9a84c" stroke-width="0.65" opacity="0.72"/>
+        <line x1="38" y1="141" x2="122" y2="141" stroke="#c9a84c" stroke-width="0.65" opacity="0.72"/>
+        <line x1="42" y1="152" x2="118" y2="152" stroke="#c9a84c" stroke-width="0.65" opacity="0.72"/>
+
+        <!-- Decorative dots above / below script block -->
+        <circle cx="80" cy="98"  r="3.5" stroke="#c9a84c" stroke-width="0.6" opacity="0.6"/>
+        <circle cx="80" cy="98"  r="1.2" fill="#c9a84c" opacity="0.8"/>
+        <circle cx="80" cy="163" r="3.5" stroke="#c9a84c" stroke-width="0.6" opacity="0.6"/>
+        <circle cx="80" cy="163" r="1.2" fill="#c9a84c" opacity="0.8"/>
+
+        <!-- Cardinal apex dots -->
+        <circle cx="80"  cy="54"  r="2.5" fill="#c9a84c" opacity="0.9"/>
+        <circle cx="150" cy="125" r="2"   fill="#c9a84c" opacity="0.7"/>
+        <circle cx="80"  cy="222" r="2.5" fill="#c9a84c" opacity="0.9"/>
+        <circle cx="10"  cy="125" r="2"   fill="#c9a84c" opacity="0.7"/>
+
+        <!-- 8-petalled lotus at center (8 limbs) -->
+        <circle cx="80" cy="130" r="7"   stroke="#c9a84c" stroke-width="0.65" opacity="0.55"/>
+        <circle cx="80" cy="130" r="2.5" fill="#c9a84c" opacity="0.8"/>
+        <!-- 8 petal marks -->
+        <circle cx="80"  cy="121" r="1"   fill="#c9a84c" opacity="0.45"/>
+        <circle cx="80"  cy="139" r="1"   fill="#c9a84c" opacity="0.45"/>
+        <circle cx="71"  cy="130" r="1"   fill="#c9a84c" opacity="0.45"/>
+        <circle cx="89"  cy="130" r="1"   fill="#c9a84c" opacity="0.45"/>
+        <circle cx="73.6" cy="123.6" r="1" fill="#c9a84c" opacity="0.45"/>
+        <circle cx="86.4" cy="123.6" r="1" fill="#c9a84c" opacity="0.45"/>
+        <circle cx="73.6" cy="136.4" r="1" fill="#c9a84c" opacity="0.45"/>
+        <circle cx="86.4" cy="136.4" r="1" fill="#c9a84c" opacity="0.45"/>
+      </svg>
+
+      <!-- Stretched title — filled by JS -->
+      <div class="title-block" id="titleBlock">
+        <span class="title-line" id="lineMuay">MUAY</span>
+        <span class="title-line" id="lineThai">THAI</span>
+      </div>
+
+      <span class="thai-sub">มวยไทย &nbsp;·&nbsp; แปดแขนขา</span>
+
+      <div class="gold-rule"></div>
+
+      <div class="excerpt">
+        <span class="eyebrow">THE ART OF EIGHT LIMBS</span>
+        <p>Fists. Elbows. Knees. Shins.<br>
+        A martial art born in Thailand,<br>refined over centuries.</p>
+      </div>
+
+    </div>
+
+    <div class="left-bottom">
+      <span class="contact-label">REACH OUT</span>
+      <a href="mailto:your@email.com">YOUR@EMAIL.COM</a>
+      <a href="#">+XX XXXX XXX XXX</a>
+      <div class="social-row">
+        <a href="#" target="_blank">IG</a>
+        <a href="#" target="_blank">YT</a>
+        <a href="#" target="_blank">TW</a>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ╔══════════════════════════════════════════╗ -->
+  <!-- ║  RIGHT — scrollable black content        ║ -->
+  <!-- ╚══════════════════════════════════════════╝ -->
+  <div class="right">
+
+    <span class="subheading">Training Muay Thai since [year]. Based in [city]. A record of practice, technique, fighters, and the culture of the art of eight limbs.</span>
+
+    <div class="br"></div>
+
+    <div class="contact-row">
+      <div>FANCY A CHAT?</div>
+      <div>
+        <a href="mailto:your@email.com">YOUR@EMAIL.COM</a><br>
+        +XX XXXX XXX XXX
+      </div>
+      <div class="soc-r">
+        <a class="soc-link" href="#" target="_blank">IG</a>
+        <a class="soc-link" href="#" target="_blank">YT</a>
+      </div>
+    </div>
+
+    <div class="spacer-title"></div>
+
+    <hr>
+    <div class="br"></div>
+
+    <!-- 01 HISTORY -->
+    <div class="col-set">
+      <div><div class="img-box"><span class="img-label">[ image — history ]</span></div></div>
+      <div>
+        <span class="caption"><span class="sec-num">๑ — </span>HISTORY<br><br></span>
+        <span class="h3">THE ART OF<br>EIGHT LIMBS</span>
+        <div class="br"></div>
+        <p>Muay Thai is the national sport and cultural martial art of Thailand. Distinguished by its use of fists, elbows, knees, and shins — the eight limbs of the body — it has been practised for centuries and remains one of the most effective stand-up combat systems in the world.</p>
+        <div class="br"></div>
+        <span class="caption">Originating from ancient Siamese military training.</span>
+      </div>
+      <div></div>
+    </div>
+
+    <div class="br"></div><hr class="hr-g"><div class="br"></div>
+
+    <!-- 02 TECHNIQUES -->
+    <div class="col-set">
+      <div>
+        <div class="slide-deck">
+          <div class="slide"><div class="img-box"><span class="img-label">[ jab / cross ]</span></div></div>
+          <div class="slide"><div class="img-box"><span class="img-label">[ roundhouse kick ]</span></div></div>
+          <div class="slide"><div class="img-box"><span class="img-label">[ elbow strike ]</span></div></div>
+          <div class="slide"><div class="img-box"><span class="img-label">[ knee in clinch ]</span></div></div>
+        </div>
+      </div>
+      <div>
+        <span class="caption"><span class="sec-num">๒ — </span>TECHNIQUES<br><br></span>
+        <span class="h3">STRIKING &amp;<br>CLINCH WORK</span>
+        <div class="br"></div>
+        <p>Punches, elbows at five angles, teep (push kicks), roundhouse kicks with the shin, and devastating knee strikes — particularly in the clinch. Footwork and rhythm underpin everything.</p>
+        <div class="br"></div>
+        <span class="caption">Techniques currently being drilled.</span>
+      </div>
+      <div></div>
+    </div>
+
+    <div class="br"></div><hr class="hr-g"><div class="br"></div>
+
+    <!-- 03 TRAINING -->
+    <div class="col-set">
+      <div><div class="img-box"><span class="img-label">[ image — conditioning ]</span></div></div>
+      <div>
+        <span class="caption"><span class="sec-num">๓ — </span>TRAINING<br><br></span>
+        <span class="h3">CONDITIONING<br>AND PRACTICE</span>
+        <div class="br"></div>
+        <p>Shadowboxing, pad work, heavy bag rounds, sparring, and clinch drills. Physical conditioning — skipping, running, core work — is as central to the art as technique itself.</p>
+        <div class="br"></div>
+        <p>Current schedule: [X] sessions per week at [Gym Name].</p>
+      </div>
+      <div></div>
+    </div>
+
+    <div class="br"></div><hr class="hr-g"><div class="br"></div>
+
+    <!-- 04 FIGHTERS -->
+    <div class="col-set">
+      <div><div class="img-box"><span class="img-label">[ image — fighters ]</span></div></div>
+      <div>
+        <span class="caption"><span class="sec-num">๔ — </span>FIGHTERS<br><br></span>
+        <span class="h3">LEGENDS OF<br>THE RING</span>
+        <div class="br"></div>
+        <p>Saenchai. Buakaw. Dieselnoi. Rodtang. Each generation produces fighters whose technical mastery and ring intelligence redefine what is possible. Watching the greats is as much a part of the education as training.</p>
+        <div class="br"></div>
+        <span class="caption">Current favourites and influences.</span>
+      </div>
+      <div></div>
+    </div>
+
+    <div class="br"></div><hr class="hr-g"><div class="br"></div>
+
+    <!-- 05 GYM -->
+    <div class="col-set">
+      <div><div class="img-box"><span class="img-label">[ image — the gym ]</span></div></div>
+      <div>
+        <span class="caption"><span class="sec-num">๕ — </span>THE GYM<br><br></span>
+        <span class="h3">[GYM NAME]</span>
+        <div class="br"></div>
+        <p>[A sentence or two about your gym, your coaches, what makes it special.] Training under [Coach Name] since [year].</p>
+        <div class="br"></div>
+        <p>See the gym <a href="#">here ↗</a></p>
+      </div>
+      <div></div>
+    </div>
+
+    <div class="br"></div><hr class="hr-g"><div class="br"></div>
+
+    <!-- 06 ARCHIVE -->
+    <div class="col-set">
+      <div><div class="img-box"><span class="img-label">[ image — archive ]</span></div></div>
+      <div>
+        <span class="caption"><span class="sec-num">๖ — </span>MISC<br><br></span>
+        <span class="h3">ARCHIVE</span>
+        <div class="br"></div>
+        <p>Older training videos, trip notes from Thailand, equipment reviews, fight records, and whatever else doesn't fit neatly elsewhere. (I'll keep updating it, I promise.)</p>
+      </div>
+      <div></div>
+    </div>
+
+    <div style="height:4rem"></div>
+    <hr>
+    <div style="height:.6rem"></div>
+    <span class="footer-txt">Last updated: [MM.YYYY]</span>
+    <div style="height:3rem"></div>
+
+  </div><!-- /right -->
+
+</div><!-- /split -->
+
+<script>
+  // Binary-search font size so each title line fills exactly the container width
+  function fitLine(elId, containerId) {
+    const el  = document.getElementById(elId);
+    const box = document.getElementById(containerId);
+    if (!el || !box) return;
+    let lo = 1, hi = 700, mid;
+    while (hi - lo > 0.25) {
+      mid = (lo + hi) / 2;
+      el.style.fontSize = mid + 'px';
+      el.scrollWidth <= box.clientWidth ? lo = mid : hi = mid;
+    }
+    el.style.fontSize = lo + 'px';
+  }
+  function fitAll() {
+    fitLine('lineMuay', 'titleBlock');
+    fitLine('lineThai', 'titleBlock');
+  }
+  document.addEventListener('DOMContentLoaded', fitAll);
+  window.addEventListener('resize', fitAll);
+</script>
+
+</body>
+</html>

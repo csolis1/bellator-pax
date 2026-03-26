@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Second Image</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,700;1,800;1,900&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red:   #f41515;
+    --cream: #f7f3e7;
+    --font:  'Barlow Condensed', sans-serif;
+  }
+
+  html, body {
+    min-height: 100vh;
+    background-color: var(--red);
+    color: var(--cream);
+    font-family: var(--font);
+    font-weight: 900;
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: 0.04em;
+  }
+
+  .page {
+    display: flex;
+    justify-content: center;
+    background-color: var(--red);
+    padding: 4rem;
+    padding-bottom: 2rem;
+    text-align: center;
+  }
+
+  /* 3-column grid mirroring the original 2|8|2 span ratio */
+  .col-grid {
+    display: grid;
+    grid-template-columns: 2fr 8fr 2fr;
+    gap: 2rem;
+    width: 100%;
+    max-width: 100%;
+    align-items: flex-start;
+    text-align: center;
+  }
+
+  .col-left,
+  .col-centre,
+  .col-right {
+    text-align: center;
+  }
+
+  /* ── TYPE SCALE ── */
+  .t-l {
+    font-family: var(--font);
+    font-weight: 900;
+    font-size: 4rem;
+    line-height: 1;
+    color: var(--cream);
+    letter-spacing: 0.05em;
+  }
+
+  .t-m {
+    font-family: var(--font);
+    font-weight: 900;
+    font-size: 3.2rem;
+    line-height: 1.1;
+    color: var(--cream);
+    letter-spacing: 0.05em;
+  }
+
+  .t-s {
+    font-family: var(--font);
+    font-weight: 900;
+    font-size: 1.65rem;
+    line-height: 1.2;
+    color: var(--cream);
+    letter-spacing: 0.05em;
+  }
+
+  .t-xs {
+    font-family: var(--font);
+    font-weight: 900;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: var(--cream);
+    letter-spacing: 0.05em;
+  }
+
+  /* scale modifiers */
+  .scale-73  { font-size: calc(1em * 0.73); }
+  .scale-109 { font-size: calc(1em * 1.09); }
+  .scale-139 { font-size: calc(1em * 1.39); }
+  .scale-14  { font-size: calc(8rem * 1.4); }
+  .scale-235 { font-size: calc(1.5rem * 2.35); }
+
+  /* ── BORDERED INFO BOX (left / right columns) ── */
+  .info-box {
+    display: inline-block;
+    padding: 0.4rem;
+    border: 0.5rem solid var(--cream);
+    background-color: var(--cream);
+    color: var(--red);
+    font-family: var(--font);
+    font-weight: 900;
+    font-size: 1.5rem;
+    line-height: 1;
+    letter-spacing: 0.05em;
+  }
+
+  /* highlight block used in centre column */
+  .highlight {
+    background-color: var(--cream);
+    color: var(--red);
+  }
+
+  /* general spacing helpers */
+  .block { display: block; }
+  .br    { display: block; height: 1em; }
+  .br-sm { display: block; height: 0.4em; }
+
+  /* ── STAR ICON ── */
+  .star::before { content: "★"; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 800px) {
+    .page { padding: 2rem 1rem; }
+    .col-grid {
+      grid-template-columns: 1fr;
+    }
+    .t-l   { font-size: 2.8rem; }
+    .t-m   { font-size: 2.2rem; }
+    .scale-14 { font-size: calc(2.8rem * 1.2); }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="col-grid">
+
+    <!-- ══════════════════════════════
+         LEFT COLUMN  (2 spans)
+    ═══════════════════════════════ -->
+    <div class="col-left">
+
+      <span class="t-l block">24–7</span>
+      <span class="br"></span>
+
+      <div class="info-box">
+        ROUND BY ROUND<br/>
+        <span class="star"></span><span class="star"></span><br/>
+        BLOW BY BLOW<br/>
+        <span class="br-sm"></span>
+        <span class="star"></span><span class="star"></span><br/>
+        SPECTACULAR<br/>
+        LIGHTING<br/>
+        BACKDROPS<br/>
+        WALL ILLUMINATIONS<br/>
+        DANCE PLATFORMS<br/>
+        EXOTIC<br/>
+        DANCERS<br/>
+        FRUIT STALL<br/>
+        SOFT DRINKS<br/>
+        COMFORTABLE<br/>
+        CHILL OUT<br/>
+        AMPLE PARKING<br/>
+        TIGHT BUT RIGHT<br/>
+        JUSTICE SECURITY<br/>
+      </div>
+
+      <span class="br"></span>
+      <span class="t-l block">£5</span>
+
+    </div>
+
+    <!-- ══════════════════════════════
+         CENTRE COLUMN  (8 spans)
+    ═══════════════════════════════ -->
+    <div class="col-centre">
+
+      <span class="t-l block">FUTURE FORCE</span>
+      <span class="t-s block"></span>
+      <span class="br-sm"></span>
+      <span class="t-l scale-14 block">BOXING</span>
+      <span class="br"></span>
+      <!-- <span class="t-m block">5TH SEPT 1992</span>
+      <span class="t-m block">DRIVING THE SL'S</span>
+      <span class="br"></span> -->
+
+      <!-- DJ lineup -->
+      <span class="t-l block"><i>SHAKE</i></span>
+      <span class="t-xs block"><i>Boxing is the last honest conversation in a dishonest world</i></span>
+      <span class="br-sm"></span>
+
+      <span class="t-l block"><i>STAY OFF THE LINE</i></span`>
+      <span class="t-xs block"><i>WORK BEHIND THE JAB</i></span>
+      <span class="br-sm"></span>
+
+      <span class="t-l block"><i>HERB AND GUNJA</i></span>
+      <span class="t-xs block"><i>DIG TO THE BODY</i></span>
+      <span class="br-sm"></span>
+
+      <span class="t-l block"><i>HANDS BACK HOME</i></span>
+      <span class="t-xs block"><i>DESTINY FM ERUPTION CREW</i></span>
+      <span class="br-sm"></span>
+      
+
+      <span class="t-l block"><i>CUT OFF THE RING</i></span>
+      <span class="t-xs block"><i>DESTINY FM</i></span>
+      <span class="br-sm"></span>
+
+      <span class="t-l block">M.C. EASYTUNE</span>
+      <span class="br-sm"></span>
+      <span class="t-s scale-73 block">TEKNO FOR YOUR MIND</span>
+      <span class="t-s scale-73 block">DRUM AND BASS IN YOUR FACE</span>
+      <span class="br"></span>
+
+      <span class="t-s block highlight">&nbsp;&nbsp;Boxing lives in the narrow space between control and consequence. Every step, every jab, every quiet adjustment of the feet is part of a fast-moving negotiation where hesitation carries interest. It’s less about wild violence than disciplined pressure — the steady, deliberate work of breaking another person’s timing without losing your own.&nbsp;&nbsp;</span>
+
+      <span class="t-m block">Angles create opport</span>
+      <span class="t-s block"><span class="scale-109"><i>43 High St, Peckham, SE20</i></span></span>
+      <span class="t-s scale-73 block"><i>THIS IS ONLY FOR THE HEAD STRONG</i></span>
+      <span class="br-sm"></span>
+
+      <span class="t-s block highlight">&nbsp;&nbsp;HOLD IT DOWN DEAN AND BEN TOP MEN&nbsp;&nbsp;</span>
+      <span class="br-sm"></span>
+
+      <span class="t-s scale-73 block"><i>Listen to DESTINY 99.3 FM</i></span>
+
+    </div>
+
+    <!-- ══════════════════════════════
+         RIGHT COLUMN  (2 spans)
+    ═══════════════════════════════ -->
+    <div class="col-right">
+
+      <span class="t-l block">24–7</span>
+      <span class="br"></span>
+
+      <div class="info-box">
+        <span class="scale-139 block">RAW, RUTHLESS, AND RIGHT ON TIME<br/>
+        <span class="star"></span><br/>
+        ENTER EDUCATED. EXIT CAREFUL<br/>
+        <span class="scale-235 block">EVENT</span>
+        <span class="scale-139 block">YOU KNOW WHO YOU ARE!</span>
+        <span class="br-sm"></span>
+        <i><span class="scale-109 block">OVER 18's ONLY<br/>
+        STRICT SEARCH<br/>
+        MANAGEMENT<br/>
+        RESERVE<br/>
+        ALL RIGHTS</span></i>
+      </div>
+
+      <span class="br"></span>
+      <span class="t-l block">£5</span>
+
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

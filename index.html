@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BELLATORPAX</title>
+<meta name="description" content="fight journalism, cultural deep dives, and the philosophy of beautiful violence."/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #161616;
+    --fg: #fafafa;
+    --muted: rgba(250,250,250,0.45);
+    --ease: cubic-bezier(.23,1,.32,1);
+  }
+  html { scroll-behavior: initial; background: var(--bg); }
+  html, body { width: 100%; min-height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    cursor: none;
+  }
+  ::-webkit-scrollbar { display: none; }
+
+  /* ---- PRELOADER ---- */
+  #preloader {
+    position: fixed; inset: 0; background: var(--bg); z-index: 9999;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 1.5rem;
+    clip-path: inset(0% 0% 0% 0%);
+    transition: clip-path 1.8s var(--ease);
+  }
+  #preloader.remove { clip-path: inset(0% 0% 100% 0%); }
+  #preloader-logo { width: 60px; height: 60px; animation: spin 3s linear infinite; }
+  #preloader-text { font-size: 11px; letter-spacing: 0.2em; color: var(--fg); opacity: 0.6; }
+  #preloader-bar-wrap { width: 180px; height: 1px; background: rgba(255,255,255,0.15); position: relative; overflow: hidden; }
+  #preloader-bar { height: 100%; background: white; width: 0%; transition: width 0.4s ease; }
+  #preloader-percent { font-size: 11px; letter-spacing: 0.1em; color: var(--fg); opacity: 0.5; margin-top: 4px; }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  /* ---- CURSOR ---- */
+  #cursor {
+    position: fixed; width: 40px; height: 40px; border-radius: 50%; background: white;
+    pointer-events: none; z-index: 9998; transform: translate(-50%, -50%);
+    mix-blend-mode: difference; clip-path: circle(0% at 50% 50%);
+    transition: clip-path 0.6s var(--ease), width 0.4s var(--ease), height 0.4s var(--ease);
+    top: 0; left: 0;
+  }
+  #cursor.visible { clip-path: circle(50% at 50% 50%); }
+  #cursor.case-hover { width: 100px; height: 100px; }
+
+  /* ---- NAV ---- */
+  .menu {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 2.2vw 3vw; mix-blend-mode: difference; pointer-events: none;
+  }
+  .menu-link-holder { display: flex; align-items: center; gap: 3vw; pointer-events: auto; }
+  .menu-logo { display: flex; align-items: center; text-decoration: none; }
+  .menu-logo svg { width: 120px; height: auto; }
+  .menu-links-holder { display: flex; align-items: center; gap: 2.5vw; pointer-events: auto; }
+  .menu-link {
+    color: var(--fg); text-decoration: none;
+    font-size: clamp(0.75rem, 0.875vw, 1rem);
+    letter-spacing: 0.02em; opacity: 0.85; transition: opacity 0.3s;
+  }
+  .menu-link:hover { opacity: 1; }
+  .menu-link sup { font-size: 0.6em; opacity: 0.6; }
+  .menu-right {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-size: clamp(0.75rem, 0.875vw, 1rem);
+    color: var(--fg); pointer-events: auto; opacity: 0.7; letter-spacing: 0.04em;
+  }
+  #clock span { animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { visibility: hidden; } }
+
+  /* ---- LAYOUT ---- */
+  .con { position: relative; }
+  .content { padding-top: 0; }
+  .f-header-holder {
+    position: relative; padding: 2vw 3vw 0; min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: flex-start; padding-top: 10vw;
+  }
+  .f-logo-holder { margin-bottom: 0; }
+  .logotype-holder { position: relative; }
+
+  /* ---- HERO LOGO ANIMATION ---- */
+  /* Each path starts clipped/translated down, animates in on .active */
+  .bellatorpax-logo-svg {
+    width: 100%; height: auto; display: block; overflow: visible;
+  }
+  .bellatorpax-logo-svg path {
+    clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%);
+    transform: translateY(20%);
+    transition: transform 1.8s var(--ease), clip-path 1.8s var(--ease);
+    transform-box: fill-box;
+    transform-origin: bottom center;
+  }
+  .bellatorpax-logo-svg.active path {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    transform: translateY(0%);
+  }
+  .bellatorpax-logo-svg.active path:nth-child(1) { transition-delay: 0.00s; }
+  .bellatorpax-logo-svg.active path:nth-child(2) { transition-delay: 0.05s; }
+  .bellatorpax-logo-svg.active path:nth-child(3) { transition-delay: 0.10s; }
+  .bellatorpax-logo-svg.active path:nth-child(4) { transition-delay: 0.15s; }
+  .bellatorpax-logo-svg.active path:nth-child(5) { transition-delay: 0.20s; }
+  .bellatorpax-logo-svg.active path:nth-child(6) { transition-delay: 0.25s; }
+  .bellatorpax-logo-svg.active path:nth-child(7) { transition-delay: 0.30s; }
+  .bellatorpax-logo-svg.active path:nth-child(8) { transition-delay: 0.35s; }
+  .bellatorpax-logo-svg.active path:nth-child(9) { transition-delay: 0.40s; }
+  .bellatorpax-logo-svg.active path:nth-child(10) { transition-delay: 0.45s; }
+  .bellatorpax-logo-svg.active path:nth-child(11) { transition-delay: 0.50s; }
+
+  .small-header {
+    font-size: clamp(0.65rem, 0.8vw, 1rem); color: var(--muted);
+    margin-top: 1.2vw; letter-spacing: 0.03em; line-height: 1.5;
+  }
+  .small-header em { font-style: italic; }
+  .f-intro-text-holder { padding: 4vw 0 2vw; max-width: 75vw; }
+  .h1 {
+    font-size: clamp(1.2rem, 2.2vw, 2.8rem); font-weight: 300;
+    line-height: 1.35; letter-spacing: -0.01em; color: var(--fg);
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 1.2s var(--ease), transform 1.2s var(--ease);
+  }
+  .h1.show { opacity: 1; transform: translateY(0); }
+  .h1 span { font-style: italic; }
+
+  /* ---- CASES ---- */
+  .f-cases-holder { padding: 2vw 3vw 0; }
+  .f-cases-cl { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5vw; list-style: none; }
+  .f-case-holder { position: relative; }
+  .f-case-link {
+    display: block; text-decoration: none; position: relative; overflow: hidden;
+    clip-path: inset(100% 0% 0% 0%); transition: clip-path 1.8s var(--ease);
+    background: #1e1e1e; aspect-ratio: 16/10;
+  }
+  .f-case-link.show { clip-path: inset(0% 0% 0% 0%); }
+  .f-case-link:nth-child(2) { transition-delay: 0.1s; }
+  .f-case-link:nth-child(3) { transition-delay: 0.2s; }
+  .f-case-link:nth-child(4) { transition-delay: 0.3s; }
+  .f-case-link:nth-child(5) { transition-delay: 0.4s; }
+  .f-case-link:nth-child(6) { transition-delay: 0.5s; }
+  .f-case-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.8s var(--ease); }
+  .f-case-link:hover .f-case-img { transform: scale(1.04); }
+  .f-case-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .grid-hover { position: absolute; inset: 0; opacity: 0; transition: opacity 0.5s var(--ease); z-index: 1; }
+  .f-case-link:hover .grid-hover { opacity: 1; }
+  .grid-hover video { width: 100%; height: 100%; object-fit: cover; }
+  .f-grid-info-holder { padding: 1vw 0 1.5vw; }
+  .f-case-title-text { font-size: clamp(1rem, 1.6vw, 2.5rem); font-weight: 300; letter-spacing: -0.02em; color: var(--fg); overflow: hidden; margin-bottom: 0.3vw; }
+  .f-category-holder { font-size: clamp(0.65rem, 0.8vw, 1rem); color: var(--muted); letter-spacing: 0.04em; }
+
+  /* ---- CONTACT ---- */
+  .f-after-cases-holder-2 {
+    padding: 8vw 3vw 6vw; display: grid; grid-template-columns: 1fr 1fr; gap: 4vw;
+    border-top: 1px solid rgba(255,255,255,0.08); margin-top: 6vw;
+  }
+  .contact-info-left { display: flex; flex-direction: column; gap: 3vw; }
+  .small-h3 { font-size: clamp(0.6rem, 0.75vw, 1rem); letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.8rem; font-weight: 400; }
+  .about-services-list-holder { text-decoration: none; display: inline-block; }
+  .about-services-list-text { font-size: clamp(0.85rem, 1.1vw, 1.4rem); color: var(--fg); font-weight: 300; letter-spacing: -0.01em; transition: opacity 0.3s; }
+  .about-services-list-holder:hover .about-services-list-text { opacity: 0.6; }
+  .contact-info-right { display: flex; align-items: flex-end; }
+  .small-contact-text { font-size: clamp(0.8rem, 1.05vw, 1.3rem); line-height: 1.55; color: var(--muted); font-weight: 300; max-width: 36ch; }
+
+  /* ---- FOOTER ---- */
+  .footer { background: #fafafa; color: #161616; padding: 3vw 3vw 0; }
+  .footer-items { border-bottom: 1px solid rgba(0,0,0,0.08); padding-bottom: 2vw; margin-bottom: 3vw; }
+  .footer-flex { display: flex; justify-content: flex-end; }
+  .footer-item-holder { display: flex; gap: 2rem; }
+  .footer-link-holder { text-decoration: none; color: #161616; font-size: clamp(0.65rem, 0.8vw, 1rem); opacity: 0.6; transition: opacity 0.3s; letter-spacing: 0.03em; }
+  .footer-link-holder:hover { opacity: 1; }
+  .footer-over-logo-holder { display: grid; grid-template-columns: 1fr 1fr; gap: 3vw; margin-bottom: 3vw; }
+  .footer-links-holder { display: flex; flex-direction: column; gap: 1rem; }
+  .footer-main-link { text-decoration: none; color: #161616; font-size: clamp(1.2rem, 2vw, 3rem); font-weight: 300; letter-spacing: -0.02em; line-height: 1.1; transition: opacity 0.3s; }
+  .footer-main-link:hover { opacity: 0.5; }
+  .footer-rights { font-size: clamp(0.65rem, 0.8vw, 1rem); color: rgba(22,22,22,0.4); line-height: 1.6; margin-top: 2rem; }
+  .footer-flex.smaller { justify-content: flex-end; align-items: flex-start; gap: 3vw; }
+  .footer-h3-holder { margin-bottom: 0.6rem; }
+  .footer-h3 { font-size: clamp(0.6rem, 0.7vw, 0.9rem); letter-spacing: 0.14em; text-transform: uppercase; color: rgba(22,22,22,0.45); font-weight: 400; }
+  .footer-info-link { text-decoration: none; color: #161616; font-size: clamp(0.75rem, 0.9vw, 1.1rem); font-weight: 300; transition: opacity 0.3s; }
+  .footer-info-link:hover { opacity: 0.5; }
+  .footer-logo-holder { padding: 3vw 0 4vw; border-top: 1px solid rgba(0,0,0,0.08); margin-top: 2vw; }
+  .footer-logo-svg { width: 100%; height: auto; }
+
+  /* ---- LOAD OVERLAY ---- */
+  .load-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 9000; clip-path: inset(100% 0% 0% 0%); pointer-events: none; }
+  .load-overlay.loading { animation: loadoverlay 1.2s cubic-bezier(.645,.045,.355,1) forwards; }
+  @keyframes loadoverlay {
+    0%   { clip-path: inset(100% 0% 0% 0%); }
+    45%  { clip-path: inset(0%   0% 0% 0%); }
+    55%  { clip-path: inset(0%   0% 0% 0%); }
+    100% { clip-path: inset(0%   0% 100% 0%); }
+  }
+
+  @media (max-width: 768px) {
+    .f-cases-cl { grid-template-columns: 1fr; }
+    .f-after-cases-holder-2 { grid-template-columns: 1fr; }
+    .footer-over-logo-holder { grid-template-columns: 1fr; }
+    .footer-flex.smaller { flex-direction: column; gap: 2rem; }
+    .menu-links-holder { gap: 4vw; }
+    .h1 { font-size: clamp(1rem, 4vw, 2rem); }
+  }
+</style>
+</head>
+<body>
+
+<!-- PRELOADER -->
+<div id="preloader">
+  <svg id="preloader-logo" viewBox="0 0 449 449" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M125.8448,124.9432 C42.9118,207.8772 244.7638,409.7282 327.6968,326.7952 C410.4218,244.0692 208.5718,42.2172 125.8448,124.9432 M70.6248,71.3792 C101.8548,40.1502 135.7728,19.0542 171.3448,8.2992 C207.5368,-2.6608 243.1098,-2.6608 278.6808,7.6792 C314.4598,18.6412 347.7578,39.1152 378.5738,69.9302 C409.1818,100.5402 429.8628,134.0442 440.6168,169.6162 C451.3718,205.6012 451.7848,241.5872 441.2378,278.1932 C430.8978,314.1792 409.8018,348.0972 378.5738,379.3262 C347.5508,410.3482 313.8398,431.2362 278.0608,441.3712 C241.8678,451.5052 206.0888,450.8832 170.1038,440.1302 C134.5318,429.3762 101.2338,408.4872 70.6248,377.8792 C39.8098,347.0632 19.1278,313.9722 8.1668,278.1942 C-2.5872,243.0352 -2.5872,207.4632 7.9608,171.6832 C18.5078,136.3192 39.3968,102.6082 70.6248,71.3792" fill="white"/>
+  </svg>
+  <div id="preloader-text">Documenting the art of controlled chaos</div>
+  <div id="preloader-bar-wrap"><div id="preloader-bar"></div></div>
+  <div id="preloader-percent">0%</div>
+</div>
+
+<div class="load-overlay" id="loadOverlay"></div>
+<div id="cursor"></div>
+
+<!-- NAV -->
+<nav class="menu">
+  <div class="menu-link-holder">
+    <a href="/" class="menu-logo">
+      <svg viewBox="0 0 3480.2 449" fill="white" xmlns="http://www.w3.org/2000/svg">
+        <path d="M298.14 264.91 Q298.14 281.07 292.75 296.34 Q287.36 311.61 275.46 326.42 Q263.56 341.24 239.77 350.22 Q215.97 359.20 183.19 359.20 L35.92 359.20 L35.92 31.88 L181.84 31.88 Q212.38 31.88 234.60 40.86 Q256.83 49.84 267.83 63.98 Q278.83 78.13 283.77 91.60 Q288.71 105.07 288.71 118.09 Q288.71 139.19 278.38 154.68 Q268.05 170.17 243.81 185.44 Q298.14 217.32 298.14 264.91 Z M103.27 88.00 L103.27 162.09 L176.46 162.09 Q224.05 162.09 224.05 125.27 Q224.05 88.00 176.46 88.00 Z M103.27 218.21 L103.27 303.07 L183.64 303.07 Q233.48 303.07 233.48 260.87 Q233.48 218.21 183.64 218.21 Z"/>
+            <path d="M430.59 218.21 L430.59 303.07 L607.95 303.07 L607.95 359.20 L363.24 359.20 L363.24 31.88 L599.86 31.88 L599.86 88.00 L430.59 88.00 L430.59 162.09 L587.29 162.09 L587.29 218.21 Z"/>
+            <path d="M740.40 31.88 L740.40 303.07 L897.10 303.07 L897.10 359.20 L673.05 359.20 L673.05 31.88 Z"/>
+            <path d="M1029.56 31.88 L1029.56 303.07 L1186.26 303.07 L1186.26 359.20 L962.21 359.20 L962.21 31.88 Z"/>
+            <path d="M1433.21 293.20 L1310.63 293.20 L1288.63 359.20 L1219.93 359.20 L1336.22 31.88 L1410.76 31.88 L1523.91 359.20 L1454.76 359.20 Z M1414.80 237.07 L1372.14 109.11 L1329.49 237.07 Z"/>
+            <path d="M1719.67 88.00 L1719.67 359.20 L1652.32 359.20 L1652.32 88.00 L1553.09 88.00 L1553.09 31.88 L1815.31 31.88 L1815.31 88.00 Z"/>
+            <path d="M2015.11 26.49 Q2086.05 26.49 2129.61 74.31 Q2173.16 122.13 2173.16 200.25 Q2173.16 272.99 2130.28 321.26 Q2087.40 369.53 2015.56 369.53 Q1944.17 369.53 1901.07 321.48 Q1857.96 273.44 1857.96 198.01 Q1857.96 122.58 1901.29 74.53 Q1944.62 26.49 2015.11 26.49 Z M2015.56 83.96 Q1974.70 83.96 1950.01 115.17 Q1925.31 146.37 1925.31 198.01 Q1925.31 249.64 1950.01 280.85 Q1974.70 312.06 2015.56 312.06 Q2055.97 312.06 2080.89 281.07 Q2105.81 250.09 2105.81 199.80 Q2105.81 146.82 2081.34 115.39 Q2056.87 83.96 2015.56 83.96 Z"/>
+            <path d="M2423.70 303.07 Q2423.70 289.61 2424.15 281.97 Q2424.60 274.34 2424.60 268.50 Q2424.60 247.85 2414.72 238.64 Q2404.84 229.44 2382.84 229.44 L2305.62 229.44 L2305.62 359.20 L2238.27 359.20 L2238.27 31.88 L2413.82 31.88 Q2438.97 31.88 2457.15 40.41 Q2475.34 48.94 2484.54 62.86 Q2493.75 76.78 2497.79 90.92 Q2501.83 105.07 2501.83 120.33 Q2501.83 179.60 2446.60 201.15 Q2458.72 206.09 2464.56 209.01 Q2470.40 211.93 2476.46 218.66 Q2482.52 225.40 2484.54 230.79 Q2486.56 236.17 2488.58 250.54 Q2490.60 264.91 2491.05 278.83 Q2491.50 292.75 2491.95 320.14 Q2491.95 339.00 2506.32 347.08 L2506.32 359.20 L2434.03 359.20 Q2427.74 347.53 2425.72 336.75 Q2423.70 325.97 2423.70 303.07 Z M2434.48 129.76 Q2434.48 104.62 2422.80 96.31 Q2411.13 88.00 2386.88 88.00 L2305.62 88.00 L2305.62 173.31 L2386.88 173.31 Q2410.68 173.31 2422.58 164.78 Q2434.48 156.25 2434.48 129.76 Z"/>
+            <path d="M2641.02 242.46 L2641.02 359.20 L2573.67 359.20 L2573.67 31.88 L2718.25 31.88 Q2769.43 31.88 2796.60 57.92 Q2823.76 83.96 2823.76 133.35 Q2823.76 183.19 2796.82 212.83 Q2769.88 242.46 2724.98 242.46 Z M2641.02 186.33 L2703.88 186.33 Q2756.41 186.33 2756.41 137.39 Q2756.41 112.25 2743.61 100.13 Q2730.82 88.00 2703.88 88.00 L2641.02 88.00 Z"/>
+            <path d="M3070.71 293.20 L2948.13 293.20 L2926.13 359.20 L2857.44 359.20 L2973.73 31.88 L3048.26 31.88 L3161.41 359.20 L3092.26 359.20 Z M3052.30 237.07 L3009.65 109.11 L2966.99 237.07 Z"/>
+            <path d="M3365.26 192.17 L3470.32 359.20 L3390.40 359.20 L3327.54 245.60 L3265.13 359.20 L3187.00 359.20 L3290.27 194.42 L3190.59 31.88 L3270.52 31.88 L3327.99 139.64 L3388.15 31.88 L3466.28 31.88 Z"/>
+      </svg>
+    </a>
+  </div>
+  <div class="menu-links-holder">
+    <a href="/work" class="menu-link">Fight Styles <sup>(6)</sup></a>
+    <a href="/studio" class="menu-link">Featured</a>
+    <a href="/gallery" class="menu-link">Gallery</a>
+    <a href="/news" class="menu-link">News</a>
+    <a href="/library" class="menu-link">Technical Library</a>
+    <a href="/community" class="menu-link">Community</a>
+    <a href="/contact" class="menu-link">Contact</a>
+  </div>
+  <div class="menu-right">
+    <span>CPH</span>
+    <p id="clock">12<span>:</span>00</p>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="con">
+  <div class="content">
+
+    <div class="f-header-holder">
+      <div class="f-logo-holder">
+        <div class="logotype-holder">
+          <svg id="heroBpLogo" class="bellatorpax-logo-svg" viewBox="0 0 3480.2 449" fill="white" xmlns="http://www.w3.org/2000/svg">
+            <path d="M298.14 264.91 Q298.14 281.07 292.75 296.34 Q287.36 311.61 275.46 326.42 Q263.56 341.24 239.77 350.22 Q215.97 359.20 183.19 359.20 L35.92 359.20 L35.92 31.88 L181.84 31.88 Q212.38 31.88 234.60 40.86 Q256.83 49.84 267.83 63.98 Q278.83 78.13 283.77 91.60 Q288.71 105.07 288.71 118.09 Q288.71 139.19 278.38 154.68 Q268.05 170.17 243.81 185.44 Q298.14 217.32 298.14 264.91 Z M103.27 88.00 L103.27 162.09 L176.46 162.09 Q224.05 162.09 224.05 125.27 Q224.05 88.00 176.46 88.00 Z M103.27 218.21 L103.27 303.07 L183.64 303.07 Q233.48 303.07 233.48 260.87 Q233.48 218.21 183.64 218.21 Z"/>
+            <path d="M430.59 218.21 L430.59 303.07 L607.95 303.07 L607.95 359.20 L363.24 359.20 L363.24 31.88 L599.86 31.88 L599.86 88.00 L430.59 88.00 L430.59 162.09 L587.29 162.09 L587.29 218.21 Z"/>
+            <path d="M740.40 31.88 L740.40 303.07 L897.10 303.07 L897.10 359.20 L673.05 359.20 L673.05 31.88 Z"/>
+            <path d="M1029.56 31.88 L1029.56 303.07 L1186.26 303.07 L1186.26 359.20 L962.21 359.20 L962.21 31.88 Z"/>
+            <path d="M1433.21 293.20 L1310.63 293.20 L1288.63 359.20 L1219.93 359.20 L1336.22 31.88 L1410.76 31.88 L1523.91 359.20 L1454.76 359.20 Z M1414.80 237.07 L1372.14 109.11 L1329.49 237.07 Z"/>
+            <path d="M1719.67 88.00 L1719.67 359.20 L1652.32 359.20 L1652.32 88.00 L1553.09 88.00 L1553.09 31.88 L1815.31 31.88 L1815.31 88.00 Z"/>
+            <path d="M2015.11 26.49 Q2086.05 26.49 2129.61 74.31 Q2173.16 122.13 2173.16 200.25 Q2173.16 272.99 2130.28 321.26 Q2087.40 369.53 2015.56 369.53 Q1944.17 369.53 1901.07 321.48 Q1857.96 273.44 1857.96 198.01 Q1857.96 122.58 1901.29 74.53 Q1944.62 26.49 2015.11 26.49 Z M2015.56 83.96 Q1974.70 83.96 1950.01 115.17 Q1925.31 146.37 1925.31 198.01 Q1925.31 249.64 1950.01 280.85 Q1974.70 312.06 2015.56 312.06 Q2055.97 312.06 2080.89 281.07 Q2105.81 250.09 2105.81 199.80 Q2105.81 146.82 2081.34 115.39 Q2056.87 83.96 2015.56 83.96 Z"/>
+            <path d="M2423.70 303.07 Q2423.70 289.61 2424.15 281.97 Q2424.60 274.34 2424.60 268.50 Q2424.60 247.85 2414.72 238.64 Q2404.84 229.44 2382.84 229.44 L2305.62 229.44 L2305.62 359.20 L2238.27 359.20 L2238.27 31.88 L2413.82 31.88 Q2438.97 31.88 2457.15 40.41 Q2475.34 48.94 2484.54 62.86 Q2493.75 76.78 2497.79 90.92 Q2501.83 105.07 2501.83 120.33 Q2501.83 179.60 2446.60 201.15 Q2458.72 206.09 2464.56 209.01 Q2470.40 211.93 2476.46 218.66 Q2482.52 225.40 2484.54 230.79 Q2486.56 236.17 2488.58 250.54 Q2490.60 264.91 2491.05 278.83 Q2491.50 292.75 2491.95 320.14 Q2491.95 339.00 2506.32 347.08 L2506.32 359.20 L2434.03 359.20 Q2427.74 347.53 2425.72 336.75 Q2423.70 325.97 2423.70 303.07 Z M2434.48 129.76 Q2434.48 104.62 2422.80 96.31 Q2411.13 88.00 2386.88 88.00 L2305.62 88.00 L2305.62 173.31 L2386.88 173.31 Q2410.68 173.31 2422.58 164.78 Q2434.48 156.25 2434.48 129.76 Z"/>
+            <path d="M2641.02 242.46 L2641.02 359.20 L2573.67 359.20 L2573.67 31.88 L2718.25 31.88 Q2769.43 31.88 2796.60 57.92 Q2823.76 83.96 2823.76 133.35 Q2823.76 183.19 2796.82 212.83 Q2769.88 242.46 2724.98 242.46 Z M2641.02 186.33 L2703.88 186.33 Q2756.41 186.33 2756.41 137.39 Q2756.41 112.25 2743.61 100.13 Q2730.82 88.00 2703.88 88.00 L2641.02 88.00 Z"/>
+            <path d="M3070.71 293.20 L2948.13 293.20 L2926.13 359.20 L2857.44 359.20 L2973.73 31.88 L3048.26 31.88 L3161.41 359.20 L3092.26 359.20 Z M3052.30 237.07 L3009.65 109.11 L2966.99 237.07 Z"/>
+            <path d="M3365.26 192.17 L3470.32 359.20 L3390.40 359.20 L3327.54 245.60 L3265.13 359.20 L3187.00 359.20 L3290.27 194.42 L3190.59 31.88 L3270.52 31.88 L3327.99 139.64 L3388.15 31.88 L3466.28 31.88 Z"/>
+          </svg>
+        </div>
+        <div class="small-header">
+          <span>/ˌbɛləˈtɔːpæks/<em> noun</em></span><br/>
+          warrior of peace; one who fights for harmony
+        </div>
+      </div>
+      <div class="f-intro-text-holder">
+        <h1 class="h1" id="heroH1">
+          <span>Inside the fight game through raw storytelling</span> - Fight journalism, cultural deep dives, and the philosophy of beautiful violence.
+        </h1>
+      </div>
+    </div>
+
+    <div class="f-cases-holder">
+      <ul class="f-cases-cl" id="casesList">
+        <li class="f-case-holder">
+          <a href="Boxing/index.html" class="f-case-link" id="case0">
+            <img class="f-case-img" src="https://cdn.prod.website-files.com/63640f262fc5ea1d18eb1986/65d207ba76d61ba2f8ac146f_65d2077fa7c957c2dfd3e7df_Canairi-baseborn-header.webp" alt="Boxing" loading="lazy"/>
+            <div class="grid-hover">
+              <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
+                <source src="https://simonholml.com/Canairi/Canairi_3D_Half_video_2.mp4" type="video/mp4"/>
+              </video>
+            </div>
+          </a>
+          <div class="f-grid-info-holder">
+            <div class="f-case-title-text">Boxing</div>
+            <div class="f-category-holder">Where rhythm meets consequence</div>
+          </div>
+        </li>
+        <li class="f-case-holder">
+          <a href="MuayThai/index.html" class="f-case-link" id="case1">
+            <video autoplay muted loop playsinline class="f-case-video">
+              <source src="https://assets.curbcph.tv/Kategori%20-%20Film_small.mp4" type="video/mp4"/>
+            </video>
+            <div class="grid-hover" style="background:#0a0a0a;"></div>
+          </a>
+          <div class="f-grid-info-holder">
+            <div class="f-case-title-text">Muay Thai</div>
+            <div class="f-category-holder">Clinched up and out of mercy</div>
+          </div>
+        </li>
+        <li class="f-case-holder">
+          <a href="#" class="f-case-link" id="case2">
+            <video autoplay muted loop playsinline class="f-case-video">
+              <source src="https://assets.website-files.com/645aacb0e2b5dc8254a63e55/6508e6ebbc6d90669d06408c_Story-transcode.mp4" type="video/mp4"/>
+            </video>
+            <div class="grid-hover">
+              <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
+                <source src="https://simonholml.com/MixMob/MixMox-Spin-Breaker-2.mp4" type="video/mp4"/>
+              </video>
+            </div>
+          </a>
+          <div class="f-grid-info-holder">
+            <div class="f-case-title-text">Brazilian Jujitsu</div>
+            <div class="f-category-holder">Efficiency at ground level</div>
+          </div>
+        </li>
+        <li class="f-case-holder">
+          <a href="#" class="f-case-link" id="case3">
+            <img class="f-case-img" src="https://cdn.prod.website-files.com/63640f262fc5ea1d18eb1986/651e68bc799bcbc1409a0a84_651e67f4caa28de3251e22bb_palette-thumb.webp" alt="Taekwondo" loading="lazy"/>
+            <div class="grid-hover">
+              <img src="https://cdn.prod.website-files.com/63640f262fc5ea1d18eb1986/652cfcd6ab4df64e485eed19_Palette_HeroLogo_Fullscreen_Img.webp" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;" alt="Taekwondo hover"/>
+            </div>
+          </a>
+          <div class="f-grid-info-holder">
+            <div class="f-case-title-text">Taekwondo</div>
+            <div class="f-category-holder">Polite distance. Impolite speed</div>
+          </div>
+        </li>
+        <li class="f-case-holder">
+          <a href="#" class="f-case-link" id="case4">
+            <img class="f-case-img" src="https://cdn.prod.website-files.com/63640f262fc5ea1d18eb1986/65d27490eafc1e4b5951065a_191601da19cc67c03f3eb195790eba38e5adf95d-2806x1870.webp" alt="Wing Chun" loading="lazy"/>
+            <div class="grid-hover">
+              <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
+                <source src="https://simonholml.com/PW/PW-social-video-4.mp4" type="video/mp4"/>
+              </video>
+            </div>
+          </a>
+          <div class="f-grid-info-holder">
+            <div class="f-case-title-text">Wing Chun</div>
+            <div class="f-category-holder">Close range. Clear mind. No wasted motion</div>
+          </div>
+        </li>
+        <li class="f-case-holder">
+          <a href="#" class="f-case-link" id="case5">
+            <video autoplay muted loop playsinline class="f-case-video">
+              <source src="https://cdn.prod.website-files.com/602aae8e1071667af79ea33a/63ecf1cc4f21a9162b7ffa54_frontpage_teaser1-transcode.mp4" type="video/mp4"/>
+            </video>
+            <div class="grid-hover">
+              <img src="https://cdn.prod.website-files.com/63640f262fc5ea1d18eb1986/65d1eeac50a2ea9f70c623e2_65d1ee633dcf2f045574d828_trwm-breaker.webp" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;" alt="Ride hover"/>
+            </div>
+          </a>
+          <div class="f-grid-info-holder">
+            <div class="f-case-title-text">Take A Ride With Me</div>
+            <div class="f-category-holder">Downhill Mountainbike</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="f-after-cases-holder-2">
+      <div class="contact-info-left">
+        <div class="contact-info-holder">
+          <h3 class="small-h3">Business Inquiries</h3>
+          <a href="mailto:newbiz@bellatorpax.studio" class="about-services-list-holder">
+            <div class="about-services-list-text">newbiz@bellatorpax.studio</div>
+          </a>
+        </div>
+        <div class="contact-info-holder">
+          <h3 class="small-h3">General</h3>
+          <a href="mailto:hello@bellatorpax.studio" class="about-services-list-holder">
+            <div class="about-services-list-text">hello@bellatorpax.studio</div>
+          </a>
+        </div>
+        <div class="contact-info-holder">
+          <h3 class="small-h3">Call us</h3>
+          <a href="tel:+14049408834" class="about-services-list-holder">
+            <div class="about-services-list-text">(+1) 404-940-8834</div>
+          </a>
+        </div>
+      </div>
+      <div class="contact-info-right">
+        <p class="small-contact-text">
+          We're always looking for events and fighters to work with internationally and domestically.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="footer-items">
+    <div class="footer-flex">
+      <div class="footer-item-holder">
+        <a href="https://www.instagram.com/bellatorpax_studio/" target="_blank" rel="noopener" class="footer-link-holder">Instagram</a>
+        <a href="https://www.linkedin.com/company/bellatorpax/" target="_blank" rel="noopener" class="footer-link-holder">LinkedIn</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-over-logo-holder">
+    <div class="footer-links-holder">
+      <a href="/work" class="footer-main-link">Work</a>
+      <a href="/studio" class="footer-main-link">Studio</a>
+      <a href="/contact" class="footer-main-link">Contact</a>
+      <div class="footer-rights">All Rights<br/>Reserved<br/>&#169; 2026</div>
+    </div>
+    <div class="footer-flex smaller">
+      <div class="footer-item-holder" style="flex-direction:column;gap:0.3rem;">
+        <div class="footer-h3-holder"><h3 class="footer-h3">Business Inquiries</h3></div>
+        <a href="mailto:newbiz@bellatorpax.studio" class="footer-info-link">newbiz@bellatorpax.studio</a>
+      </div>
+      <div class="footer-item-holder" style="flex-direction:column;gap:0.3rem;">
+        <div class="footer-h3-holder"><h3 class="footer-h3">General</h3></div>
+        <a href="mailto:hello@bellatorpax.studio" class="footer-info-link">hello@bellatorpax.studio</a>
+      </div>
+      <div class="footer-item-holder" style="flex-direction:column;gap:0.3rem;">
+        <div class="footer-h3-holder"><h3 class="footer-h3">Call Us</h3></div>
+        <a href="tel:+4542760898" class="footer-info-link">(+45) 42 76 08 98</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-logo-holder">
+    <svg class="footer-logo-svg" viewBox="0 0 3480.2 449" fill="#161616" xmlns="http://www.w3.org/2000/svg">
+      <path d="M298.14 264.91 Q298.14 281.07 292.75 296.34 Q287.36 311.61 275.46 326.42 Q263.56 341.24 239.77 350.22 Q215.97 359.20 183.19 359.20 L35.92 359.20 L35.92 31.88 L181.84 31.88 Q212.38 31.88 234.60 40.86 Q256.83 49.84 267.83 63.98 Q278.83 78.13 283.77 91.60 Q288.71 105.07 288.71 118.09 Q288.71 139.19 278.38 154.68 Q268.05 170.17 243.81 185.44 Q298.14 217.32 298.14 264.91 Z M103.27 88.00 L103.27 162.09 L176.46 162.09 Q224.05 162.09 224.05 125.27 Q224.05 88.00 176.46 88.00 Z M103.27 218.21 L103.27 303.07 L183.64 303.07 Q233.48 303.07 233.48 260.87 Q233.48 218.21 183.64 218.21 Z"/>
+            <path d="M430.59 218.21 L430.59 303.07 L607.95 303.07 L607.95 359.20 L363.24 359.20 L363.24 31.88 L599.86 31.88 L599.86 88.00 L430.59 88.00 L430.59 162.09 L587.29 162.09 L587.29 218.21 Z"/>
+            <path d="M740.40 31.88 L740.40 303.07 L897.10 303.07 L897.10 359.20 L673.05 359.20 L673.05 31.88 Z"/>
+            <path d="M1029.56 31.88 L1029.56 303.07 L1186.26 303.07 L1186.26 359.20 L962.21 359.20 L962.21 31.88 Z"/>
+            <path d="M1433.21 293.20 L1310.63 293.20 L1288.63 359.20 L1219.93 359.20 L1336.22 31.88 L1410.76 31.88 L1523.91 359.20 L1454.76 359.20 Z M1414.80 237.07 L1372.14 109.11 L1329.49 237.07 Z"/>
+            <path d="M1719.67 88.00 L1719.67 359.20 L1652.32 359.20 L1652.32 88.00 L1553.09 88.00 L1553.09 31.88 L1815.31 31.88 L1815.31 88.00 Z"/>
+            <path d="M2015.11 26.49 Q2086.05 26.49 2129.61 74.31 Q2173.16 122.13 2173.16 200.25 Q2173.16 272.99 2130.28 321.26 Q2087.40 369.53 2015.56 369.53 Q1944.17 369.53 1901.07 321.48 Q1857.96 273.44 1857.96 198.01 Q1857.96 122.58 1901.29 74.53 Q1944.62 26.49 2015.11 26.49 Z M2015.56 83.96 Q1974.70 83.96 1950.01 115.17 Q1925.31 146.37 1925.31 198.01 Q1925.31 249.64 1950.01 280.85 Q1974.70 312.06 2015.56 312.06 Q2055.97 312.06 2080.89 281.07 Q2105.81 250.09 2105.81 199.80 Q2105.81 146.82 2081.34 115.39 Q2056.87 83.96 2015.56 83.96 Z"/>
+            <path d="M2423.70 303.07 Q2423.70 289.61 2424.15 281.97 Q2424.60 274.34 2424.60 268.50 Q2424.60 247.85 2414.72 238.64 Q2404.84 229.44 2382.84 229.44 L2305.62 229.44 L2305.62 359.20 L2238.27 359.20 L2238.27 31.88 L2413.82 31.88 Q2438.97 31.88 2457.15 40.41 Q2475.34 48.94 2484.54 62.86 Q2493.75 76.78 2497.79 90.92 Q2501.83 105.07 2501.83 120.33 Q2501.83 179.60 2446.60 201.15 Q2458.72 206.09 2464.56 209.01 Q2470.40 211.93 2476.46 218.66 Q2482.52 225.40 2484.54 230.79 Q2486.56 236.17 2488.58 250.54 Q2490.60 264.91 2491.05 278.83 Q2491.50 292.75 2491.95 320.14 Q2491.95 339.00 2506.32 347.08 L2506.32 359.20 L2434.03 359.20 Q2427.74 347.53 2425.72 336.75 Q2423.70 325.97 2423.70 303.07 Z M2434.48 129.76 Q2434.48 104.62 2422.80 96.31 Q2411.13 88.00 2386.88 88.00 L2305.62 88.00 L2305.62 173.31 L2386.88 173.31 Q2410.68 173.31 2422.58 164.78 Q2434.48 156.25 2434.48 129.76 Z"/>
+            <path d="M2641.02 242.46 L2641.02 359.20 L2573.67 359.20 L2573.67 31.88 L2718.25 31.88 Q2769.43 31.88 2796.60 57.92 Q2823.76 83.96 2823.76 133.35 Q2823.76 183.19 2796.82 212.83 Q2769.88 242.46 2724.98 242.46 Z M2641.02 186.33 L2703.88 186.33 Q2756.41 186.33 2756.41 137.39 Q2756.41 112.25 2743.61 100.13 Q2730.82 88.00 2703.88 88.00 L2641.02 88.00 Z"/>
+            <path d="M3070.71 293.20 L2948.13 293.20 L2926.13 359.20 L2857.44 359.20 L2973.73 31.88 L3048.26 31.88 L3161.41 359.20 L3092.26 359.20 Z M3052.30 237.07 L3009.65 109.11 L2966.99 237.07 Z"/>
+            <path d="M3365.26 192.17 L3470.32 359.20 L3390.40 359.20 L3327.54 245.60 L3265.13 359.20 L3187.00 359.20 L3290.27 194.42 L3190.59 31.88 L3270.52 31.88 L3327.99 139.64 L3388.15 31.88 L3466.28 31.88 Z"/>
+    </svg>
+  </div>
+</footer>
+
+<script>
+(function() {
+  const preloader      = document.getElementById('preloader');
+  const preloaderBar   = document.getElementById('preloader-bar');
+  const preloaderPct   = document.getElementById('preloader-percent');
+  const heroBpLogo     = document.getElementById('heroBpLogo');
+  const heroH1         = document.getElementById('heroH1');
+  const caseLinks      = document.querySelectorAll('.f-case-link');
+
+  let progress = 0;
+  const interval = setInterval(() => {
+    progress += Math.random() * 18;
+    if (progress >= 100) {
+      progress = 100;
+      clearInterval(interval);
+      finishPreloader();
+    }
+    preloaderBar.style.width = progress + '%';
+    preloaderPct.textContent = Math.floor(progress) + '%';
+  }, 120);
+
+  function finishPreloader() {
+    setTimeout(() => preloader.classList.add('remove'), 600);
+    setTimeout(() => {
+      heroBpLogo.classList.add('active');
+      heroH1.classList.add('show');
+    }, 1000);
+    setTimeout(() => caseLinks.forEach(l => l.classList.add('show')), 1400);
+  }
+
+  const cursor = document.getElementById('cursor');
+  let cx = 0, cy = 0;
+  document.addEventListener('mousemove', e => {
+    cx = e.clientX; cy = e.clientY;
+    cursor.classList.add('visible');
+  });
+  (function loop() {
+    cursor.style.left = cx + 'px';
+    cursor.style.top  = cy + 'px';
+    requestAnimationFrame(loop);
+  })();
+  caseLinks.forEach(l => {
+    l.addEventListener('mouseenter', () => cursor.classList.add('case-hover'));
+    l.addEventListener('mouseleave', () => cursor.classList.remove('case-hover'));
+  });
+
+  const clockEl = document.getElementById('clock');
+  function tick() {
+    const d = new Date();
+    let h = d.getHours(), m = d.getMinutes();
+    if (h < 10) h = '0'+h;
+    if (m < 10) m = '0'+m;
+    clockEl.innerHTML = h + '<span>:</span>' + m;
+  }
+  tick(); setInterval(tick, 1000);
+
+  const titles = document.querySelectorAll('.f-case-title-text');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+  titles.forEach(t => {
+    t.style.opacity = '0';
+    t.style.transform = 'translateY(12px)';
+    t.style.transition = 'opacity 1s cubic-bezier(.23,1,.32,1), transform 1s cubic-bezier(.23,1,.32,1)';
+    obs.observe(t);
+  });
+})();
+</script>
+</body>
+</html>
