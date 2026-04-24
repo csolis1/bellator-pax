@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Wing Chun — Close Range. Clear Mind.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,700;0,800;1,700&family=Cormorant+Garamond:ital,wght@0,700;1,700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --ctx: 1920;
+        --m: 24rem;
+        --g: 20rem;
+        --bg: #261915;
+        --mid: #471e10;
+        --lt: #794330;
+        --amb: #faad17;
+        --hot: #dd6900;
+        --crm: #f2e6c6;
+        --drk: #382c28;
+        --f-display: 'Barlow', sans-serif;
+        --f-body: 'Barlow', sans-serif;
+        --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+        --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      @media (max-width: 743px) {
+        :root {
+          --ctx: 744;
+          --m: 16rem;
+          --g: 16rem;
+        }
+      }
+      @media (max-width: 479px) {
+        :root {
+          --ctx: 375;
+          --m: 16rem;
+          --g: 12rem;
+        }
+      }
+
+      html {
+        font-size: calc(100vw / var(--ctx));
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background: var(--bg);
+        overscroll-behavior: none;
+      }
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      p {
+        margin: 0;
+      }
+      ul,
+      ol {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+      button {
+        background: transparent;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 0;
+      }
+
+      body {
+        background: var(--bg);
+        overflow: hidden;
+        transition: background-color 1.1s var(--ease-soft);
+      }
+
+      #preloader {
+        position: fixed;
+        inset: 0;
+        z-index: 300;
+        background: var(--bg);
+        display: flex;
+        flex-direction: column;
+        padding: 0 var(--m) var(--m);
+      }
+      #pre-title {
+        font-family: var(--f-body);
+        font-weight: 800;
+        text-transform: uppercase;
+        color: var(--amb);
+        line-height: 0.84;
+        font-size: clamp(56px, 11vw, 220px);
+        letter-spacing: -0.05em;
+        margin-top: auto;
+        opacity: 0;
+        transform: translateY(18rem) scale(0.985);
+        transition: opacity 0.95s ease, transform 1.1s var(--ease-out);
+        will-change: transform, opacity;
+      }
+      #pre-title.on {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+      #pre-sub {
+        font-family: var(--f-body);
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        font-size: clamp(8px, 12rem, 18px);
+        color: var(--amb);
+        margin-top: 10rem;
+        line-height: 1.05;
+        max-width: 96rem;
+        opacity: 0;
+        transform: translateY(8rem);
+        transition: opacity 0.75s 0.2s ease, transform 0.75s 0.2s ease;
+      }
+      #pre-sub.on {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      #preloader.gone {
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.9s ease;
+      }
+
+      .nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 260;
+        pointer-events: none;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.35s ease, visibility 0.35s ease;
+      }
+      .nav.on {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+      }
+      .nav ul {
+        display: flex;
+        width: 100%;
+        position: relative;
+        z-index: 1;
+      }
+      .nav li {
+        position: absolute;
+        top: 0;
+        width: 25vw;
+        overflow: hidden;
+        pointer-events: auto;
+        color: var(--mid);
+      }
+      .nav li::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+      }
+      .nav li:nth-child(1)::after {
+        background: #d2c9a0;
+      }
+      .nav li:nth-child(2)::after {
+        background: var(--hot);
+      }
+      .nav li:nth-child(3)::after {
+        background: var(--lt);
+      }
+      .nav li:nth-child(4)::after {
+        background: var(--drk);
+      }
+      .nav li:nth-child(1) {
+        left: 0;
+      }
+      .nav li:nth-child(2) {
+        left: 25vw;
+        width: 25.1vw;
+      }
+      .nav li:nth-child(3) {
+        left: 50vw;
+      }
+      .nav li:nth-child(4) {
+        left: 75vw;
+      }
+      .nav li a {
+        display: block;
+        position: relative;
+        font-family: var(--f-body);
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+      .nav li a span {
+        display: block;
+        padding: 8px var(--m);
+        font-size: clamp(8px, 12rem, 24px);
+        position: relative;
+        width: 100%;
+      }
+      .nav li a span::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        transform: translate3d(0, -50%, 0);
+        width: 12rem;
+        height: 12rem;
+        border-radius: 50%;
+        background: currentColor;
+        opacity: 0;
+        transition: opacity 0.3s;
+        z-index: 1;
+      }
+      .nav li:nth-child(1) a span::before,
+      .nav li:nth-child(2) a span::before {
+        right: var(--m);
+      }
+      .nav li:nth-child(3) a,
+      .nav li:nth-child(4) a {
+        text-align: right;
+      }
+      .nav li:nth-child(3) a span::before,
+      .nav li:nth-child(4) a span::before {
+        left: var(--m);
+      }
+      .nav li a:hover span::before,
+      .nav li a.act span::before {
+        opacity: 1;
+      }
+      .nav li:nth-child(3) a {
+        color: var(--amb);
+      }
+      .nav li:nth-child(4) a {
+        color: var(--crm);
+      }
+
+      @media (max-width: 479px) {
+        .nav ul {
+          flex-wrap: wrap;
+        }
+        .nav li {
+          position: relative;
+          left: auto !important;
+          width: 100%;
+        }
+        .nav li a span {
+          padding: 11px var(--m);
+          font-size: clamp(12px, 18rem, 18px);
+        }
+        .nav li a span::before {
+          right: -20rem !important;
+          left: auto !important;
+          width: 8px;
+          height: 8px;
+        }
+      }
+
+      .page {
+        position: relative;
+        z-index: 1;
+        width: 100vw;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.5s, visibility 0.5s;
+      }
+      .page.on {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .scroll-content {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: auto;
+        will-change: transform;
+      }
+
+      .home-page {
+        position: relative;
+        min-height: 0;
+        padding: calc(66rem + var(--m)) var(--m) 0;
+      }
+      .home-page header {
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+        width: min(100vw - calc(var(--m) * 2), 1600rem);
+        z-index: 12;
+        text-align: center;
+        margin-bottom: 0;
+      }
+      .home-page header h1 {
+        font-family: var(--f-body);
+        font-weight: 800;
+        text-transform: uppercase;
+        line-height: 0.82;
+        color: var(--mid);
+        font-size: clamp(74px, 11.5vw, 220px);
+        letter-spacing: -0.055em;
+        overflow: hidden;
+        position: relative;
+        z-index: 13;
+      }
+      .home-page header h1 span:first-child {
+        position: relative;
+        z-index: 14;
+      }
+      .home-page header h1 span:last-child {
+        position: absolute;
+        inset: 0;
+        transform: translateY(110%);
+        will-change: transform;
+      }
+      .home-page .paragraph {
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+        width: min(100vw - calc(var(--m) * 2), 1600rem);
+        overflow: hidden;
+        will-change: transform;
+        font-size: clamp(8px, 12rem, 50px);
+        padding-bottom: 14rem;
+        margin-top: 10rem;
+        z-index: 3;
+      }
+      .home-page .paragraph p {
+        font-family: var(--f-body);
+        font-weight: 800;
+        text-transform: uppercase;
+        line-height: 1.005;
+        text-align: justify;
+        color: var(--mid);
+        will-change: transform;
+        opacity: 0;
+        transform: translateY(6rem);
+        transition: opacity 0.7s 0.25s, transform 0.7s 0.25s;
+      }
+      .home-page .paragraph p.on {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      @media (max-width: 743px) {
+        .home-page {
+          padding: 58rem var(--m) 0;
+        }
+        .home-page header {
+          width: 100%;
+        }
+        .home-page header h1 {
+          font-size: 84rem;
+        }
+        .home-page .paragraph {
+          width: 100%;
+          margin-top: 8rem;
+          padding-bottom: 10rem;
+        }
+      }
+      @media (max-width: 479px) {
+        .home-page {
+          padding: 50rem var(--m) 0;
+        }
+        .home-page header {
+          display: none;
+        }
+        .home-page .paragraph {
+          position: relative;
+          left: 50%;
+          transform: translateX(-50%);
+          width: calc(100vw - var(--m) * 2);
+          margin-top: 0;
+          padding-bottom: 10rem;
+        }
+      }
+
+      .imagery {
+        padding: 0 var(--m);
+        position: relative;
+        z-index: 2;
+        user-select: none;
+        margin-top: 0rem;
+      }
+      .imagery__item {
+        position: relative;
+        margin: 0 auto 32rem auto;
+      }
+      .col-24 {
+        width: calc((100vw - var(--m) * 2 - var(--g) * 23) * 1 + var(--g) * 23);
+      }
+      .col-16 {
+        width: calc(
+          (100vw - var(--m) * 2 - var(--g) * 23) * 0.6667 + var(--g) * 15
+        );
+      }
+      .col-14 {
+        width: calc(
+          (100vw - var(--m) * 2 - var(--g) * 23) * 0.5833 + var(--g) * 13
+        );
+      }
+      .col-12 {
+        width: calc(
+          (100vw - var(--m) * 2 - var(--g) * 23) * 0.5 + var(--g) * 11
+        );
+      }
+      @media (max-width: 743px) {
+        .col-24,
+        .col-16,
+        .col-14,
+        .col-12 {
+          width: 100%;
+        }
+        .imagery__item {
+          margin-bottom: calc(var(--m) / 2);
+        }
+        .imagery__item:first-child {
+          padding-bottom: calc(var(--m) / 2);
+        }
+        .imagery {
+          margin-top: 0rem;
+        }
+      }
+
+      .asset {
+        position: relative;
+        transform: translate3d(0, 0, 0);
+        cursor: pointer;
+      }
+      .asset__container {
+        width: 100%;
+        padding-top: var(--ratio);
+        position: relative;
+        overflow: hidden;
+      }
+      .asset__container .inner {
+        position: absolute;
+        inset: 0;
+        background: var(--mid);
+        overflow: hidden;
+        transition: filter 0.5s;
+      }
+      .asset:hover .asset__container .inner {
+        filter: brightness(1.08);
+      }
+      .asset__container .inner::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: inherit;
+        transform: scale(1.04) translate3d(0, 0, 0);
+        transition: transform 1s var(--ease-out);
+      }
+      .asset.revealed .asset__container .inner::before {
+        transform: scale(1) translate3d(0, 0, 0);
+      }
+      .g0 .inner {
+        background: linear-gradient(
+          158deg,
+          #3a1a0a 0%,
+          #160a04 45%,
+          #2a1108 100%
+        );
+      }
+      .g1 .inner {
+        background: linear-gradient(
+          205deg,
+          #1c1007 0%,
+          #4a2010 55%,
+          #130603 100%
+        );
+      }
+      .g2 .inner {
+        background: linear-gradient(
+          125deg,
+          #0e0804 0%,
+          #3c1b0c 58%,
+          #200d06 100%
+        );
+      }
+      .g3 .inner {
+        background: linear-gradient(
+          172deg,
+          #281508 0%,
+          #110804 50%,
+          #4a200c 100%
+        );
+      }
+      .g4 .inner {
+        background: linear-gradient(
+          148deg,
+          #150b05 0%,
+          #371a09 44%,
+          #160905 100%
+        );
+      }
+      .g5 .inner {
+        background: linear-gradient(
+          192deg,
+          #421808 0%,
+          #150705 54%,
+          #28100a 100%
+        );
+      }
+      .g6 .inner {
+        background: linear-gradient(
+          133deg,
+          #100b07 0%,
+          #4c2210 49%,
+          #120804 100%
+        );
+      }
+      .g7 .inner {
+        background: linear-gradient(
+          160deg,
+          #311407 0%,
+          #0e0503 38%,
+          #3d1a0a 100%
+        );
+      }
+      .g8 .inner {
+        background: linear-gradient(
+          142deg,
+          #130a05 0%,
+          #381609 50%,
+          #230d07 100%
+        );
+      }
+      .asset-ghost {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: var(--f-display);
+        font-weight: 700;
+        font-style: italic;
+        text-transform: uppercase;
+        font-size: clamp(18px, 80rem, 160px);
+        color: rgba(210, 165, 80, 0.07);
+        white-space: nowrap;
+        pointer-events: none;
+        letter-spacing: -0.02em;
+        line-height: 1;
+        z-index: 1;
+      }
+      .asset__container .inner::after {
+        content: '';
+        position: absolute;
+        top: 10%;
+        bottom: 10%;
+        left: 50%;
+        width: 1px;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          rgba(250, 173, 23, 0.12),
+          transparent
+        );
+      }
+      .asset-cap {
+        position: absolute;
+        bottom: 28rem;
+        left: 28rem;
+        right: 28rem;
+        z-index: 2;
+        pointer-events: none;
+        font-family: var(--f-body);
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        font-size: clamp(7px, 9rem, 14px);
+        color: rgba(210, 201, 160, 0.32);
+        line-height: 1.4;
+      }
+      .asset__toggle {
+        position: absolute;
+        top: 18px;
+        right: 18px;
+        font-family: var(--f-body);
+        font-weight: 800;
+        text-transform: uppercase;
+        font-size: clamp(8px, 12rem, 18px);
+        color: #fff;
+        z-index: 5;
+        opacity: 0;
+        transition: opacity 0.5s;
+        pointer-events: none;
+      }
+      .asset:hover .asset__toggle {
+        opacity: 1;
+      }
+
+      .section {
+        padding: 60rem var(--m) 56rem;
+        opacity: 0;
+        transform: translate3d(0, 24rem, 0);
+        transition: opacity 0.8s, transform 0.8s;
+      }
+      .section.on {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+      }
+      .s-rule {
+        width: 100%;
+        height: 1px;
+        background: rgba(71, 30, 16, 0.28);
+        margin-bottom: 26rem;
+      }
+      .s-label {
+        font-family: var(--f-body);
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        font-size: clamp(7px, 9rem, 14px);
+        color: var(--lt);
+        margin-bottom: 14rem;
+      }
+      .s-title {
+        font-family: var(--f-display);
+        font-weight: 700;
+        font-size: clamp(22px, 72rem, 140px);
+        line-height: 0.88;
+        text-transform: uppercase;
+        color: var(--mid);
+        letter-spacing: -0.01em;
+        margin-bottom: 18rem;
+      }
+      .s-body {
+        font-family: var(--f-body);
+        font-weight: 800;
+        text-transform: uppercase;
+        font-size: clamp(8px, 11rem, 36px);
+        line-height: 1.05;
+        text-align: justify;
+        color: #6b3a22;
+        letter-spacing: 0.02em;
+        max-width: 900rem;
+      }
+      .s-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20rem 40rem;
+        margin-top: 30rem;
+      }
+      @media (max-width: 743px) {
+        .s-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (max-width: 479px) {
+        .s-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .gn {
+        font-family: var(--f-display);
+        font-weight: 700;
+        font-style: italic;
+        font-size: clamp(14px, 28rem, 52px);
+        line-height: 1;
+        color: #dd6900;
+        text-transform: uppercase;
+        display: block;
+        margin-bottom: 6rem;
+      }
+      .gd {
+        font-family: var(--f-body);
+        font-weight: 800;
+        text-transform: uppercase;
+        font-size: clamp(7px, 9rem, 15px);
+        line-height: 1.4;
+        color: #7a4025;
+        letter-spacing: 0.05em;
+      }
+      .p-list {
+        margin-top: 24rem;
+      }
+      .p-row {
+        display: flex;
+        align-items: baseline;
+        gap: 16rem;
+        padding: 12rem 0;
+        border-bottom: 1px solid rgba(71, 30, 16, 0.18);
+      }
+      .p-num {
+        font-family: var(--f-body);
+        font-weight: 800;
+        font-size: clamp(7px, 9rem, 13px);
+        color: var(--lt);
+        letter-spacing: 0.1em;
+        min-width: 28rem;
+      }
+      .p-name {
+        font-family: var(--f-display);
+        font-weight: 700;
+        font-size: clamp(16px, 36rem, 68px);
+        line-height: 1;
+        text-transform: uppercase;
+        color: var(--mid);
+        flex: 1;
+        letter-spacing: -0.01em;
+      }
+      .p-note {
+        font-family: var(--f-body);
+        font-weight: 800;
+        text-transform: uppercase;
+        font-size: clamp(7px, 9rem, 13px);
+        color: var(--lt);
+        letter-spacing: 0.08em;
+        white-space: nowrap;
+      }
+      .l-list {
+        margin-top: 24rem;
+      }
+      .l-row {
+        display: grid;
+        grid-template-columns: 70rem 1fr;
+        gap: 16rem;
+        padding: 14rem 0;
+        border-bottom: 1px solid rgba(71, 30, 16, 0.14);
+        align-items: start;
+      }
+      .l-yr {
+        font-family: var(--f-body);
+        font-weight: 800;
+        font-size: clamp(7px, 9rem, 13px);
+        color: var(--lt);
+        letter-spacing: 0.06em;
+        padding-top: 5rem;
+      }
+      .l-nm {
+        font-family: var(--f-display);
+        font-weight: 700;
+        font-size: clamp(14px, 28rem, 52px);
+        line-height: 1;
+        text-transform: uppercase;
+        color: var(--mid);
+        letter-spacing: -0.01em;
+      }
+      .l-dt {
+        font-family: var(--f-body);
+        font-weight: 800;
+        text-transform: uppercase;
+        font-size: clamp(7px, 9rem, 13px);
+        color: #7a4025;
+        letter-spacing: 0.04em;
+        margin-top: 5rem;
+        line-height: 1.4;
+      }
+
+      .quote {
+        padding: 64rem var(--m);
+        text-align: center;
+        opacity: 0;
+        transform: translate3d(0, 16rem, 0);
+        transition: opacity 0.8s, transform 0.8s;
+      }
+      .quote.on {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+      }
+      .q-txt {
+        font-family: var(--f-display);
+        font-weight: 700;
+        font-style: italic;
+        text-transform: uppercase;
+        font-size: clamp(18px, 60rem, 120px);
+        line-height: 0.92;
+        color: var(--mid);
+        letter-spacing: -0.01em;
+        display: block;
+        margin-bottom: 18rem;
+      }
+      .q-attr {
+        font-family: var(--f-body);
+        font-weight: 800;
+        text-transform: uppercase;
+        font-size: clamp(7px, 10rem, 16px);
+        color: var(--lt);
+        letter-spacing: 0.15em;
+      }
+      .contact {
+        padding: 40rem var(--m) 80rem;
+        border-top: 1px solid rgba(71, 30, 16, 0.22);
+        opacity: 0;
+        transform: translate3d(0, 16rem, 0);
+        transition: opacity 0.8s, transform 0.8s;
+      }
+      .contact.on {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+      }
+      .c-lbl {
+        font-family: var(--f-body);
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        font-size: clamp(7px, 9rem, 14px);
+        color: var(--lt);
+      }
+      .c-email {
+        font-family: var(--f-display);
+        font-weight: 700;
+        font-size: clamp(18px, 55rem, 110px);
+        text-transform: uppercase;
+        line-height: 0.88;
+        color: var(--mid);
+        letter-spacing: -0.01em;
+        display: block;
+        margin-top: 14rem;
+        position: relative;
+      }
+      .c-email::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -4px;
+        width: 100%;
+        height: 1px;
+        background: var(--mid);
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 0.4s;
+      }
+      .c-email:hover::after {
+        transform: scaleX(1);
+        transform-origin: left;
+      }
+
+      .indicator {
+        position: fixed;
+        left: 50%;
+        bottom: 0;
+        transform: translate3d(-50%, 0, 0);
+        z-index: 260;
+        display: flex;
+        height: 28px;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.4s, visibility 0.4s;
+        pointer-events: none;
+      }
+      .indicator.on {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+      }
+      .indicator button {
+        width: 33.333vw;
+        height: 100%;
+        font-family: var(--f-body);
+        font-weight: 800;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        line-height: 1;
+      }
+      .indicator button:nth-child(2) {
+        color: var(--mid);
+        background: var(--crm);
+      }
+      .indicator button:not(:nth-child(2)) {
+        color: var(--crm);
+        background: var(--drk);
+      }
+
+      #focus {
+        position: fixed;
+        inset: 0;
+        z-index: 200;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 0 var(--m);
+        background: #0d0804;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.45s, visibility 0.45s;
+      }
+      #focus.on {
+        opacity: 1;
+        visibility: visible;
+      }
+      #focus-wrap {
+        width: 100%;
+        max-height: 70vh;
+        position: relative;
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+      #focus-box {
+        width: 100%;
+        padding-top: var(--fr, 55%);
+        position: relative;
+        overflow: hidden;
+      }
+      #focus-fill {
+        position: absolute;
+        inset: 0;
+        transition: background 0.4s;
+      }
+      #focus-ghost {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: var(--f-display);
+        font-weight: 700;
+        font-style: italic;
+        text-transform: uppercase;
+        font-size: clamp(20px, 80rem, 160px);
+        color: rgba(250, 173, 23, 0.1);
+        white-space: nowrap;
+        pointer-events: none;
+        letter-spacing: -0.02em;
+        line-height: 1;
+      }
+      #focus-cap {
+        position: absolute;
+        bottom: 24rem;
+        left: 28rem;
+        font-family: var(--f-body);
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        font-size: clamp(7px, 9rem, 14px);
+        color: rgba(210, 201, 160, 0.45);
+      }
+      #focus-meta {
+        margin-top: 24rem;
+        width: 100%;
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 16rem;
+      }
+      #focus-title {
+        font-family: var(--f-display);
+        font-weight: 700;
+        font-style: italic;
+        font-size: clamp(20px, 48rem, 90px);
+        line-height: 0.92;
+        text-transform: uppercase;
+        color: var(--crm);
+        letter-spacing: -0.01em;
+      }
+      #focus-idx {
+        font-family: var(--f-body);
+        font-weight: 800;
+        font-size: clamp(7px, 10rem, 16px);
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        color: rgba(210, 201, 160, 0.35);
+        white-space: nowrap;
+      }
+      @media (max-width: 743px) {
+        .section {
+          padding: 40rem var(--m);
+        }
+        #focus {
+          padding: 0 var(--m) 40rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="preloader">
+      <h1 id="pre-title">Wing Chun</h1>
+      <p id="pre-sub">
+        Close range. Clear mind. No wasted motion. — A system of kung fu built
+        on economy, structure, and simultaneous attack and defence.
+      </p>
+    </div>
+
+    <nav class="nav" id="nav">
+      <ul>
+        <li>
+          <a href="#forms"><span>Forms</span></a>
+        </li>
+        <li>
+          <a href="#principles"><span>Principles</span></a>
+        </li>
+        <li>
+          <a href="#lineage"><span>Lineage</span></a>
+        </li>
+        <li>
+          <a href="#contact"><span>Contact</span></a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="page" id="page">
+      <div class="scroll-content" id="sc">
+        <div class="home-page" id="hp">
+          <header>
+            <h1><span>Wing Chun</span><span id="h1live">Wing Chun</span></h1>
+          </header>
+          <div class="paragraph">
+            <p id="herop">
+              Wing Chun is a concept-based Chinese martial art and form of
+              self-defence utilising both striking and grappling while
+              specialising in close-range combat. The system works on the energy
+              and position of the opponent — using simultaneous defence and
+              attack, centreline theory, economy of movement, and relaxed power
+              to overcome force with structure. Built for the smaller fighter.
+              Perfected over three centuries.
+            </p>
+          </div>
+        </div>
+        <div id="flow"></div>
+      </div>
+    </div>
+
+    <div id="focus">
+      <div id="focus-wrap">
+        <div id="focus-box">
+          <div id="focus-fill"></div>
+          <span id="focus-ghost"></span>
+          <span id="focus-cap"></span>
+        </div>
+      </div>
+      <div id="focus-meta">
+        <span id="focus-title"></span>
+        <span id="focus-idx"></span>
+      </div>
+    </div>
+
+    <div class="indicator" id="ind">
+      <button id="btn-prev"><span>Prev</span></button>
+      <button id="btn-close"><span>Close</span></button>
+      <button id="btn-next"><span>Next</span></button>
+    </div>
+
+    <script>
+      'use strict';
+
+      const IMAGES = [
+        [
+          'col-24',
+          '33.37',
+          'g0',
+          'Siu Nim Tao',
+          'The First Form · Little Idea · Seed of the System',
+        ],
+        [
+          'col-12',
+          '125',
+          'g1',
+          'Stance',
+          'Yee Gee Kim Yeung Ma · Horse Stance · Foundation Posture',
+        ],
+        [
+          'col-24',
+          '55.81',
+          'g2',
+          'Chum Kiu',
+          'Seeking the Bridge · Second Form · Footwork & Pivoting',
+        ],
+        [
+          'col-14',
+          '122.6',
+          'g3',
+          'Chi Sao',
+          'Sticky Hands · Sensitivity Training · Contact Reflexes',
+        ],
+        [
+          'col-24',
+          '55.83',
+          'g4',
+          'Centreline',
+          'Centreline Theory · The Core Structural Law',
+        ],
+        [
+          'col-16',
+          '122.5',
+          'g5',
+          'Biu Gee',
+          'Thrusting Fingers · Third Form · Emergency Recovery',
+        ],
+        [
+          'col-24',
+          '55.81',
+          'g6',
+          'Muk Yan Jong',
+          'Wooden Dummy · 116 Movements · Unyielding Partner',
+        ],
+        [
+          'col-16',
+          '122.6',
+          'g7',
+          'Baat Cham Dao',
+          'Butterfly Swords · The Final Form · Complete System',
+        ],
+        [
+          'col-24',
+          '75.35',
+          'g8',
+          'Ip Man',
+          'Ip Man · Grandmaster · 1893–1972 · Teacher of Bruce Lee',
+        ],
+        [
+          'col-24',
+          '31.56',
+          'g2',
+          'Luk Dim Boon Kwun',
+          'The Long Pole · Six and a Half Points · Whole-Body Power',
+        ],
+      ];
+
+      const SECTIONS = {
+        forms: {
+          id: 'forms',
+          label: 'Three Hand Forms · One Weapons Form · One Dummy Form',
+          title: 'The Forms',
+          body: "Five training forms constitute the complete Wing Chun curriculum. Each encodes a distinct layer of the system's biomechanical logic — from the first principles of stillness to the twin blades of the advanced practitioner.",
+          grid: [
+            [
+              'Siu Nim Tao',
+              'Little Idea — Stance, centreline, basic hand positions, and the development of internal energy through stillness.',
+            ],
+            [
+              'Chum Kiu',
+              "Seeking the Bridge — Footwork, pivoting, and how to find, bridge, and control the opponent's limbs.",
+            ],
+            [
+              'Biu Gee',
+              'Thrusting Fingers — Emergency recovery, attacking vital points, regaining the centreline when position is lost.',
+            ],
+            [
+              'Muk Yan Jong',
+              'Wooden Dummy — 116 movements against an unyielding partner. Angle, deflection, simultaneous block and strike.',
+            ],
+            [
+              'Luk Dim Boon Kwun',
+              'Six and a Half Point Pole — Long-range power and the transfer of whole-body force through a single weapon.',
+            ],
+            [
+              'Baat Cham Dao',
+              'Eight Cutting Broadswords — The pinnacle. Paired butterfly swords incorporating every principle from all preceding forms.',
+            ],
+          ],
+        },
+        principles: {
+          id: 'principles',
+          label: 'Core Concepts · Structural Laws · Unchanging Rules',
+          title: 'Principles',
+          body: 'Wing Chun does not rely on strength or size — it relies on laws. Structural, mechanical, and spatial laws that remain constant regardless of the opponent.',
+          rows: [
+            ['01', 'Centreline Theory', 'Control the line, control the fight'],
+            ['02', 'Economy of Motion', 'Shortest path, maximum effect'],
+            ['03', 'Simultaneous Attack & Defence', 'One hand does two jobs'],
+            ['04', 'Chi Sao — Sticky Hands', 'Sensitivity over sight'],
+            [
+              '05',
+              'Relaxed Structure',
+              'Tension costs energy, relaxation generates it',
+            ],
+            ['06', 'Elbow Energy', 'Power from behind the technique'],
+            ['07', 'Facing & Angling', 'Geometric advantage over strength'],
+          ],
+        },
+        lineage: {
+          id: 'lineage',
+          label: 'Historical Transmission · Grandmasters · Three Centuries',
+          title: 'Lineage',
+          body: 'The art passed mouth to ear, hand to hand, across three centuries — from the southern Shaolin tradition to the rooftops of Hong Kong and beyond to every continent.',
+          rows: [
+            [
+              'c.1700s',
+              'Ng Mui',
+              'Shaolin nun. Founder. Distilled the system so a smaller practitioner could overcome a larger aggressor through structure, not strength.',
+            ],
+            [
+              'c.1700s',
+              'Yim Wing Chun',
+              "The art's namesake. First student of Ng Mui. The entire system forged in her name.",
+            ],
+            [
+              'c.1800s',
+              'Leung Jan',
+              'The King of Wing Chun. Herbalist and fighter of Fatshan. Refined the technical foundation.',
+            ],
+            [
+              '1893–1972',
+              'Ip Man',
+              'Grandmaster. Brought Wing Chun from Fatshan to Hong Kong. Teacher of Bruce Lee. Made the art global.',
+            ],
+            [
+              '1940–1973',
+              'Bruce Lee',
+              'Student of Ip Man. Used Wing Chun as the root of Jeet Kune Do. Brought martial arts to the world stage.',
+            ],
+            [
+              'Present',
+              'Living Tradition',
+              'Ip Ching, Ip Chun, Wong Shun Leung, William Cheung — the art continues in thousands of schools worldwide.',
+            ],
+          ],
+        },
+      };
+
+      const GRADS = {
+        g0: 'linear-gradient(158deg,#3a1a0a 0%,#160a04 45%,#2a1108 100%)',
+        g1: 'linear-gradient(205deg,#1c1007 0%,#4a2010 55%,#130603 100%)',
+        g2: 'linear-gradient(125deg,#0e0804 0%,#3c1b0c 58%,#200d06 100%)',
+        g3: 'linear-gradient(172deg,#281508 0%,#110804 50%,#4a200c 100%)',
+        g4: 'linear-gradient(148deg,#150b05 0%,#371a09 44%,#160905 100%)',
+        g5: 'linear-gradient(192deg,#421808 0%,#150705 54%,#28100a 100%)',
+        g6: 'linear-gradient(133deg,#100b07 0%,#4c2210 49%,#120804 100%)',
+        g7: 'linear-gradient(160deg,#311407 0%,#0e0503 38%,#3d1a0a 100%)',
+        g8: 'linear-gradient(142deg,#130a05 0%,#381609 50%,#230d07 100%)',
+      };
+
+      const BG_ZONES = [
+        [0.0, '#faad17'],
+        [0.18, '#f2e6c6'],
+        [0.34, '#fffaf2'],
+        [0.54, '#d4c195'],
+        [0.7, '#b6873f'],
+        [0.84, '#7a4f2a'],
+        [1.0, '#faad17'],
+      ];
+      const DOM = Object.fromEntries(
+        [
+          'sc',
+          'flow',
+          'page',
+          'nav',
+          'preloader',
+          'pre-title',
+          'pre-sub',
+          'h1live',
+          'herop',
+          'focus',
+          'focus-fill',
+          'focus-ghost',
+          'focus-cap',
+          'focus-title',
+          'focus-idx',
+          'focus-box',
+          'ind',
+        ].map((id) => [id, document.getElementById(id)])
+      );
+      const state = {
+        scrollY: 0,
+        targetY: 0,
+        maxScroll: 0,
+        focusIndex: -1,
+        lastBg: '',
+      };
+      const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+      const lerp = (a, b, t) => a + (b - a) * t;
+      const smoothstep = (t) => t * t * (3 - 2 * t);
+      const hexToRgb = (h) =>
+        h
+          .replace('#', '')
+          .match(/../g)
+          .map((x) => parseInt(x, 16));
+      const mixColor = (a, b, t) => {
+        const A = hexToRgb(a),
+          B = hexToRgb(b);
+        return `rgb(${Math.round(lerp(A[0], B[0], t))},${Math.round(
+          lerp(A[1], B[1], t)
+        )},${Math.round(lerp(A[2], B[2], t))})`;
+      };
+
+      function createAsset(index) {
+        const [col, ratio, grad, ghost, cap] = IMAGES[index];
+        const el = document.createElement('div');
+        el.className = `imagery__item ${col}`;
+        el.innerHTML = `<div class="asset ${grad}" data-idx="${index}" tabindex="0" role="button" aria-label="View ${ghost}"><div class="asset__container" style="--ratio:${ratio}%"><div class="inner"><span class="asset-ghost">${ghost}</span><span class="asset-cap">${cap}</span></div></div><span class="asset__toggle">View</span></div>`;
+        el.querySelector('.asset').addEventListener('click', () =>
+          openFocus(index)
+        );
+        return el;
+      }
+      function createImageGroup(indices) {
+        const group = document.createElement('div');
+        group.className = 'imagery';
+        indices.forEach((i) => group.appendChild(createAsset(i)));
+        return group;
+      }
+      function createSection(key) {
+        const s = SECTIONS[key],
+          section = document.createElement('div');
+        section.className = 'section';
+        section.id = s.id;
+        let html = `<div class="s-rule"></div><div class="s-label">${s.label}</div><div class="s-title">${s.title}</div><div class="s-body">${s.body}</div>`;
+        if (s.grid)
+          html += `<div class="s-grid">${s.grid
+            .map(
+              ([name, desc]) =>
+                `<div><span class="gn">${name}</span><span class="gd">${desc}</span></div>`
+            )
+            .join('')}</div>`;
+        if (s.rows) {
+          const rows =
+            key === 'principles'
+              ? s.rows
+                  .map(
+                    ([num, name, note]) =>
+                      `<div class="p-row"><span class="p-num">${num}</span><span class="p-name">${name}</span><span class="p-note">${note}</span></div>`
+                  )
+                  .join('')
+              : s.rows
+                  .map(
+                    ([year, name, note]) =>
+                      `<div class="l-row"><div class="l-yr">${year}</div><div><div class="l-nm">${name}</div><div class="l-dt">${note}</div></div></div>`
+                  )
+                  .join('');
+          html +=
+            key === 'principles'
+              ? `<div class="p-list">${rows}</div>`
+              : `<div class="l-list">${rows}</div>`;
+        }
+        section.innerHTML = html;
+        return section;
+      }
+      function createQuote() {
+        const el = document.createElement('div');
+        el.className = 'quote';
+        el.innerHTML = `<span class="q-txt">"Use no way as way,<br/>have no limitation<br/>as limitation."</span><span class="q-attr">Bruce Lee · Student of Ip Man · Wing Chun Lineage</span>`;
+        return el;
+      }
+      function createContact() {
+        const el = document.createElement('div');
+        el.className = 'contact';
+        el.id = 'contact';
+        el.innerHTML = `<div class="c-lbl">Enquiries · Training · Collaboration</div><a class="c-email" href="mailto:hello@wingchun.studio">hello@wingchun.studio</a>`;
+        return el;
+      }
+
+      function renderFlow() {
+        [
+          createImageGroup([0, 1]),
+          createSection('forms'),
+          createImageGroup([2, 3]),
+          createQuote(),
+          createImageGroup([4, 5]),
+          createSection('principles'),
+          createImageGroup([6, 7, 8]),
+          createSection('lineage'),
+          createImageGroup([9]),
+          createContact(),
+        ].forEach((node) => DOM.flow.appendChild(node));
+      }
+      function updateMaxScroll() {
+        state.maxScroll = Math.max(0, DOM.sc.scrollHeight - window.innerHeight);
+      }
+      function updateBackground(progress) {
+        const p = smoothstep(clamp(progress, 0, 1));
+        let low = BG_ZONES[0],
+          high = BG_ZONES.at(-1);
+        for (let i = 0; i < BG_ZONES.length - 1; i++) {
+          const a = BG_ZONES[i],
+            b = BG_ZONES[i + 1];
+          if (p >= a[0] && p <= b[0]) {
+            low = a;
+            high = b;
+            break;
+          }
+        }
+        const t = (p - low[0]) / (high[0] - low[0] || 1);
+        const color = mixColor(low[1], high[1], t);
+        if (color !== state.lastBg) {
+          document.body.style.backgroundColor = color;
+          state.lastBg = color;
+        }
+        document.documentElement.style.setProperty(
+          '--mid',
+          p > 0.78 ? '#261915' : '#471e10'
+        );
+      }
+      function revealBySelector(selector, className) {
+        document
+          .querySelectorAll(`${selector}:not(.${className})`)
+          .forEach((el) => {
+            if (el.getBoundingClientRect().top < window.innerHeight * 0.9)
+              el.classList.add(className);
+          });
+      }
+      function updateNavActive() {
+        const ids = ['forms', 'principles', 'lineage', 'contact'];
+        let active = -1;
+        ids.forEach((id, i) => {
+          const el = document.getElementById(id);
+          if (el && el.getBoundingClientRect().top <= 80) active = i;
+        });
+        document
+          .querySelectorAll('.nav li a')
+          .forEach((a, i) => a.classList.toggle('act', i === active));
+      }
+      function updateScroll(delta) {
+        state.targetY = clamp(state.targetY + delta, 0, state.maxScroll);
+      }
+      function bindNavigation() {
+        document.querySelectorAll('.nav li a').forEach((link) => {
+          link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+            if (!href?.startsWith('#')) return;
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (target)
+              state.targetY = clamp(target.offsetTop - 60, 0, state.maxScroll);
+          });
+        });
+      }
+      function populateFocus(index) {
+        const [, , grad, ghost, cap] = IMAGES[index];
+        DOM['focus-fill'].style.background = GRADS[grad];
+        DOM['focus-box'].style.setProperty('--fr', `${IMAGES[index][1]}%`);
+        DOM['focus-box'].style.paddingTop = `${IMAGES[index][1]}%`;
+        DOM['focus-ghost'].textContent = ghost;
+        DOM['focus-cap'].textContent = cap;
+        DOM['focus-title'].textContent = ghost;
+        DOM['focus-idx'].textContent = `${index + 1} / ${IMAGES.length}`;
+      }
+      function openFocus(index) {
+        state.focusIndex = index;
+        populateFocus(index);
+        DOM.focus.classList.add('on');
+        DOM.ind.classList.add('on');
+      }
+      function closeFocus() {
+        state.focusIndex = -1;
+        DOM.focus.classList.remove('on');
+        DOM.ind.classList.remove('on');
+      }
+      function stepFocus(delta) {
+        if (state.focusIndex < 0) return;
+        state.focusIndex =
+          (state.focusIndex + delta + IMAGES.length) % IMAGES.length;
+        populateFocus(state.focusIndex);
+      }
+      function revealHero() {
+        requestAnimationFrame(() => {
+          DOM['h1live'].style.transform = 'translateY(0)';
+        });
+        setTimeout(() => DOM['herop'].classList.add('on'), 350);
+      }
+      function animate() {
+        state.scrollY += (state.targetY - state.scrollY) * 0.06;
+        if (Math.abs(state.targetY - state.scrollY) < 0.05)
+          state.scrollY = state.targetY;
+        DOM.sc.style.transform = `translate3d(0,${-state.scrollY}px,0)`;
+        updateBackground(state.maxScroll ? state.scrollY / state.maxScroll : 0);
+        revealBySelector('.asset', 'revealed');
+        revealBySelector('.section,.quote,.contact', 'on');
+        updateNavActive();
+        requestAnimationFrame(animate);
+      }
+
+      window.addEventListener('wheel', (e) => updateScroll(e.deltaY), {
+        passive: true,
+      });
+      let touchY = 0;
+      window.addEventListener(
+        'touchstart',
+        (e) => {
+          touchY = e.touches[0].clientY;
+        },
+        { passive: true }
+      );
+      window.addEventListener(
+        'touchmove',
+        (e) => {
+          const current = e.touches[0].clientY;
+          updateScroll(touchY - current);
+          touchY = current;
+        },
+        { passive: true }
+      );
+      window.addEventListener('keydown', (e) => {
+        const step = {
+          ArrowDown: 80,
+          ArrowUp: -80,
+          PageDown: window.innerHeight * 0.85,
+          PageUp: -window.innerHeight * 0.85,
+        }[e.key];
+        if (step) updateScroll(step);
+      });
+      document
+        .getElementById('btn-close')
+        .addEventListener('click', closeFocus);
+      document
+        .getElementById('btn-prev')
+        .addEventListener('click', () => stepFocus(-1));
+      document
+        .getElementById('btn-next')
+        .addEventListener('click', () => stepFocus(1));
+      DOM.focus.addEventListener('click', (e) => {
+        if (
+          e.target === DOM.focus ||
+          e.target.id === 'focus-wrap' ||
+          e.target.id === 'focus-box' ||
+          e.target.id === 'focus-fill'
+        )
+          closeFocus();
+      });
+
+      function init() {
+        requestAnimationFrame(() => {
+          DOM['pre-title'].classList.add('on');
+          DOM['pre-sub'].classList.add('on');
+        });
+        renderFlow();
+        setTimeout(() => {
+          DOM.preloader.classList.add('gone');
+          setTimeout(() => {
+            DOM.preloader.style.display = 'none';
+          }, 900);
+          DOM.page.classList.add('on');
+          DOM.nav.classList.add('on');
+          revealHero();
+          updateMaxScroll();
+          bindNavigation();
+          animate();
+          window.addEventListener('resize', () => {
+            updateMaxScroll();
+            revealBySelector('.asset', 'revealed');
+          });
+        }, 1400);
+      }
+      init();
+    </script>
+  </body>
+</html>

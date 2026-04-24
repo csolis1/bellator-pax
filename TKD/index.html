@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Serif+KR:wght@400;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+
+/* ─── TOKENS ─────────────────────────────────────────── */
+:root {
+  --black:  #0a0a0a;
+  --white:  #f5f5f0;
+  --red:    #C8001C;      /* Taegukgi red   */
+  --blue:   #003478;      /* Taegukgi blue  */
+  --red-lt: rgba(200,0,28,.08);
+  --blue-lt:rgba(0,52,120,.08);
+  --mono:   'DM Mono', monospace;
+  --serif:  'Noto Serif KR', serif;
+  --display:'Bebas Neue', sans-serif;
+}
+
+/* ─── RESET ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { background: var(--black); }
+body {
+  background: var(--white);
+  color: var(--black);
+  font-family: var(--mono);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── PAGE ENTER ANIMATION ───────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes revealRight {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0% 0 0); }
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ─── LAYOUT ─────────────────────────────────────────── */
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 4rem 8rem;
+}
+
+/* ─── NAV ────────────────────────────────────────────── */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 5rem;
+  opacity: 0;
+  animation: fadeUp .6s .1s ease forwards;
+}
+.nav-mark {
+  font-family: var(--display);
+  font-size: 1.4rem;
+  letter-spacing: .2em;
+  color: var(--black);
+}
+.nav-links {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+  font-family: var(--mono);
+  font-size: .72rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.nav-links a {
+  color: rgba(245,245,240,.45);
+  text-decoration: none;
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--black); }
+
+/* thin top rule */
+.top-rule {
+  width: 100%;
+  height: 1px;
+  background: rgba(245,245,240,.12);
+  margin-bottom: 5rem;
+  opacity: 0;
+  animation: revealRight .9s .2s ease forwards;
+}
+
+/* ─── HEADLINE BLOCK ─────────────────────────────────── */
+.headline-block {
+  margin-bottom: 3.5rem;
+}
+
+.title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 1.2rem;
+  line-height: 1;
+  opacity: 0;
+  animation: fadeUp .7s ease forwards;
+}
+.title-row:nth-child(1) { animation-delay: .25s; }
+.title-row:nth-child(2) { animation-delay: .38s; margin-left: 4vw; }
+.title-row:nth-child(3) { animation-delay: .51s; margin-left: 9vw; }
+
+.portfolio-word {
+  font-family: var(--display);
+  font-size: clamp(5rem, 14vw, 13rem);
+  letter-spacing: -.01em;
+  color: var(--black);
+  line-height: .88;
+}
+
+/* small tag next to the big word */
+.title-tag {
+  font-family: var(--mono);
+  font-size: .65rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(10,10,10,.6);
+  white-space: nowrap;
+  padding-bottom: .4em;
+}
+
+/* ─── KOREAN ACCENT BOX ──────────────────────────────── */
+.korean-box {
+  position: relative;
+  margin: 0 0 5rem;
+  padding: 2.4rem 2.8rem;
+  overflow: hidden;
+  opacity: 0;
+  animation: fadeUp .75s .65s ease forwards;
+
+  /* Base: deep night gradient */
+  background: linear-gradient(135deg,
+    #0a0a0a 0%,
+    #0d1a2e 35%,
+    #1a0008 70%,
+    #0a0a0a 100%
+  );
+  border: 1px solid rgba(245,245,240,.08);
+}
+
+/* Taeguk circles — pure CSS, no images */
+.korean-box::before,
+.korean-box::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+/* Blue orb */
+.korean-box::before {
+  width: 280px; height: 280px;
+  top: -80px; right: -60px;
+  background: radial-gradient(circle at 40% 40%,
+    rgba(0,52,120,.55) 0%,
+    rgba(0,52,120,.18) 45%,
+    transparent 70%
+  );
+}
+/* Red orb */
+.korean-box::after {
+  width: 220px; height: 220px;
+  bottom: -60px; right: 60px;
+  background: radial-gradient(circle at 60% 60%,
+    rgba(200,0,28,.5) 0%,
+    rgba(200,0,28,.14) 45%,
+    transparent 70%
+  );
+}
+
+/* Trigram bars — decorative vertical stack */
+.trigrams {
+  position: absolute;
+  right: 2.8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  opacity: .22;
+}
+.trigram-line {
+  width: 36px;
+  height: 4px;
+  background: var(--black);
+  border-radius: 2px;
+}
+.trigram-line.broken {
+  background: transparent;
+  border-top: none;
+  display: flex;
+  gap: 4px;
+}
+.trigram-line.broken::before,
+.trigram-line.broken::after {
+  content: '';
+  flex: 1;
+  height: 4px;
+  background: var(--black);
+  border-radius: 2px;
+}
+
+/* Rotating taeguk circle */
+.taeguk {
+  position: absolute;
+  bottom: 1.4rem;
+  left: 2.6rem;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid rgba(245,245,240,.1);
+  animation: spin 18s linear infinite;
+  background: conic-gradient(
+    var(--red)  0deg 180deg,
+    var(--blue) 180deg 360deg
+  );
+  opacity: .25;
+}
+
+/* Korean character watermarks */
+.hangul-marks {
+  position: absolute;
+  top: 1.2rem;
+  right: 5rem;
+  font-family: var(--serif);
+  font-size: 3.5rem;
+  font-weight: 900;
+  letter-spacing: .1em;
+  opacity: .06;
+  color: var(--black);
+  user-select: none;
+  white-space: nowrap;
+}
+
+.box-inner {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 3rem;
+  align-items: start;
+}
+
+.box-left { }
+
+.box-label {
+  font-family: var(--mono);
+  font-size: .62rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 1.1rem;
+}
+
+.box-headline {
+  font-family: var(--serif);
+  font-size: clamp(1.4rem, 2.6vw, 2.2rem);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--black);
+  margin-bottom: 1.4rem;
+}
+.box-headline em {
+  font-style: italic;
+  color: rgba(245,245,240,.55);
+}
+
+.box-desc {
+  font-family: var(--mono);
+  font-size: .72rem;
+  line-height: 1.85;
+  color: rgba(245,245,240,.42);
+  max-width: 38ch;
+  letter-spacing: .04em;
+}
+
+/* Stat pills on the right */
+.box-stats {
+  display: flex;
+  flex-direction: column;
+  gap: .7rem;
+  padding-right: 3.5rem;
+}
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: .1rem;
+}
+.stat-num {
+  font-family: var(--display);
+  font-size: 2.6rem;
+  line-height: 1;
+  color: var(--black);
+}
+.stat-num.red  { color: var(--red); }
+.stat-num.blue { color: #5b8fcf; }
+.stat-label {
+  font-family: var(--mono);
+  font-size: .58rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: rgba(245,245,240,.3);
+}
+
+/* Horizontal rule inside box */
+.box-rule {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, rgba(200,0,28,.5), rgba(0,52,120,.5), transparent);
+  margin: 1.6rem 0 0;
+  position: relative;
+  z-index: 2;
+}
+
+/* ─── STAGGERED LIST ─────────────────────────────────── */
+.stagger-section {
+  margin-bottom: 6rem;
+}
+.stagger-label {
+  font-family: var(--mono);
+  font-size: .62rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: rgba(245,245,240,.28);
+  margin-bottom: 2rem;
+}
+
+.stagger-item {
+  display: flex;
+  align-items: baseline;
+  gap: 1.6rem;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid rgba(245,245,240,.06);
+  opacity: 0;
+  animation: fadeUp .55s ease forwards;
+}
+.stagger-item:nth-child(1)  { animation-delay: .75s; margin-left: 0;    }
+.stagger-item:nth-child(2)  { animation-delay: .85s; margin-left: 3vw;  }
+.stagger-item:nth-child(3)  { animation-delay: .95s; margin-left: 7vw;  }
+.stagger-item:nth-child(4)  { animation-delay:1.05s; margin-left: 12vw; }
+.stagger-item:nth-child(5)  { animation-delay:1.15s; margin-left: 7vw;  }
+.stagger-item:nth-child(6)  { animation-delay:1.25s; margin-left: 2vw;  }
+
+.stagger-num {
+  font-family: var(--display);
+  font-size: .85rem;
+  color: rgba(245,245,240,.2);
+  min-width: 2.2rem;
+  letter-spacing: .05em;
+}
+.stagger-title {
+  font-family: var(--display);
+  font-size: clamp(1.6rem, 3.5vw, 3rem);
+  letter-spacing: .04em;
+  color: var(--black);
+  line-height: 1;
+  flex: 1;
+  transition: color .2s;
+}
+.stagger-item:hover .stagger-title { color: rgba(245,245,240,.5); }
+
+.stagger-meta {
+  font-family: var(--mono);
+  font-size: .62rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(245,245,240,.25);
+  white-space: nowrap;
+}
+
+/* accent dots */
+.dot-red  { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--red);  margin-right: .5rem; vertical-align: middle; }
+.dot-blue { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--blue); margin-right: .5rem; vertical-align: middle; }
+
+/* ─── BOTTOM BAR ─────────────────────────────────────── */
+.bottom-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(245,245,240,.1);
+  opacity: 0;
+  animation: fadeUp .6s 1.4s ease forwards;
+}
+.bottom-left {
+  font-family: var(--mono);
+  font-size: .62rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(245,245,240,.22);
+}
+.bottom-right {
+  display: flex;
+  gap: 1.6rem;
+}
+.bottom-link {
+  font-family: var(--mono);
+  font-size: .62rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(245,245,240,.22);
+  text-decoration: none;
+  transition: color .2s;
+}
+.bottom-link:hover { color: var(--black); }
+
+/* color bar accent */
+.color-bar {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(to right, var(--red) 0%, var(--red) 50%, var(--blue) 50%, var(--blue) 100%);
+  opacity: .7;
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────────── */
+@media (max-width: 700px) {
+  .page { padding: 2.5rem 1.5rem 5rem; }
+  .title-row:nth-child(2) { margin-left: 2vw; }
+  .title-row:nth-child(3) { margin-left: 5vw; }
+  .box-inner { grid-template-columns: 1fr; }
+  .box-stats { flex-direction: row; padding-right: 0; }
+  .trigrams, .hangul-marks { display: none; }
+  .nav-links { gap: 1.2rem; }
+}
+
+</style>
+</head>
+<body>
+
+<div class="color-bar"></div>
+
+<div class="page">
+
+  <!-- NAV -->
+  <nav>
+    <span class="nav-mark">작품집</span>
+    <ul class="nav-links">
+      <li><a href="#">Work</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="top-rule"></div>
+
+  <!-- BIG STAGGERED TITLE -->
+  <div class="headline-block">
+
+    <div class="title-row">
+      <span class="portfolio-word">TAE</span>
+      <span class="title-tag"> What happens when elegance decides to move at light speed and refuses to apologize for it? &nbsp;—&nbsp; You get Taekwondo</span>
+    </div>
+
+    <div class="title-row">
+      <span class="portfolio-word">KWON</span>
+    </div>
+
+     <div class="title-row">
+      <span class="portfolio-word">DO</span>
+    </div>
+
+    <div class="title-row">
+      <span class="portfolio-word" style="color: rgba(10,10,10,.15);">태권도</span>
+      <span class="title-tag">태권도 · Jakpum</span>
+    </div>
+
+  </div>
+
+  <!-- KOREAN ACCENT BOX -->
+  <div class="korean-box">
+
+    <!-- decorative elements -->
+    <div class="hangul-marks">정직 &nbsp; 창의</div>
+    <div class="taeguk"></div>
+
+    <!-- trigrams right edge -->
+    <div class="trigrams">
+      <div class="trigram-line"></div>
+      <div class="trigram-line broken"></div>
+      <div class="trigram-line"></div>
+      <div class="trigram-line broken"></div>
+      <div class="trigram-line"></div>
+      <div class="trigram-line"></div>
+      <div class="trigram-line broken"></div>
+      <div class="trigram-line"></div>
+    </div>
+
+    <div class="box-inner">
+      <div class="box-left">
+        <div class="box-label">진행 중 &nbsp;·&nbsp; In Progress</div>
+        <div class="box-headline">
+          Design is the silence<br/>
+          between <em>intention</em> and form.
+        </div>
+        <div class="box-desc">
+          A collection of work spanning identity, digital, and spatial design.
+          Each project begins with a single question and ends with a decision
+          that cannot be taken back.
+        </div>
+      </div>
+
+      <div class="box-stats">
+        <div class="stat">
+          <span class="stat-num red">24</span>
+          <span class="stat-label">Projects</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num blue">08</span>
+          <span class="stat-label">Clients</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">03</span>
+          <span class="stat-label">Years</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="box-rule"></div>
+  </div>
+
+  <!-- STAGGERED PROJECT LIST -->
+  <div class="stagger-section">
+    <div class="stagger-label">Selected Projects</div>
+
+    <div class="stagger-item">
+      <span class="stagger-num">01</span>
+      <span class="stagger-title"><span class="dot-red"></span>Brand Identity</span>
+      <span class="stagger-meta">2024 &nbsp;·&nbsp; Identity</span>
+    </div>
+
+    <div class="stagger-item">
+      <span class="stagger-num">02</span>
+      <span class="stagger-title"><span class="dot-blue"></span>Digital Campaigns</span>
+      <span class="stagger-meta">2024 &nbsp;·&nbsp; Digital</span>
+    </div>
+
+    <div class="stagger-item">
+      <span class="stagger-num">03</span>
+      <span class="stagger-title"><span class="dot-red"></span>Editorial Design</span>
+      <span class="stagger-meta">2023 &nbsp;·&nbsp; Print</span>
+    </div>
+
+    <div class="stagger-item">
+      <span class="stagger-num">04</span>
+      <span class="stagger-title"><span class="dot-blue"></span>Motion &amp; Film</span>
+      <span class="stagger-meta">2023 &nbsp;·&nbsp; Motion</span>
+    </div>
+
+    <div class="stagger-item">
+      <span class="stagger-num">05</span>
+      <span class="stagger-title"><span class="dot-red"></span>Spatial Identity</span>
+      <span class="stagger-meta">2023 &nbsp;·&nbsp; Space</span>
+    </div>
+
+    <div class="stagger-item">
+      <span class="stagger-num">06</span>
+      <span class="stagger-title"><span class="dot-blue"></span>Type &amp; Language</span>
+      <span class="stagger-meta">2022 &nbsp;·&nbsp; Typography</span>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM BAR -->
+  <div class="bottom-bar">
+    <span class="bottom-left">© 2024 &nbsp;·&nbsp; All rights reserved</span>
+    <div class="bottom-right">
+      <a class="bottom-link" href="#">Instagram</a>
+      <a class="bottom-link" href="#">LinkedIn</a>
+      <a class="bottom-link" href="#">Email</a>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
