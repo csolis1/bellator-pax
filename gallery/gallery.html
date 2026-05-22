@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BELLATORPAX — Gallery</title>
+<meta name="description" content="Drawings and photographs from inside the fight game."/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #161616;
+  --fg: #fafafa;
+  --muted: rgba(250,250,250,0.45);
+  --line: rgba(255,255,255,0.08);
+  --ease: cubic-bezier(.23,1,.32,1);
+  --ease-sharp: cubic-bezier(.645,.045,.355,1);
+}
+html, body { width: 100%; background: var(--bg); color: var(--fg); }
+body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  cursor: none;
+}
+/* toggled by JS */
+body.scroll-mode { overflow: hidden; }
+body.grid-mode   { overflow-x: hidden; overflow-y: auto; }
+::-webkit-scrollbar { display: none; }
+
+/* ── CURSOR ───────────────────────────────────────────── */
+#cursor {
+  position: fixed; width: 40px; height: 40px; border-radius: 50%;
+  background: white; pointer-events: none; z-index: 9998;
+  transform: translate(-50%,-50%); mix-blend-mode: difference;
+  clip-path: circle(0% at 50% 50%);
+  transition: clip-path .5s var(--ease), width .35s var(--ease), height .35s var(--ease);
+  top: 0; left: 0;
+}
+#cursor.visible   { clip-path: circle(50% at 50% 50%); }
+#cursor.big       { width: 80px; height: 80px; }
+#cursor.small     { width: 16px; height: 16px; }
+
+/* ── NAV ──────────────────────────────────────────────── */
+.menu {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 2.2vw 3vw; mix-blend-mode: difference; pointer-events: none;
+}
+.menu-link-holder { display: flex; align-items: center; gap: 3vw; pointer-events: auto; }
+.menu-logo { display: flex; align-items: center; text-decoration: none; }
+.menu-logo svg { width: 120px; height: auto; }
+.menu-links-holder { display: flex; align-items: center; gap: 2.5vw; pointer-events: auto; }
+.menu-link {
+  color: var(--fg); text-decoration: none;
+  font-size: clamp(.75rem,.875vw,1rem);
+  letter-spacing: .02em; opacity: .85; transition: opacity .3s;
+}
+.menu-link:hover, .menu-link.active { opacity: 1; }
+.menu-link sup { font-size: .6em; opacity: .6; }
+.menu-right {
+  display: flex; align-items: center; gap: .5rem;
+  font-size: clamp(.75rem,.875vw,1rem);
+  color: var(--fg); pointer-events: auto; opacity: .7; letter-spacing: .04em;
+}
+#clock span { animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { visibility: hidden; } }
+
+/* ── VIEW TOGGLE + CONTROLS ───────────────────────────── */
+.controls {
+  position: fixed; bottom: 2.5vw; left: 3vw; z-index: 200;
+  display: flex; align-items: center; gap: 1.2rem;
+  pointer-events: auto; mix-blend-mode: difference;
+}
+.ctrl-btn {
+  background: none; border: 1px solid rgba(250,250,250,.25);
+  color: var(--fg); font-family: inherit;
+  font-size: clamp(.55rem,.65vw,.75rem); letter-spacing: .14em;
+  text-transform: uppercase; padding: .45rem 1rem;
+  border-radius: 999px; cursor: none;
+  transition: border-color .25s, background .25s, color .25s;
+}
+.ctrl-btn:hover     { border-color: var(--fg); }
+.ctrl-btn.active    { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.ctrl-divider       { width: 1px; height: 14px; background: rgba(255,255,255,.2); }
+.ctrl-status {
+  font-size: clamp(.5rem,.6vw,.7rem); letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted);
+  transition: opacity .3s;
+}
+
+/* ── SCROLL STATE indicator bar ──────────────────────── */
+.scroll-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: 1px; background: rgba(255,255,255,.06); z-index: 199;
+}
+.scroll-bar-fill {
+  height: 100%; background: rgba(255,255,255,.35);
+  width: 30%; transition: width .4s var(--ease), opacity .3s;
+}
+
+/* ═══════════════════════════════════════════════════════
+   MODE A — TIGHT SCROLL (default)
+   Cargo-style: images stacked flush, zero gap, full-width.
+   Two columns, images touching like tiles.
+   ═══════════════════════════════════════════════════════ */
+.view-scroll {
+  position: fixed; inset: 0; overflow: hidden;
+}
+.scroll-track {
+  position: absolute; top: 0; left: 0; width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  will-change: transform;
+}
+
+/* Each cell is a tight image tile — no padding, no gap */
+.scroll-cell {
+  position: relative; overflow: hidden;
+  background: #111;
+  cursor: none;
+}
+/* Alternate heights so left col vs right col feel offset */
+.scroll-cell:nth-child(odd)  { aspect-ratio: 3/4; }
+.scroll-cell:nth-child(even) { aspect-ratio: 4/5; }
+
+.scroll-cell img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform 1s var(--ease), filter .6s;
+  filter: brightness(.92);
+}
+.scroll-cell:hover img {
+  transform: scale(1.03);
+  filter: brightness(1);
+}
+
+/* Caption strip — slides up on hover */
+.scroll-caption {
+  position: absolute; inset: auto 0 0;
+  padding: 1.4rem 1.6rem 1.2rem;
+  background: linear-gradient(to top, rgba(0,0,0,.75) 0%, transparent 100%);
+  transform: translateY(101%);
+  transition: transform .55s var(--ease);
+  pointer-events: none;
+}
+.scroll-cell:hover .scroll-caption { transform: translateY(0); }
+.scroll-caption-title {
+  font-size: clamp(.8rem,1.1vw,1.4rem);
+  font-weight: 300; letter-spacing: -.01em;
+  margin-bottom: .3rem;
+}
+.scroll-caption-sub {
+  font-size: clamp(.5rem,.6vw,.72rem);
+  letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+}
+
+/* type pill */
+.scroll-pill {
+  position: absolute; top: 1rem; right: 1rem;
+  font-size: clamp(.45rem,.55vw,.65rem);
+  letter-spacing: .1em; text-transform: uppercase;
+  padding: .2rem .55rem; border-radius: 999px;
+  opacity: 0; transition: opacity .35s;
+}
+.scroll-cell:hover .scroll-pill { opacity: 1; }
+.pill-photo   { background: rgba(250,250,250,.12); border: 1px solid rgba(250,250,250,.2); color: var(--fg); }
+.pill-drawing { background: rgba(200,130,255,.1);  border: 1px solid rgba(200,130,255,.3); color: rgba(200,130,255,.9); }
+
+/* Placeholder when no src */
+.scroll-placeholder {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: .5rem;
+  background: #111;
+}
+.ph-num {
+  font-size: clamp(2rem,4vw,5.5rem);
+  font-weight: 200; letter-spacing: -.06em;
+  color: rgba(250,250,250,.07);
+}
+.ph-label {
+  font-size: clamp(.45rem,.55vw,.65rem);
+  letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(250,250,250,.14);
+}
+
+/* ═══════════════════════════════════════════════════════
+   MODE B — GRID (toggle)
+   ═══════════════════════════════════════════════════════ */
+.view-grid {
+  display: none;
+  padding: 10vw 3vw 6vw;
+  min-height: 100vh;
+}
+.view-grid.active  { display: block; }
+.view-scroll       { display: none; }
+.view-scroll.active { display: block; }
+
+.grid-header {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 3vw; margin-bottom: 4vw;
+  display: grid; grid-template-columns: 1.2fr .8fr;
+  gap: 4vw; align-items: end;
+}
+.grid-header h1 {
+  font-size: clamp(1.4rem,3vw,4rem);
+  font-weight: 300; line-height: 1.1; letter-spacing: -.03em;
+  max-width: 14ch;
+}
+.grid-header p {
+  color: var(--muted); font-size: clamp(.85rem,1.1vw,1.1rem);
+  line-height: 1.7; max-width: 38ch;
+}
+
+.grid-items {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1.25vw;
+}
+.grid-item {
+  grid-column: span 6;
+  text-decoration: none; color: inherit; cursor: none;
+}
+.grid-media {
+  position: relative; aspect-ratio: 16/10;
+  overflow: hidden; background: #1e1e1e;
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 1.4s var(--ease);
+}
+.grid-media.show { clip-path: inset(0 0 0 0); }
+.grid-media img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform .8s var(--ease);
+}
+.grid-item:hover .grid-media img { transform: scale(1.04); }
+.grid-meta {
+  display: flex; justify-content: space-between; gap: 1rem;
+  padding: .8rem 0 1.6rem;
+  border-bottom: 1px solid var(--line);
+}
+.grid-title {
+  font-size: clamp(1rem,1.5vw,2rem);
+  font-weight: 300; letter-spacing: -.02em;
+}
+.grid-type {
+  font-size: clamp(.65rem,.8vw,.95rem);
+  color: var(--muted); letter-spacing: .05em;
+  text-transform: uppercase; align-self: end;
+}
+
+/* ═══════════════════════════════════════════════════════
+   LIGHTBOX
+   ═══════════════════════════════════════════════════════ */
+.lightbox {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(0,0,0,.92);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity .5s var(--ease);
+  backdrop-filter: blur(6px);
+}
+.lightbox.open { opacity: 1; pointer-events: auto; }
+
+.lb-inner {
+  display: flex; flex-direction: column;
+  align-items: center;
+  max-width: min(72vw, 1000px);
+  width: 100%;
+  transform: translateY(24px);
+  transition: transform .55s var(--ease);
+}
+.lightbox.open .lb-inner { transform: translateY(0); }
+
+.lb-img-wrap {
+  position: relative; width: 100%;
+  background: #111;
+  overflow: hidden;
+}
+.lb-img-wrap img {
+  width: 100%; height: auto;
+  display: block; max-height: 72vh; object-fit: contain;
+}
+
+/* placeholder for lightbox */
+.lb-placeholder {
+  width: 100%; aspect-ratio: 4/3;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 1rem;
+  background: #111;
+}
+.lb-ph-num {
+  font-size: clamp(3rem,6vw,8rem);
+  font-weight: 200; letter-spacing: -.06em;
+  color: rgba(250,250,250,.06);
+}
+.lb-ph-label {
+  font-size: clamp(.55rem,.65vw,.75rem);
+  letter-spacing: .16em; text-transform: uppercase;
+  color: rgba(250,250,250,.18);
+}
+
+.lb-info {
+  width: 100%;
+  padding: 1.6rem 0 .6rem;
+  border-top: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem 3rem;
+  align-items: start;
+}
+.lb-title {
+  font-size: clamp(1.1rem,1.8vw,2.4rem);
+  font-weight: 300; letter-spacing: -.025em;
+  line-height: 1.1;
+}
+.lb-detail {
+  font-size: clamp(.6rem,.72vw,.85rem);
+  color: var(--muted); letter-spacing: .06em;
+  line-height: 1.8;
+  text-align: right;
+}
+.lb-desc {
+  grid-column: 1 / -1;
+  font-size: clamp(.72rem,.85vw,1rem);
+  color: var(--muted); line-height: 1.7;
+  font-weight: 300; max-width: 60ch;
+  margin-top: .3rem;
+}
+
+.lb-close {
+  position: fixed; top: 2.5vw; right: 3vw;
+  background: none; border: 1px solid rgba(255,255,255,.2);
+  color: var(--fg); font-family: inherit;
+  font-size: clamp(.55rem,.65vw,.75rem); letter-spacing: .14em;
+  text-transform: uppercase; padding: .45rem 1rem;
+  border-radius: 999px; cursor: none;
+  transition: border-color .25s, background .25s;
+  z-index: 501;
+}
+.lb-close:hover { border-color: var(--fg); background: rgba(255,255,255,.06); }
+
+.lb-nav {
+  position: fixed; top: 50%; transform: translateY(-50%);
+  background: none; border: none; color: var(--muted);
+  font-family: inherit; font-size: 1.4rem;
+  padding: 1rem; cursor: none;
+  transition: color .25s; z-index: 501;
+}
+.lb-nav:hover { color: var(--fg); }
+.lb-prev { left: 2vw; }
+.lb-next { right: 2vw; }
+
+/* ── RESPONSIVE ───────────────────────────────────────── */
+@media (max-width: 768px) {
+  body { cursor: auto; }
+  #cursor { display: none; }
+  .scroll-track { grid-template-columns: 1fr; }
+  .scroll-cell:nth-child(n) { aspect-ratio: 4/3; }
+  .grid-item { grid-column: span 12; }
+  .grid-header { grid-template-columns: 1fr; }
+  .lb-inner { max-width: 95vw; }
+  .lb-info { grid-template-columns: 1fr; }
+  .lb-detail { text-align: left; }
+  .menu-links-holder { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+
+<!-- ── NAV ──────────────────────────────────────────────── -->
+<nav class="menu">
+  <div class="menu-link-holder">
+    <a href="/index.html" class="menu-logo">
+      <svg viewBox="0 0 3480.2 449" fill="white" xmlns="http://www.w3.org/2000/svg">
+        <path d="M298.14 264.91 Q298.14 281.07 292.75 296.34 Q287.36 311.61 275.46 326.42 Q263.56 341.24 239.77 350.22 Q215.97 359.20 183.19 359.20 L35.92 359.20 L35.92 31.88 L181.84 31.88 Q212.38 31.88 234.60 40.86 Q256.83 49.84 267.83 63.98 Q278.83 78.13 283.77 91.60 Q288.71 105.07 288.71 118.09 Q288.71 139.19 278.38 154.68 Q268.05 170.17 243.81 185.44 Q298.14 217.32 298.14 264.91 Z M103.27 88.00 L103.27 162.09 L176.46 162.09 Q224.05 162.09 224.05 125.27 Q224.05 88.00 176.46 88.00 Z M103.27 218.21 L103.27 303.07 L183.64 303.07 Q233.48 303.07 233.48 260.87 Q233.48 218.21 183.64 218.21 Z"/>
+        <path d="M430.59 218.21 L430.59 303.07 L607.95 303.07 L607.95 359.20 L363.24 359.20 L363.24 31.88 L599.86 31.88 L599.86 88.00 L430.59 88.00 L430.59 162.09 L587.29 162.09 L587.29 218.21 Z"/>
+        <path d="M740.40 31.88 L740.40 303.07 L897.10 303.07 L897.10 359.20 L673.05 359.20 L673.05 31.88 Z"/>
+        <path d="M1029.56 31.88 L1029.56 303.07 L1186.26 303.07 L1186.26 359.20 L962.21 359.20 L962.21 31.88 Z"/>
+        <path d="M1433.21 293.20 L1310.63 293.20 L1288.63 359.20 L1219.93 359.20 L1336.22 31.88 L1410.76 31.88 L1523.91 359.20 L1454.76 359.20 Z M1414.80 237.07 L1372.14 109.11 L1329.49 237.07 Z"/>
+        <path d="M1719.67 88.00 L1719.67 359.20 L1652.32 359.20 L1652.32 88.00 L1553.09 88.00 L1553.09 31.88 L1815.31 31.88 L1815.31 88.00 Z"/>
+        <path d="M2015.11 26.49 Q2086.05 26.49 2129.61 74.31 Q2173.16 122.13 2173.16 200.25 Q2173.16 272.99 2130.28 321.26 Q2087.40 369.53 2015.56 369.53 Q1944.17 369.53 1901.07 321.48 Q1857.96 273.44 1857.96 198.01 Q1857.96 122.58 1901.29 74.53 Q1944.62 26.49 2015.11 26.49 Z M2015.56 83.96 Q1974.70 83.96 1950.01 115.17 Q1925.31 146.37 1925.31 198.01 Q1925.31 249.64 1950.01 280.85 Q1974.70 312.06 2015.56 312.06 Q2055.97 312.06 2080.89 281.07 Q2105.81 250.09 2105.81 199.80 Q2105.81 146.82 2081.34 115.39 Q2056.87 83.96 2015.56 83.96 Z"/>
+        <path d="M2423.70 303.07 Q2423.70 289.61 2424.15 281.97 Q2424.60 274.34 2424.60 268.50 Q2424.60 247.85 2414.72 238.64 Q2404.84 229.44 2382.84 229.44 L2305.62 229.44 L2305.62 359.20 L2238.27 359.20 L2238.27 31.88 L2413.82 31.88 Q2438.97 31.88 2457.15 40.41 Q2475.34 48.94 2484.54 62.86 Q2493.75 76.78 2497.79 90.92 Q2501.83 105.07 2501.83 120.33 Q2501.83 179.60 2446.60 201.15 Q2458.72 206.09 2464.56 209.01 Q2470.40 211.93 2476.46 218.66 Q2482.52 225.40 2484.54 230.79 Q2486.56 236.17 2488.58 250.54 Q2490.60 264.91 2491.05 278.83 Q2491.50 292.75 2491.95 320.14 Q2491.95 339.00 2506.32 347.08 L2506.32 359.20 L2434.03 359.20 Q2427.74 347.53 2425.72 336.75 Q2423.70 325.97 2423.70 303.07 Z M2434.48 129.76 Q2434.48 104.62 2422.80 96.31 Q2411.13 88.00 2386.88 88.00 L2305.62 88.00 L2305.62 173.31 L2386.88 173.31 Q2410.68 173.31 2422.58 164.78 Q2434.48 156.25 2434.48 129.76 Z"/>
+        <path d="M2641.02 242.46 L2641.02 359.20 L2573.67 359.20 L2573.67 31.88 L2718.25 31.88 Q2769.43 31.88 2796.60 57.92 Q2823.76 83.96 2823.76 133.35 Q2823.76 183.19 2796.82 212.83 Q2769.88 242.46 2724.98 242.46 Z M2641.02 186.33 L2703.88 186.33 Q2756.41 186.33 2756.41 137.39 Q2756.41 112.25 2743.61 100.13 Q2730.82 88.00 2703.88 88.00 L2641.02 88.00 Z"/>
+        <path d="M3070.71 293.20 L2948.13 293.20 L2926.13 359.20 L2857.44 359.20 L2973.73 31.88 L3048.26 31.88 L3161.41 359.20 L3092.26 359.20 Z M3052.30 237.07 L3009.65 109.11 L2966.99 237.07 Z"/>
+        <path d="M3365.26 192.17 L3470.32 359.20 L3390.40 359.20 L3327.54 245.60 L3265.13 359.20 L3187.00 359.20 L3290.27 194.42 L3190.59 31.88 L3270.52 31.88 L3327.99 139.64 L3388.15 31.88 L3466.28 31.88 Z"/>
+      </svg>
+    </a>
+  </div>
+  <div class="menu-links-holder">
+    <a href="/work"           class="menu-link">Fight Styles <sup>(6)</sup></a>
+    <a href="/featured.html"  class="menu-link">Featured</a>
+    <a href="/gallery.html"   class="menu-link active">Gallery</a>
+    <a href="/martialbody"    class="menu-link">Martial Body: Inherited Motion</a>
+    <a href="/library"        class="menu-link">Technical Library</a>
+    <a href="/community"      class="menu-link">Community</a>
+    <a href="/contact"        class="menu-link">Contact</a>
+  </div>
+  <div class="menu-right">
+    <span>CPH</span>
+    <p id="clock">12<span>:</span>00</p>
+  </div>
+</nav>
+
+<!-- ── CONTROLS ─────────────────────────────────────────── -->
+<div class="controls">
+  <button class="ctrl-btn active" id="btnScroll">Scroll</button>
+  <div class="ctrl-divider"></div>
+  <button class="ctrl-btn" id="btnGrid">Grid</button>
+  <div class="ctrl-divider"></div>
+  <button class="ctrl-btn" id="btnPause">Pause</button>
+  <div class="ctrl-divider"></div>
+  <span class="ctrl-status" id="ctrlStatus">Drifting slowly</span>
+</div>
+
+<div class="scroll-bar"><div class="scroll-bar-fill" id="scrollBarFill"></div></div>
+
+<!-- ═══════════════════════════════════════════════════════
+     MODE A — TIGHT SCROLL
+     ═══════════════════════════════════════════════════════ -->
+<div class="view-scroll active" id="viewScroll">
+  <div class="scroll-track" id="scrollTrack">
+    <!-- Cells injected by JS -->
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     MODE B — GRID
+     ═══════════════════════════════════════════════════════ -->
+<div class="view-grid" id="viewGrid">
+  <div class="grid-header">
+    <h1>Gallery: Muscle, ritual, velocity, exhaustion.</h1>
+    <p>A living archive of sketch studies, portraits, photographs, movement stills, and athletic fragments. </p>
+  </div>
+  <div class="grid-items" id="gridItems">
+    <!-- Items injected by JS -->
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     LIGHTBOX
+     ═══════════════════════════════════════════════════════ -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+  <button class="lb-close" id="lbClose">Close ✕</button>
+  <button class="lb-nav lb-prev" id="lbPrev">&#8592;</button>
+  <button class="lb-nav lb-next" id="lbNext">&#8594;</button>
+  <div class="lb-inner">
+    <div class="lb-img-wrap" id="lbImgWrap"></div>
+    <div class="lb-info">
+      <div class="lb-title"  id="lbTitle"></div>
+      <div class="lb-detail" id="lbDetail"></div>
+      <div class="lb-desc"   id="lbDesc"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SCRIPT
+     ═══════════════════════════════════════════════════════ -->
+<script>
+(function () {
+
+  /* ── DATA ─────────────────────────────────────────────
+     Leave src blank / commented
+     and a numbered placeholder renders automatically.
+     ─────────────────────────────────────────────────── */
+  const items = [
+    {
+      title: "Bongo the Fight Pirate: No. 1, 2026",
+      type: "Photography by C.I. Solis",
+      src: "../images/bongo.jpg",
+      alt: "Bongo Portrait",
+      discipline: "Boxing, Muay Thai, Kickboxing",
+      year: "2026",
+      desc: " Bongo"
+    },
+    {
+      title: "Bongo's Belts",
+      type: "Photo",
+      src: "../images/belts.jpg",
+      alt: "Title Belts",
+      discipline: "Boxing",
+      year: "2025",
+      desc: "32 championship belts across 5 different disciplines"
+    },
+    {
+      title: "Bongo the Fight Pirate: No. 2, 2026",
+      type: "Photo",
+      src: "../images/bongo1.jpg",
+      alt: "Side Profile of Bongo",
+      discipline: "Boxing",
+      year: "2025",
+      desc: "'The thing that makes me most emotional is that flag. Anytime I win a title for a gym...I have a tradition where I leave a pirate flag' - Bongo"
+    },
+    {
+      title: "Bongo the Fight Pirate: No. 3, 2026",
+      type: "Photo",
+      src: "../images/bongo2.jpg",
+      alt: "Bongo Portrait",
+      discipline: "Boxing",
+      year: "2025",
+      desc: "Direct gaze. Nothing hidden."
+    },
+    {
+      title: "Bongo the Fight Pirate: No. 4, 2026",
+      type: "Photo",
+      src: "../images/bongo3.jpg",
+      alt: "Bongo Sitting",
+      discipline: "Boxing",
+      year: "2025",
+      desc: "The decorated and disciplied fight pirate himself"
+    },
+    /* ── PLACEHOLDERS — replace with real data ── */
+    { title: "Pre-fight — Bangkok",    type: "Photo",   src: "", discipline: "Muay Thai", year: "2025", desc: "Replace src with your image path." },
+    { title: "The Guard, No. 3",       type: "Drawing", src: "", discipline: "BJJ",       year: "2024", desc: "Replace src with your image path." },
+    { title: "Clinch Study II",        type: "Drawing", src: "", discipline: "Muay Thai", year: "2024", desc: "Replace src with your image path." },
+    { title: "Corner Between Rounds",  type: "Photo",   src: "", discipline: "Boxing",    year: "2025", desc: "Replace src with your image path." },
+    { title: "Inside Heel Hook",       type: "Drawing", src: "", discipline: "BJJ",       year: "2024", desc: "Replace src with your image path." },
+    { title: "Shadowbox, 5AM",         type: "Photo",   src: "", discipline: "Boxing",    year: "2025", desc: "Replace src with your image path." },
+    { title: "Form — Wing Chun I",     type: "Drawing", src: "", discipline: "Wing Chun", year: "2024", desc: "Replace src with your image path." },
+  ];
+
+  /* ── CURSOR ─────────────────────────────────────────── */
+  const cursor = document.getElementById('cursor');
+  let cx = 0, cy = 0;
+  document.addEventListener('mousemove', e => {
+    cx = e.clientX; cy = e.clientY;
+    cursor.style.left = cx + 'px';
+    cursor.style.top  = cy + 'px';
+    cursor.classList.add('visible');
+  });
+  function addHover(els) {
+    els.forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('big'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
+    });
+  }
+
+  /* ── CLOCK ──────────────────────────────────────────── */
+  const clockEl = document.getElementById('clock');
+  function tick() {
+    const d = new Date();
+    clockEl.innerHTML = String(d.getHours()).padStart(2,'0') + '<span>:</span>' + String(d.getMinutes()).padStart(2,'0');
+  }
+  tick(); setInterval(tick, 1000);
+
+  /* ── BUILD SCROLL CELLS ─────────────────────────────── */
+  const scrollTrack = document.getElementById('scrollTrack');
+  function buildScrollCells(list) {
+    return list.map((item, i) => {
+      const pillClass = item.type === 'Drawing' ? 'pill-drawing' : 'pill-photo';
+      const media = item.src
+        ? `<img src="${item.src}" alt="${item.alt || item.title}" loading="lazy" decoding="async"/>`
+        : `<div class="scroll-placeholder"><div class="ph-num">${String(i+1).padStart(2,'0')}</div><div class="ph-label">Image Placeholder</div></div>`;
+      return `
+        <div class="scroll-cell" data-index="${i}">
+          ${media}
+          <div class="scroll-pill ${pillClass}">${item.type}</div>
+          <div class="scroll-caption">
+            <div class="scroll-caption-title">${item.title}</div>
+            <div class="scroll-caption-sub">${item.discipline} · ${item.year}</div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  /* Populate + duplicate for seamless loop */
+  scrollTrack.innerHTML = buildScrollCells(items);
+  const origCells = [...scrollTrack.querySelectorAll('.scroll-cell')];
+  // Clone for infinite loop
+  origCells.forEach(c => {
+    const clone = c.cloneNode(true);
+    clone.setAttribute('aria-hidden','true');
+    scrollTrack.appendChild(clone);
+  });
+  const allCells = scrollTrack.querySelectorAll('.scroll-cell');
+
+  /* ── BUILD GRID ITEMS ───────────────────────────────── */
+  const gridItems = document.getElementById('gridItems');
+  gridItems.innerHTML = items.map((item, i) => {
+    const media = item.src
+      ? `<img src="${item.src}" alt="${item.alt || item.title}" loading="lazy" decoding="async"/>`
+      : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.5rem;background:#111">
+           <div style="font-size:clamp(2rem,4vw,5rem);font-weight:200;letter-spacing:-.06em;color:rgba(250,250,250,.06)">${String(i+1).padStart(2,'0')}</div>
+           <div style="font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(250,250,250,.14)">Image Placeholder</div>
+         </div>`;
+    return `
+      <div class="grid-item" data-index="${i}">
+        <div class="grid-media">${media}</div>
+        <div class="grid-meta">
+          <div class="grid-title">${item.title}</div>
+          <div class="grid-type">${item.type} · ${item.discipline}</div>
+        </div>
+      </div>`;
+  }).join('');
+
+  /* Grid reveal on scroll */
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelector('.grid-media').classList.add('show');
+        io.unobserve(e.target);
+      }
+    });
+  }, { rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('.grid-item').forEach(el => io.observe(el));
+
+  /* ── LIGHTBOX ───────────────────────────────────────── */
+  const lightbox  = document.getElementById('lightbox');
+  const lbImgWrap = document.getElementById('lbImgWrap');
+  const lbTitle   = document.getElementById('lbTitle');
+  const lbDetail  = document.getElementById('lbDetail');
+  const lbDesc    = document.getElementById('lbDesc');
+  const lbClose   = document.getElementById('lbClose');
+  const lbPrev    = document.getElementById('lbPrev');
+  const lbNext    = document.getElementById('lbNext');
+  let lbIndex     = 0;
+
+  function openLightbox(i) {
+    lbIndex = ((i % items.length) + items.length) % items.length;
+    const item = items[lbIndex];
+    lbTitle.textContent  = item.title;
+    lbDetail.innerHTML   = `${item.type}<br>${item.discipline}<br>${item.year}`;
+    lbDesc.textContent   = item.desc || '';
+
+    if (item.src) {
+      lbImgWrap.innerHTML = `<img src="${item.src}" alt="${item.alt || item.title}"/>`;
+    } else {
+      lbImgWrap.innerHTML = `
+        <div class="lb-placeholder">
+          <div class="lb-ph-num">${String(lbIndex+1).padStart(2,'0')}</div>
+          <div class="lb-ph-label">Image Placeholder</div>
+        </div>`;
+    }
+    lightbox.classList.add('open');
+    document.body.classList.add('scroll-mode');
+    document.body.classList.remove('grid-mode');
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    /* restore whichever mode is active */
+    if (viewGrid.classList.contains('active')) {
+      document.body.classList.add('grid-mode');
+      document.body.classList.remove('scroll-mode');
+    }
+  }
+
+  lbClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+  lbPrev.addEventListener('click', e => { e.stopPropagation(); openLightbox(lbIndex - 1); });
+  lbNext.addEventListener('click', e => { e.stopPropagation(); openLightbox(lbIndex + 1); });
+  document.addEventListener('keydown', e => {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape')     closeLightbox();
+    if (e.key === 'ArrowLeft')  openLightbox(lbIndex - 1);
+    if (e.key === 'ArrowRight') openLightbox(lbIndex + 1);
+  });
+
+  /* Click on cells/grid-items */
+  document.addEventListener('click', e => {
+    if (lightbox.classList.contains('open')) return;
+    const cell = e.target.closest('.scroll-cell, .grid-item');
+    if (!cell) return;
+    const idx = parseInt(cell.dataset.index, 10);
+    if (!isNaN(idx)) openLightbox(idx);
+  });
+
+  addHover([...document.querySelectorAll('.ctrl-btn, .lb-close, .lb-nav, .menu-link, .menu-logo')]);
+
+  /* ── SCROLL ENGINE ──────────────────────────────────── */
+  const BASE   = 0.4;   // px/frame baseline
+  const MAX    = 6.0;
+  const EASE   = 0.07;
+  const fill   = document.getElementById('scrollBarFill');
+  const status = document.getElementById('ctrlStatus');
+
+  let offset      = 0;
+  let curSpeed    = 0;
+  let targSpeed   = BASE;
+  let paused      = false;
+  let holding     = false;
+  let wheelVel    = 0;
+  let rafId       = null;
+  let halfH       = 0;
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+
+  function getHalfHeight() {
+    return scrollTrack.scrollHeight / 2;
+  }
+
+  function scrollLoop() {
+    halfH = getHalfHeight();
+    wheelVel *= 0.91;
+
+    if (paused) {
+      targSpeed = 0;
+    } else if (holding) {
+      targSpeed = MAX;
+    } else {
+      targSpeed = Math.max(0, BASE + wheelVel);
+    }
+
+    curSpeed = lerp(curSpeed, targSpeed, EASE);
+    offset  += curSpeed;
+    if (offset >= halfH) offset = 0;
+
+    scrollTrack.style.transform = `translateY(${-offset}px)`;
+
+    /* speed bar */
+    const norm = Math.min(curSpeed / MAX, 1);
+    fill.style.width   = (8 + norm * 92) + '%';
+    fill.style.opacity = paused ? '0' : (0.2 + norm * 0.5);
+
+    rafId = requestAnimationFrame(scrollLoop);
+  }
+
+  /* Hold mousedown = fast */
+  const viewport = document.getElementById('viewScroll');
+  viewport.addEventListener('mousedown', () => {
+    if (paused || lightbox.classList.contains('open')) return;
+    holding = true;
+    cursor.classList.add('small');
+    status.textContent = 'Fast →';
+  });
+  document.addEventListener('mouseup', () => {
+    holding = false;
+    cursor.classList.remove('small');
+    if (!paused) status.textContent = 'Drifting slowly';
+  });
+
+  /* Wheel = speed burst */
+  viewport.addEventListener('wheel', e => {
+    e.preventDefault();
+    if (paused) return;
+    wheelVel += Math.abs(e.deltaY) * 0.03;
+    wheelVel  = Math.min(wheelVel, MAX);
+    status.textContent = 'Scrolling…';
+    clearTimeout(viewport._wt);
+    viewport._wt = setTimeout(() => {
+      if (!paused) status.textContent = 'Drifting slowly';
+    }, 900);
+  }, { passive: false });
+
+  /* Touch */
+  let lastTY = null;
+  viewport.addEventListener('touchstart', e => { lastTY = e.touches[0].clientY; }, { passive: true });
+  viewport.addEventListener('touchmove',  e => {
+    if (lastTY === null || paused) return;
+    wheelVel += (lastTY - e.touches[0].clientY) * 0.05;
+    wheelVel  = Math.max(0, Math.min(wheelVel, MAX));
+    lastTY = e.touches[0].clientY;
+  }, { passive: true });
+  viewport.addEventListener('touchend', () => { lastTY = null; });
+
+  /* Pause button */
+  const btnPause = document.getElementById('btnPause');
+  btnPause.addEventListener('click', () => {
+    paused = !paused;
+    btnPause.textContent = paused ? 'Resume' : 'Pause';
+    btnPause.classList.toggle('active', paused);
+    status.textContent = paused ? 'Paused' : 'Drifting slowly';
+    cursor.classList.toggle('big', paused);
+  });
+
+  /* ── VIEW TOGGLE ────────────────────────────────────── */
+  const viewScroll = document.getElementById('viewScroll');
+  const viewGrid   = document.getElementById('viewGrid');
+  const btnScroll  = document.getElementById('btnScroll');
+  const btnGrid    = document.getElementById('btnGrid');
+
+  function showScroll() {
+    viewScroll.classList.add('active');
+    viewGrid.classList.remove('active');
+    btnScroll.classList.add('active');
+    btnGrid.classList.remove('active');
+    document.body.classList.add('scroll-mode');
+    document.body.classList.remove('grid-mode');
+    if (!rafId) rafId = requestAnimationFrame(scrollLoop);
+  }
+
+  function showGrid() {
+    viewGrid.classList.add('active');
+    viewScroll.classList.remove('active');
+    btnGrid.classList.add('active');
+    btnScroll.classList.remove('active');
+    document.body.classList.add('grid-mode');
+    document.body.classList.remove('scroll-mode');
+    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+    document.querySelectorAll('.grid-item').forEach(el => io.observe(el));
+  }
+
+  btnScroll.addEventListener('click', showScroll);
+  btnGrid.addEventListener('click', showGrid);
+
+  /* ── INIT ───────────────────────────────────────────── */
+  showScroll();
+
+})();
+</script>
+</body>
+</html>
