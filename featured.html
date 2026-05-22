@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BELLATORPAX — Featured</title>
+<meta name="description" content="Fight journalism, cultural deep dives, and the philosophy of beautiful violence."/>
+<style>
+/* ============================================================
+   TOKENS & RESET
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #161616;
+  --fg: #fafafa;
+  --muted: rgba(250,250,250,0.45);
+  --dim: rgba(250,250,250,0.15);
+  --ease: cubic-bezier(.23,1,.32,1);
+  --ease-in: cubic-bezier(.55,0,1,.45);
+  --accent: #fafafa;
+  --tag-radius: 2px;
+}
+html { scroll-behavior: smooth; background: var(--bg); }
+html, body { width: 100%; min-height: 100%; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  cursor: none;
+}
+::-webkit-scrollbar { display: none; }
+img, video { display: block; }
+
+/* ============================================================
+   CURSOR
+   ============================================================ */
+#cursor {
+  position: fixed; width: 40px; height: 40px; border-radius: 50%;
+  background: white; pointer-events: none; z-index: 9998;
+  transform: translate(-50%,-50%); mix-blend-mode: difference;
+  clip-path: circle(0% at 50% 50%);
+  transition: clip-path .6s var(--ease), width .4s var(--ease), height .4s var(--ease);
+  top: 0; left: 0;
+}
+#cursor.visible { clip-path: circle(50% at 50% 50%); }
+#cursor.hover   { width: 70px; height: 70px; }
+
+/* ============================================================
+   NAV — identical to index
+   ============================================================ */
+.menu {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 2.2vw 3vw; mix-blend-mode: difference; pointer-events: none;
+}
+.menu-link-holder { display: flex; align-items: center; gap: 3vw; pointer-events: auto; }
+.menu-logo { display: flex; align-items: center; text-decoration: none; }
+.menu-logo svg { width: 120px; height: auto; }
+.menu-links-holder { display: flex; align-items: center; gap: 2.5vw; pointer-events: auto; }
+.menu-link {
+  color: var(--fg); text-decoration: none;
+  font-size: clamp(.75rem, .875vw, 1rem);
+  letter-spacing: .02em; opacity: .85; transition: opacity .3s;
+}
+.menu-link:hover, .menu-link.active { opacity: 1; }
+.menu-link sup { font-size: .6em; opacity: .6; }
+.menu-right {
+  display: flex; align-items: center; gap: .5rem;
+  font-size: clamp(.75rem, .875vw, 1rem);
+  color: var(--fg); pointer-events: auto; opacity: .7; letter-spacing: .04em;
+}
+#clock span { animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { visibility: hidden; } }
+
+/* ============================================================
+   LOAD OVERLAY
+   ============================================================ */
+.load-overlay {
+  position: fixed; inset: 0; background: var(--bg); z-index: 9000;
+  clip-path: inset(0% 0% 100% 0%); pointer-events: none;
+  animation: wipe-in .9s var(--ease) forwards;
+}
+@keyframes wipe-in {
+  0%   { clip-path: inset(0% 0% 0% 0%); }
+  100% { clip-path: inset(0% 0% 100% 0%); }
+}
+
+/* ============================================================
+   PAGE HEADER
+   ============================================================ */
+.page-header {
+  padding: 2vw 3vw 0;
+  padding-top: 11vw;
+  position: relative;
+  overflow: hidden;
+}
+.page-header-inner {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: flex-end;
+  gap: 2vw;
+  border-bottom: 1px solid var(--dim);
+  padding-bottom: 2vw;
+}
+.page-kicker {
+  font-size: clamp(.6rem, .75vw, .9rem);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1vw;
+}
+.page-title-svg {
+  width: min(55vw, 520px);
+  height: auto;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 1.2s var(--ease), transform 1.2s var(--ease);
+}
+.page-title-svg.show { opacity: 1; transform: translateY(0); }
+.header-meta {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+  align-self: flex-end;
+  padding-bottom: .25rem;
+}
+.header-meta-count {
+  font-size: clamp(2rem, 5vw, 6rem);
+  font-weight: 300;
+  letter-spacing: -.04em;
+  color: var(--dim);
+  line-height: 1;
+}
+.header-meta-label {
+  font-size: clamp(.6rem, .7vw, .85rem);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ============================================================
+   FILTER BAR
+   ============================================================ */
+.filter-bar {
+  padding: 2vw 3vw 1.5vw;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem 1.2rem;
+  align-items: center;
+  border-bottom: 1px solid var(--dim);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--bg);
+}
+.filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  align-items: center;
+}
+.filter-group-label {
+  font-size: clamp(.55rem, .65vw, .75rem);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding-right: .4rem;
+}
+.filter-divider {
+  width: 1px;
+  height: 14px;
+  background: var(--dim);
+  align-self: center;
+}
+.filter-btn {
+  background: none;
+  border: 1px solid var(--dim);
+  color: var(--muted);
+  font-family: inherit;
+  font-size: clamp(.6rem, .7vw, .8rem);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: .35rem .75rem;
+  border-radius: var(--tag-radius);
+  cursor: none;
+  transition: border-color .25s, color .25s, background .25s;
+}
+.filter-btn:hover { border-color: rgba(250,250,250,.4); color: var(--fg); }
+.filter-btn.active { border-color: var(--fg); color: var(--fg); background: rgba(250,250,250,.06); }
+.filter-clear {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: clamp(.6rem, .65vw, .75rem);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  cursor: none;
+  transition: color .25s;
+}
+.filter-clear:hover { color: var(--fg); }
+
+/* ============================================================
+   FEATURED FEED
+   ============================================================ */
+.feed {
+  padding: 0 3vw 6vw;
+}
+
+/* ---- HERO FEATURE (latest post) ---- */
+.feed-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-bottom: 1px solid var(--dim);
+  padding-bottom: 3vw;
+  margin-bottom: 0;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 1s var(--ease), transform 1s var(--ease);
+}
+.feed-hero.show { opacity: 1; transform: translateY(0); }
+.feed-hero-media {
+  position: relative;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  background: #1e1e1e;
+}
+.feed-hero-media img,
+.feed-hero-media video {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform .9s var(--ease);
+}
+.feed-hero-media:hover img,
+.feed-hero-media:hover video { transform: scale(1.04); }
+.feed-hero-info {
+  padding: 2.5vw 3vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.feed-hero-top { display: flex; flex-direction: column; gap: 1.5vw; }
+.feed-hero-date {
+  font-size: clamp(.6rem, .7vw, .8rem);
+  letter-spacing: .1em;
+  color: var(--muted);
+}
+.feed-hero-title {
+  font-size: clamp(1.4rem, 2.8vw, 4rem);
+  font-weight: 300;
+  letter-spacing: -.03em;
+  line-height: 1.1;
+  color: var(--fg);
+}
+.feed-hero-excerpt {
+  font-size: clamp(.75rem, .9vw, 1.1rem);
+  line-height: 1.65;
+  color: var(--muted);
+  font-weight: 300;
+  max-width: 40ch;
+  margin-top: 1.5vw;
+}
+.feed-hero-bottom { display: flex; align-items: flex-end; justify-content: space-between; }
+.feed-hero-read {
+  font-size: clamp(.65rem, .75vw, .9rem);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--fg);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.feed-hero-read::after { content: '→'; }
+.feed-hero-read:hover { opacity: .6; }
+
+/* ---- TAGS (shared) ---- */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem;
+}
+.tag {
+  font-size: clamp(.5rem, .6vw, .7rem);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: .25rem .6rem;
+  border-radius: var(--tag-radius);
+  font-weight: 400;
+  line-height: 1;
+}
+.tag-format {
+  border: 1px solid rgba(250,250,250,.5);
+  color: var(--fg);
+}
+.tag-discipline {
+  border: 1px solid var(--dim);
+  color: var(--muted);
+}
+/* Discipline colour accents (subtle) */
+.tag-bjj     { border-color: rgba(80,160,255,.4);  color: rgba(80,160,255,.8); }
+.tag-muaythai{ border-color: rgba(255,120,80,.4);  color: rgba(255,120,80,.8); }
+.tag-boxing  { border-color: rgba(255,210,60,.4);  color: rgba(255,210,60,.8); }
+.tag-tkd     { border-color: rgba(120,255,150,.4); color: rgba(120,255,150,.8); }
+.tag-wingchun{ border-color: rgba(200,130,255,.4); color: rgba(200,130,255,.8); }
+.tag-mma     { border-color: rgba(255,80,120,.4);  color: rgba(255,80,120,.8); }
+.tag-wrestling{ border-color: rgba(255,170,60,.4); color: rgba(255,170,60,.8); }
+.tag-judo    { border-color: rgba(60,220,230,.4);  color: rgba(60,220,230,.8); }
+
+/* ---- SECTION DIVIDER ---- */
+.section-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2.5vw 0 1.5vw;
+  border-bottom: 1px solid var(--dim);
+  margin-bottom: 1px;
+}
+.section-row-label {
+  font-size: clamp(.6rem, .7vw, .85rem);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.section-row-count {
+  font-size: clamp(.6rem, .7vw, .85rem);
+  letter-spacing: .08em;
+  color: var(--dim);
+}
+
+/* ---- GRID — 3-up ---- */
+.feed-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+.feed-grid-item {
+  border-right: 1px solid var(--dim);
+  border-bottom: 1px solid var(--dim);
+  padding: 1.8vw 1.8vw 2vw;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2vw;
+  text-decoration: none;
+  color: inherit;
+  transition: background .3s;
+  opacity: 0;
+  transform: translateY(18px);
+}
+.feed-grid-item:nth-child(3n) { border-right: none; }
+.feed-grid-item:hover { background: rgba(255,255,255,.025); }
+.feed-grid-item.show { opacity: 1; transform: translateY(0); transition: opacity .9s var(--ease), transform .9s var(--ease), background .3s; }
+.feed-grid-item-media {
+  position: relative;
+  aspect-ratio: 16/10;
+  overflow: hidden;
+  background: #1e1e1e;
+}
+.feed-grid-item-media img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform .8s var(--ease);
+}
+.feed-grid-item:hover .feed-grid-item-media img { transform: scale(1.05); }
+.feed-grid-item-media-placeholder {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  background: #1a1a1a;
+  color: var(--dim);
+  font-size: clamp(.55rem, .65vw, .75rem);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.feed-grid-item-title {
+  font-size: clamp(.9rem, 1.3vw, 1.8rem);
+  font-weight: 300;
+  letter-spacing: -.02em;
+  line-height: 1.2;
+  color: var(--fg);
+}
+.feed-grid-item-excerpt {
+  font-size: clamp(.65rem, .8vw, .95rem);
+  color: var(--muted);
+  line-height: 1.6;
+  font-weight: 300;
+}
+.feed-grid-item-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: auto;
+}
+.feed-grid-item-date {
+  font-size: clamp(.55rem, .65vw, .75rem);
+  letter-spacing: .08em;
+  color: var(--dim);
+}
+
+/* ---- LIST — tall rows ---- */
+.feed-list { border-top: 1px solid var(--dim); }
+.feed-list-item {
+  display: grid;
+  grid-template-columns: 2.4rem 1fr auto;
+  align-items: center;
+  gap: 2vw;
+  padding: 1.4vw 0;
+  border-bottom: 1px solid var(--dim);
+  text-decoration: none;
+  color: inherit;
+  cursor: none;
+  opacity: 0;
+  transform: translateX(-12px);
+  transition: opacity .8s var(--ease), transform .8s var(--ease), background .25s;
+}
+.feed-list-item:hover { background: rgba(255,255,255,.02); padding-left: .5rem; margin-left: -.5rem; margin-right: -.5rem; padding-right: .5rem; }
+.feed-list-item.show { opacity: 1; transform: translateX(0); }
+.feed-list-num {
+  font-size: clamp(.55rem, .65vw, .75rem);
+  color: var(--dim);
+  letter-spacing: .06em;
+  text-align: right;
+}
+.feed-list-info { display: flex; flex-direction: column; gap: .5rem; }
+.feed-list-title {
+  font-size: clamp(.85rem, 1.15vw, 1.5rem);
+  font-weight: 300;
+  letter-spacing: -.015em;
+  line-height: 1.25;
+  color: var(--fg);
+  transition: opacity .25s;
+}
+.feed-list-item:hover .feed-list-title { opacity: .65; }
+.feed-list-thumb {
+  width: clamp(60px, 7vw, 100px);
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  background: #1e1e1e;
+  flex-shrink: 0;
+}
+.feed-list-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.feed-list-thumb-placeholder {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 8px; letter-spacing: .06em; text-transform: uppercase; color: var(--dim);
+}
+
+/* ---- EMPTY STATE ---- */
+.feed-empty {
+  padding: 6vw 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: clamp(.75rem, .9vw, 1.1rem);
+  letter-spacing: .06em;
+  display: none;
+}
+.feed-empty.show { display: block; }
+
+/* ============================================================
+   FOOTER — identical to index
+   ============================================================ */
+.footer { background: #fafafa; color: #161616; padding: 3vw 3vw 0; }
+.footer-items { border-bottom: 1px solid rgba(0,0,0,.08); padding-bottom: 2vw; margin-bottom: 3vw; }
+.footer-flex { display: flex; justify-content: flex-end; }
+.footer-item-holder { display: flex; gap: 2rem; }
+.footer-link-holder { text-decoration: none; color: #161616; font-size: clamp(.65rem,.8vw,1rem); opacity: .6; transition: opacity .3s; letter-spacing: .03em; }
+.footer-link-holder:hover { opacity: 1; }
+.footer-over-logo-holder { display: grid; grid-template-columns: 1fr 1fr; gap: 3vw; margin-bottom: 3vw; }
+.footer-links-holder { display: flex; flex-direction: column; gap: 1rem; }
+.footer-main-link { text-decoration: none; color: #161616; font-size: clamp(1.2rem,2vw,3rem); font-weight: 300; letter-spacing: -.02em; line-height: 1.1; transition: opacity .3s; }
+.footer-main-link:hover { opacity: .5; }
+.footer-rights { font-size: clamp(.65rem,.8vw,1rem); color: rgba(22,22,22,.4); line-height: 1.6; margin-top: 2rem; }
+.footer-flex.smaller { justify-content: flex-end; align-items: flex-start; gap: 3vw; }
+.footer-h3-holder { margin-bottom: .6rem; }
+.footer-h3 { font-size: clamp(.6rem,.7vw,.9rem); letter-spacing: .14em; text-transform: uppercase; color: rgba(22,22,22,.45); font-weight: 400; }
+.footer-info-link { text-decoration: none; color: #161616; font-size: clamp(.75rem,.9vw,1.1rem); font-weight: 300; transition: opacity .3s; }
+.footer-info-link:hover { opacity: .5; }
+.footer-logo-holder { padding: 3vw 0 4vw; border-top: 1px solid rgba(0,0,0,.08); margin-top: 2vw; }
+.footer-logo-svg { width: 100%; height: auto; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 900px) {
+  .feed-hero { grid-template-columns: 1fr; }
+  .feed-grid  { grid-template-columns: 1fr 1fr; }
+  .feed-grid-item:nth-child(3n)  { border-right: 1px solid var(--dim); }
+  .feed-grid-item:nth-child(2n)  { border-right: none; }
+  .page-header-inner { grid-template-columns: 1fr; }
+  .header-meta { text-align: left; }
+  .footer-over-logo-holder { grid-template-columns: 1fr; }
+  .footer-flex.smaller { flex-direction: column; gap: 2rem; }
+}
+@media (max-width: 600px) {
+  .feed-grid  { grid-template-columns: 1fr; }
+  .feed-grid-item { border-right: none; }
+  .feed-list-item { grid-template-columns: 1.8rem 1fr; }
+  .feed-list-thumb { display: none; }
+  .filter-bar { gap: .4rem .8rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="load-overlay"></div>
+<div id="cursor"></div>
+
+<!-- ============================================================
+     NAV
+     ============================================================ -->
+<nav class="menu">
+  <div class="menu-link-holder">
+    <a href="/index.html" class="menu-logo">
+      <svg viewBox="0 0 3480.2 449" fill="white" xmlns="http://www.w3.org/2000/svg">
+        <path d="M298.14 264.91 Q298.14 281.07 292.75 296.34 Q287.36 311.61 275.46 326.42 Q263.56 341.24 239.77 350.22 Q215.97 359.20 183.19 359.20 L35.92 359.20 L35.92 31.88 L181.84 31.88 Q212.38 31.88 234.60 40.86 Q256.83 49.84 267.83 63.98 Q278.83 78.13 283.77 91.60 Q288.71 105.07 288.71 118.09 Q288.71 139.19 278.38 154.68 Q268.05 170.17 243.81 185.44 Q298.14 217.32 298.14 264.91 Z M103.27 88.00 L103.27 162.09 L176.46 162.09 Q224.05 162.09 224.05 125.27 Q224.05 88.00 176.46 88.00 Z M103.27 218.21 L103.27 303.07 L183.64 303.07 Q233.48 303.07 233.48 260.87 Q233.48 218.21 183.64 218.21 Z"/>
+        <path d="M430.59 218.21 L430.59 303.07 L607.95 303.07 L607.95 359.20 L363.24 359.20 L363.24 31.88 L599.86 31.88 L599.86 88.00 L430.59 88.00 L430.59 162.09 L587.29 162.09 L587.29 218.21 Z"/>
+        <path d="M740.40 31.88 L740.40 303.07 L897.10 303.07 L897.10 359.20 L673.05 359.20 L673.05 31.88 Z"/>
+        <path d="M1029.56 31.88 L1029.56 303.07 L1186.26 303.07 L1186.26 359.20 L962.21 359.20 L962.21 31.88 Z"/>
+        <path d="M1433.21 293.20 L1310.63 293.20 L1288.63 359.20 L1219.93 359.20 L1336.22 31.88 L1410.76 31.88 L1523.91 359.20 L1454.76 359.20 Z M1414.80 237.07 L1372.14 109.11 L1329.49 237.07 Z"/>
+        <path d="M1719.67 88.00 L1719.67 359.20 L1652.32 359.20 L1652.32 88.00 L1553.09 88.00 L1553.09 31.88 L1815.31 31.88 L1815.31 88.00 Z"/>
+        <path d="M2015.11 26.49 Q2086.05 26.49 2129.61 74.31 Q2173.16 122.13 2173.16 200.25 Q2173.16 272.99 2130.28 321.26 Q2087.40 369.53 2015.56 369.53 Q1944.17 369.53 1901.07 321.48 Q1857.96 273.44 1857.96 198.01 Q1857.96 122.58 1901.29 74.53 Q1944.62 26.49 2015.11 26.49 Z M2015.56 83.96 Q1974.70 83.96 1950.01 115.17 Q1925.31 146.37 1925.31 198.01 Q1925.31 249.64 1950.01 280.85 Q1974.70 312.06 2015.56 312.06 Q2055.97 312.06 2080.89 281.07 Q2105.81 250.09 2105.81 199.80 Q2105.81 146.82 2081.34 115.39 Q2056.87 83.96 2015.56 83.96 Z"/>
+        <path d="M2423.70 303.07 Q2423.70 289.61 2424.15 281.97 Q2424.60 274.34 2424.60 268.50 Q2424.60 247.85 2414.72 238.64 Q2404.84 229.44 2382.84 229.44 L2305.62 229.44 L2305.62 359.20 L2238.27 359.20 L2238.27 31.88 L2413.82 31.88 Q2438.97 31.88 2457.15 40.41 Q2475.34 48.94 2484.54 62.86 Q2493.75 76.78 2497.79 90.92 Q2501.83 105.07 2501.83 120.33 Q2501.83 179.60 2446.60 201.15 Q2458.72 206.09 2464.56 209.01 Q2470.40 211.93 2476.46 218.66 Q2482.52 225.40 2484.54 230.79 Q2486.56 236.17 2488.58 250.54 Q2490.60 264.91 2491.05 278.83 Q2491.50 292.75 2491.95 320.14 Q2491.95 339.00 2506.32 347.08 L2506.32 359.20 L2434.03 359.20 Q2427.74 347.53 2425.72 336.75 Q2423.70 325.97 2423.70 303.07 Z M2434.48 129.76 Q2434.48 104.62 2422.80 96.31 Q2411.13 88.00 2386.88 88.00 L2305.62 88.00 L2305.62 173.31 L2386.88 173.31 Q2410.68 173.31 2422.58 164.78 Q2434.48 156.25 2434.48 129.76 Z"/>
+        <path d="M2641.02 242.46 L2641.02 359.20 L2573.67 359.20 L2573.67 31.88 L2718.25 31.88 Q2769.43 31.88 2796.60 57.92 Q2823.76 83.96 2823.76 133.35 Q2823.76 183.19 2796.82 212.83 Q2769.88 242.46 2724.98 242.46 Z M2641.02 186.33 L2703.88 186.33 Q2756.41 186.33 2756.41 137.39 Q2756.41 112.25 2743.61 100.13 Q2730.82 88.00 2703.88 88.00 L2641.02 88.00 Z"/>
+        <path d="M3070.71 293.20 L2948.13 293.20 L2926.13 359.20 L2857.44 359.20 L2973.73 31.88 L3048.26 31.88 L3161.41 359.20 L3092.26 359.20 Z M3052.30 237.07 L3009.65 109.11 L2966.99 237.07 Z"/>
+        <path d="M3365.26 192.17 L3470.32 359.20 L3390.40 359.20 L3327.54 245.60 L3265.13 359.20 L3187.00 359.20 L3290.27 194.42 L3190.59 31.88 L3270.52 31.88 L3327.99 139.64 L3388.15 31.88 L3466.28 31.88 Z"/>
+      </svg>
+    </a>
+  </div>
+  <div class="menu-links-holder">
+    <a href="/work"      class="menu-link">Fight Styles <sup>(6)</sup></a>
+    <a href="/studio"   class="menu-link active">Featured</a>
+    <a href="/gallery"  class="menu-link">Gallery</a>
+    <a href="/news"     class="menu-link">News</a>
+    <a href="/library"  class="menu-link">Technical Library</a>
+    <a href="/community"class="menu-link">Community</a>
+    <a href="/contact"  class="menu-link">Contact</a>
+  </div>
+  <div class="menu-right">
+    <span>CPH</span>
+    <p id="clock">12<span>:</span>00</p>
+  </div>
+</nav>
+
+<!-- ============================================================
+     PAGE HEADER
+     ============================================================ -->
+<header class="page-header">
+  <div class="page-header-inner">
+    <div>
+      <p class="page-kicker">The Body as Battlefield, Instrument, and Art Form</p>
+      <!-- Replace text logo with SVG path set if you want animated reveal like index -->
+      <svg id="pageTitle" class="page-title-svg" viewBox="0 0 820 100" fill="white" xmlns="http://www.w3.org/2000/svg">
+        <text y="82" font-family="'Helvetica Neue',Helvetica,Arial,sans-serif" font-size="100" font-weight="200" letter-spacing="-4">Featured</text>
+      </svg>
+    </div>
+    <div class="header-meta">
+      <div class="header-meta-count" id="visibleCount">12</div>
+      <div class="header-meta-label">Features</div>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================
+     FILTER BAR
+     ============================================================ -->
+<div class="filter-bar" id="filterBar">
+  <span class="filter-group-label">Format</span>
+  <div class="filter-group" id="formatFilters">
+    <button class="filter-btn active" data-filter-group="format" data-filter="all">All</button>
+    <button class="filter-btn" data-filter-group="format" data-filter="article">Article</button>
+    <button class="filter-btn" data-filter-group="format" data-filter="blog">Blog Post</button>
+    <button class="filter-btn" data-filter-group="format" data-filter="opinion">Opinion</button>
+    <button class="filter-btn" data-filter-group="format" data-filter="podcast">Podcast</button>
+    <button class="filter-btn" data-filter-group="format" data-filter="documentary">Documentary</button>
+    <button class="filter-btn" data-filter-group="format" data-filter="shortvideo">Short Video</button>
+  </div>
+
+  <div class="filter-divider"></div>
+
+  <span class="filter-group-label">Discipline</span>
+  <div class="filter-group" id="disciplineFilters">
+    <button class="filter-btn active" data-filter-group="discipline" data-filter="all">All</button>
+    <button class="filter-btn" data-filter-group="discipline" data-filter="bjj">BJJ</button>
+    <button class="filter-btn" data-filter-group="discipline" data-filter="muaythai">Muay Thai</button>
+    <button class="filter-btn" data-filter-group="discipline" data-filter="boxing">Boxing</button>
+    <button class="filter-btn" data-filter-group="discipline" data-filter="tkd">Taekwondo</button>
+    <button class="filter-btn" data-filter-group="discipline" data-filter="wingchun">Wing Chun</button>
+    <button class="filter-btn" data-filter-group="discipline" data-filter="mma">MMA</button>
+    <button class="filter-btn" data-filter-group="discipline" data-filter="wrestling">Wrestling</button>
+    <button class="filter-btn" data-filter-group="discipline" data-filter="judo">Judo</button>
+  </div>
+
+  <button class="filter-clear" id="filterClear">Clear filters</button>
+</div>
+
+<!-- ============================================================
+     FEATURED FEED
+     ============================================================ -->
+<main class="feed" id="feed">
+
+  <!-- ── HERO: most recent post ─────────────────────────────── -->
+  <article class="feed-hero" id="heroArticle"
+    data-format="article" data-discipline="mma">
+    <div class="feed-hero-media">
+      <!-- REPLACE: hero image or video -->
+      <img src="images/bongo.jpg"
+           alt="Bongo the Fight Pirate"
+           onerror="this.style.background='#1e1e1e';this.style.display='flex';this.outerHTML='<div class=\'feed-hero-media\' style=\'background:#1a1a1a;display:flex;align-items:center;justify-content:center;color:rgba(250,250,250,0.15);font-size:11px;letter-spacing:.12em;text-transform:uppercase;\'>Image Placeholder</div>'"/>
+    </div>
+    <div class="feed-hero-info">
+      <div class="feed-hero-top">
+        <div class="feed-hero-date">May 18, 2026</div>
+        <div class="tags">
+          <span class="tag tag-format">Article</span>
+          <span class="tag tag-muaythai">MMA</span>
+        </div>
+        <h2 class="feed-hero-title">Bongo the Fight Pirate</h2>
+        <p class="feed-hero-excerpt">
+          Twenty-four years old. Thirty-two championship belts. A life calibrated somewhere between monastery discipline and competitive violence. And now, his path leads him to Thailand.
+        </p>
+      </div>
+      <div class="feed-hero-bottom">
+        <a href="#" class="feed-hero-read">Read Feature</a>
+        <span style="font-size:clamp(.55rem,.65vw,.75rem);letter-spacing:.08em;color:var(--dim);">4 min read</span>
+      </div>
+    </div>
+  </article>
+
+  <!-- ── GRID: recent features ──────────────────────────────── -->
+  <div class="section-row">
+    <span class="section-row-label">Recent Features</span>
+    <span class="section-row-count" id="gridCount">6 features</span>
+  </div>
+
+  <div class="feed-grid" id="feedGrid">
+
+    <!-- Grid item 1 -->
+    <a href="#" class="feed-grid-item"
+       data-format="article" data-discipline="bjj">
+      <div class="feed-grid-item-media">
+        <!-- REPLACE: 800x500 image -->
+        <div class="feed-grid-item-media-placeholder">Image Placeholder</div>
+      </div>
+      <div class="tags">
+        <span class="tag tag-format">Article</span>
+        <span class="tag tag-bjj">BJJ</span>
+      </div>
+      <div class="feed-grid-item-title">Closed Guard Is Not Dead</div>
+      <div class="feed-grid-item-excerpt">Why the old-school position is having a quiet renaissance at the highest levels of submission grappling.</div>
+      <div class="feed-grid-item-meta">
+        <span class="feed-grid-item-date">May 14, 2026</span>
+        <span style="font-size:clamp(.5rem,.58vw,.7rem);letter-spacing:.06em;color:var(--dim);">8 min read</span>
+      </div>
+    </a>
+
+    <!-- Grid item 2 -->
+    <a href="#" class="feed-grid-item"
+       data-format="opinion" data-discipline="boxing">
+      <div class="feed-grid-item-media">
+        <div class="feed-grid-item-media-placeholder">Image Placeholder</div>
+      </div>
+      <div class="tags">
+        <span class="tag tag-format">Opinion</span>
+        <span class="tag tag-boxing">Boxing</span>
+      </div>
+      <div class="feed-grid-item-title">The Problem with Modern Heavyweight Boxing</div>
+      <div class="feed-grid-item-excerpt">Fifteen rounds of holding, clinching, and mandatory eight-counts. Something has to give.</div>
+      <div class="feed-grid-item-meta">
+        <span class="feed-grid-item-date">May 10, 2026</span>
+        <span style="font-size:clamp(.5rem,.58vw,.7rem);letter-spacing:.06em;color:var(--dim);">6 min read</span>
+      </div>
+    </a>
+
+    <!-- Grid item 3 -->
+    <a href="#" class="feed-grid-item"
+       data-format="podcast" data-discipline="mma">
+      <div class="feed-grid-item-media">
+        <div class="feed-grid-item-media-placeholder">Image Placeholder</div>
+      </div>
+      <div class="tags">
+        <span class="tag tag-format">Podcast</span>
+        <span class="tag tag-mma">MMA</span>
+      </div>
+      <div class="feed-grid-item-title">Ep. 41 — The Psychology of the Cage Walk</div>
+      <div class="feed-grid-item-excerpt">Sport psychologist Dr. Mirela Voss on pre-fight mental states, persona construction, and controlled aggression.</div>
+      <div class="feed-grid-item-meta">
+        <span class="feed-grid-item-date">May 6, 2026</span>
+        <span style="font-size:clamp(.5rem,.58vw,.7rem);letter-spacing:.06em;color:var(--dim);">62 min listen</span>
+      </div>
+    </a>
+
+    <!-- Grid item 4 -->
+    <a href="#" class="feed-grid-item"
+       data-format="shortvideo" data-discipline="tkd">
+      <div class="feed-grid-item-media">
+        <div class="feed-grid-item-media-placeholder">Image Placeholder</div>
+      </div>
+      <div class="tags">
+        <span class="tag tag-format">Short Video</span>
+        <span class="tag tag-tkd">Taekwondo</span>
+      </div>
+      <div class="feed-grid-item-title">One Second Breakdown: The Spinning Back Kick</div>
+      <div class="feed-grid-item-excerpt">Frame-by-frame dissection of the most mechanically demanding kick in Olympic combat sport.</div>
+      <div class="feed-grid-item-meta">
+        <span class="feed-grid-item-date">April 29, 2026</span>
+        <span style="font-size:clamp(.5rem,.58vw,.7rem);letter-spacing:.06em;color:var(--dim);">7 min watch</span>
+      </div>
+    </a>
+
+    <!-- Grid item 5 -->
+    <a href="#" class="feed-grid-item"
+       data-format="blog" data-discipline="wingchun">
+      <div class="feed-grid-item-media">
+        <div class="feed-grid-item-media-placeholder">Image Placeholder</div>
+      </div>
+      <div class="tags">
+        <span class="tag tag-format">Blog Post</span>
+        <span class="tag tag-wingchun">Wing Chun</span>
+      </div>
+      <div class="feed-grid-item-title">Training Log: Six Months With a Sifu</div>
+      <div class="feed-grid-item-excerpt">What happens when a grappler goes all-in on a classical striking system with no sparring tradition?</div>
+      <div class="feed-grid-item-meta">
+        <span class="feed-grid-item-date">April 22, 2026</span>
+        <span style="font-size:clamp(.5rem,.58vw,.7rem);letter-spacing:.06em;color:var(--dim);">11 min read</span>
+      </div>
+    </a>
+
+    <!-- Grid item 6 -->
+    <a href="#" class="feed-grid-item"
+       data-format="article" data-discipline="wrestling">
+      <div class="feed-grid-item-media">
+        <div class="feed-grid-item-media-placeholder">Image Placeholder</div>
+      </div>
+      <div class="tags">
+        <span class="tag tag-format">Article</span>
+        <span class="tag tag-wrestling">Wrestling</span>
+      </div>
+      <div class="feed-grid-item-title">The Mat Is Its Own Language</div>
+      <div class="feed-grid-item-excerpt">Inside the culture of American folkstyle wrestling and why its alumni dominate modern MMA.</div>
+      <div class="feed-grid-item-meta">
+        <span class="feed-grid-item-date">April 15, 2026</span>
+        <span style="font-size:clamp(.5rem,.58vw,.7rem);letter-spacing:.06em;color:var(--dim);">9 min read</span>
+      </div>
+    </a>
+
+  </div><!-- /feed-grid -->
+
+  <!-- ── LIST: archive ──────────────────────────────────────── -->
+  <div class="section-row" style="margin-top:3vw;">
+    <span class="section-row-label">Archive</span>
+    <span class="section-row-count" id="listCount">5 features</span>
+  </div>
+
+  <div class="feed-list" id="feedList">
+
+    <!-- List item 1 -->
+    <a href="#" class="feed-list-item"
+       data-format="documentary" data-discipline="judo">
+      <span class="feed-list-num">01</span>
+      <div class="feed-list-info">
+        <div class="tags">
+          <span class="tag tag-format">Documentary</span>
+          <span class="tag tag-judo">Judo</span>
+        </div>
+        <div class="feed-list-title">Ippon or Nothing — The All-Japan Championships</div>
+        <span style="font-size:clamp(.55rem,.65vw,.75rem);color:var(--dim);letter-spacing:.06em;">April 8, 2026 · 38 min watch</span>
+      </div>
+      <div class="feed-list-thumb">
+        <!-- REPLACE: 400x300 thumb -->
+        <div class="feed-list-thumb-placeholder">Img</div>
+      </div>
+    </a>
+
+    <!-- List item 2 -->
+    <a href="#" class="feed-list-item"
+       data-format="opinion" data-discipline="muaythai">
+      <span class="feed-list-num">02</span>
+      <div class="feed-list-info">
+        <div class="tags">
+          <span class="tag tag-format">Opinion</span>
+          <span class="tag tag-muaythai">Muay Thai</span>
+        </div>
+        <div class="feed-list-title">What Western Promotions Keep Getting Wrong About Thai Boxing</div>
+        <span style="font-size:clamp(.55rem,.65vw,.75rem);color:var(--dim);letter-spacing:.06em;">March 31, 2026 · 5 min read</span>
+      </div>
+      <div class="feed-list-thumb">
+        <div class="feed-list-thumb-placeholder">Img</div>
+      </div>
+    </a>
+
+    <!-- List item 3 -->
+    <a href="#" class="feed-list-item"
+       data-format="podcast" data-discipline="bjj">
+      <span class="feed-list-num">03</span>
+      <div class="feed-list-info">
+        <div class="tags">
+          <span class="tag tag-format">Podcast</span>
+          <span class="tag tag-bjj">BJJ</span>
+        </div>
+        <div class="feed-list-title">Ep. 39 — Leg Locks, Lineage & the New Grappling Economy</div>
+        <span style="font-size:clamp(.55rem,.65vw,.75rem);color:var(--dim);letter-spacing:.06em;">March 22, 2026 · 74 min listen</span>
+      </div>
+      <div class="feed-list-thumb">
+        <div class="feed-list-thumb-placeholder">Img</div>
+      </div>
+    </a>
+
+    <!-- List item 4 -->
+    <a href="#" class="feed-list-item"
+       data-format="blog" data-discipline="boxing">
+      <span class="feed-list-num">04</span>
+      <div class="feed-list-info">
+        <div class="tags">
+          <span class="tag tag-format">Blog Post</span>
+          <span class="tag tag-boxing">Boxing</span>
+        </div>
+        <div class="feed-list-title">Three Rounds at a South Side Gym: Notes on Amateur Boxing Culture</div>
+        <span style="font-size:clamp(.55rem,.65vw,.75rem);color:var(--dim);letter-spacing:.06em;">March 14, 2026 · 13 min read</span>
+      </div>
+      <div class="feed-list-thumb">
+        <div class="feed-list-thumb-placeholder">Img</div>
+      </div>
+    </a>
+
+    <!-- List item 5 -->
+    <a href="#" class="feed-list-item"
+       data-format="shortvideo" data-discipline="mma">
+      <span class="feed-list-num">05</span>
+      <div class="feed-list-info">
+        <div class="tags">
+          <span class="tag tag-format">Short Video</span>
+          <span class="tag tag-mma">MMA</span>
+        </div>
+        <div class="feed-list-title">Body Language: Reading a Fighter Before the First Exchange</div>
+        <span style="font-size:clamp(.55rem,.65vw,.75rem);color:var(--dim);letter-spacing:.06em;">March 5, 2026 · 9 min watch</span>
+      </div>
+      <div class="feed-list-thumb">
+        <div class="feed-list-thumb-placeholder">Img</div>
+      </div>
+    </a>
+
+  </div><!-- /feed-list -->
+
+  <div class="feed-empty" id="feedEmpty">No features match the selected filters.</div>
+
+</main>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="footer-items">
+    <div class="footer-flex">
+      <div class="footer-item-holder">
+        <a href="https://www.instagram.com/bellatorpax_studio/" target="_blank" rel="noopener" class="footer-link-holder">Instagram</a>
+        <a href="https://www.linkedin.com/company/bellatorpax/" target="_blank" rel="noopener" class="footer-link-holder">LinkedIn</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-over-logo-holder">
+    <div class="footer-links-holder">
+      <a href="/work"    class="footer-main-link">Work</a>
+      <a href="/studio"  class="footer-main-link">Studio</a>
+      <a href="/contact" class="footer-main-link">Contact</a>
+      <div class="footer-rights">All Rights<br/>Reserved<br/>&#169; 2026</div>
+    </div>
+    <div class="footer-flex smaller">
+      <div class="footer-item-holder" style="flex-direction:column;gap:.3rem;">
+        <div class="footer-h3-holder"><h3 class="footer-h3">Business Inquiries</h3></div>
+        <a href="mailto:newbiz@bellatorpax.studio" class="footer-info-link">newbiz@bellatorpax.studio</a>
+      </div>
+      <div class="footer-item-holder" style="flex-direction:column;gap:.3rem;">
+        <div class="footer-h3-holder"><h3 class="footer-h3">General</h3></div>
+        <a href="mailto:hello@bellatorpax.studio" class="footer-info-link">hello@bellatorpax.studio</a>
+      </div>
+      <div class="footer-item-holder" style="flex-direction:column;gap:.3rem;">
+        <div class="footer-h3-holder"><h3 class="footer-h3">Call Us</h3></div>
+        <a href="tel:+14049408834" class="footer-info-link">(+1) 404-940-8834</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-logo-holder">
+    <svg class="footer-logo-svg" viewBox="0 0 3480.2 449" fill="#161616" xmlns="http://www.w3.org/2000/svg">
+      <path d="M298.14 264.91 Q298.14 281.07 292.75 296.34 Q287.36 311.61 275.46 326.42 Q263.56 341.24 239.77 350.22 Q215.97 359.20 183.19 359.20 L35.92 359.20 L35.92 31.88 L181.84 31.88 Q212.38 31.88 234.60 40.86 Q256.83 49.84 267.83 63.98 Q278.83 78.13 283.77 91.60 Q288.71 105.07 288.71 118.09 Q288.71 139.19 278.38 154.68 Q268.05 170.17 243.81 185.44 Q298.14 217.32 298.14 264.91 Z M103.27 88.00 L103.27 162.09 L176.46 162.09 Q224.05 162.09 224.05 125.27 Q224.05 88.00 176.46 88.00 Z M103.27 218.21 L103.27 303.07 L183.64 303.07 Q233.48 303.07 233.48 260.87 Q233.48 218.21 183.64 218.21 Z"/>
+      <path d="M430.59 218.21 L430.59 303.07 L607.95 303.07 L607.95 359.20 L363.24 359.20 L363.24 31.88 L599.86 31.88 L599.86 88.00 L430.59 88.00 L430.59 162.09 L587.29 162.09 L587.29 218.21 Z"/>
+      <path d="M740.40 31.88 L740.40 303.07 L897.10 303.07 L897.10 359.20 L673.05 359.20 L673.05 31.88 Z"/>
+      <path d="M1029.56 31.88 L1029.56 303.07 L1186.26 303.07 L1186.26 359.20 L962.21 359.20 L962.21 31.88 Z"/>
+      <path d="M1433.21 293.20 L1310.63 293.20 L1288.63 359.20 L1219.93 359.20 L1336.22 31.88 L1410.76 31.88 L1523.91 359.20 L1454.76 359.20 Z M1414.80 237.07 L1372.14 109.11 L1329.49 237.07 Z"/>
+      <path d="M1719.67 88.00 L1719.67 359.20 L1652.32 359.20 L1652.32 88.00 L1553.09 88.00 L1553.09 31.88 L1815.31 31.88 L1815.31 88.00 Z"/>
+      <path d="M2015.11 26.49 Q2086.05 26.49 2129.61 74.31 Q2173.16 122.13 2173.16 200.25 Q2173.16 272.99 2130.28 321.26 Q2087.40 369.53 2015.56 369.53 Q1944.17 369.53 1901.07 321.48 Q1857.96 273.44 1857.96 198.01 Q1857.96 122.58 1901.29 74.53 Q1944.62 26.49 2015.11 26.49 Z M2015.56 83.96 Q1974.70 83.96 1950.01 115.17 Q1925.31 146.37 1925.31 198.01 Q1925.31 249.64 1950.01 280.85 Q1974.70 312.06 2015.56 312.06 Q2055.97 312.06 2080.89 281.07 Q2105.81 250.09 2105.81 199.80 Q2105.81 146.82 2081.34 115.39 Q2056.87 83.96 2015.56 83.96 Z"/>
+      <path d="M2423.70 303.07 Q2423.70 289.61 2424.15 281.97 Q2424.60 274.34 2424.60 268.50 Q2424.60 247.85 2414.72 238.64 Q2404.84 229.44 2382.84 229.44 L2305.62 229.44 L2305.62 359.20 L2238.27 359.20 L2238.27 31.88 L2413.82 31.88 Q2438.97 31.88 2457.15 40.41 Q2475.34 48.94 2484.54 62.86 Q2493.75 76.78 2497.79 90.92 Q2501.83 105.07 2501.83 120.33 Q2501.83 179.60 2446.60 201.15 Q2458.72 206.09 2464.56 209.01 Q2470.40 211.93 2476.46 218.66 Q2482.52 225.40 2484.54 230.79 Q2486.56 236.17 2488.58 250.54 Q2490.60 264.91 2491.05 278.83 Q2491.50 292.75 2491.95 320.14 Q2491.95 339.00 2506.32 347.08 L2506.32 359.20 L2434.03 359.20 Q2427.74 347.53 2425.72 336.75 Q2423.70 325.97 2423.70 303.07 Z M2434.48 129.76 Q2434.48 104.62 2422.80 96.31 Q2411.13 88.00 2386.88 88.00 L2305.62 88.00 L2305.62 173.31 L2386.88 173.31 Q2410.68 173.31 2422.58 164.78 Q2434.48 156.25 2434.48 129.76 Z"/>
+      <path d="M2641.02 242.46 L2641.02 359.20 L2573.67 359.20 L2573.67 31.88 L2718.25 31.88 Q2769.43 31.88 2796.60 57.92 Q2823.76 83.96 2823.76 133.35 Q2823.76 183.19 2796.82 212.83 Q2769.88 242.46 2724.98 242.46 Z M2641.02 186.33 L2703.88 186.33 Q2756.41 186.33 2756.41 137.39 Q2756.41 112.25 2743.61 100.13 Q2730.82 88.00 2703.88 88.00 L2641.02 88.00 Z"/>
+      <path d="M3070.71 293.20 L2948.13 293.20 L2926.13 359.20 L2857.44 359.20 L2973.73 31.88 L3048.26 31.88 L3161.41 359.20 L3092.26 359.20 Z M3052.30 237.07 L3009.65 109.11 L2966.99 237.07 Z"/>
+      <path d="M3365.26 192.17 L3470.32 359.20 L3390.40 359.20 L3327.54 245.60 L3265.13 359.20 L3187.00 359.20 L3290.27 194.42 L3190.59 31.88 L3270.52 31.88 L3327.99 139.64 L3388.15 31.88 L3466.28 31.88 Z"/>
+    </svg>
+  </div>
+</footer>
+
+<!-- ============================================================
+     SCRIPT
+     ============================================================ -->
+<script>
+(function () {
+  /* ---------- cursor ---------- */
+  const cursor = document.getElementById('cursor');
+  let cx = 0, cy = 0;
+  document.addEventListener('mousemove', e => { cx = e.clientX; cy = e.clientY; cursor.classList.add('visible'); });
+  document.querySelectorAll('a,button').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+  });
+  (function loop() { cursor.style.left = cx + 'px'; cursor.style.top = cy + 'px'; requestAnimationFrame(loop); })();
+
+  /* ---------- clock ---------- */
+  const clockEl = document.getElementById('clock');
+  function tick() {
+    const d = new Date();
+    let h = String(d.getHours()).padStart(2,'0');
+    let m = String(d.getMinutes()).padStart(2,'0');
+    clockEl.innerHTML = h + '<span>:</span>' + m;
+  }
+  tick(); setInterval(tick, 1000);
+
+  /* ---------- reveal on load ---------- */
+  const pageTitle = document.getElementById('pageTitle');
+  const hero = document.getElementById('heroArticle');
+  setTimeout(() => pageTitle.classList.add('show'), 400);
+  setTimeout(() => hero.classList.add('show'), 600);
+
+  /* ---------- scroll reveal (IntersectionObserver) ---------- */
+  const ioConfig = { threshold: 0.08 };
+  const io = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        // stagger siblings
+        const siblings = [...e.target.parentElement.children];
+        const idx = siblings.indexOf(e.target);
+        e.target.style.transitionDelay = (idx * 0.08) + 's';
+        e.target.classList.add('show');
+        io.unobserve(e.target);
+      }
+    });
+  }, ioConfig);
+
+  document.querySelectorAll('.feed-grid-item, .feed-list-item').forEach(el => io.observe(el));
+
+  /* ---------- filtering ---------- */
+  let activeFormat = 'all';
+  let activeDiscipline = 'all';
+
+  const allFilterableItems = () => [
+    document.getElementById('heroArticle'),
+    ...document.querySelectorAll('.feed-grid-item'),
+    ...document.querySelectorAll('.feed-list-item')
+  ];
+
+  function matchesFilters(el) {
+    const fmt  = el.dataset.format;
+    const disc = el.dataset.discipline;
+    const fmtOk  = activeFormat === 'all'      || fmt  === activeFormat;
+    const discOk = activeDiscipline === 'all'  || disc === activeDiscipline;
+    return fmtOk && discOk;
+  }
+
+  function applyFilters() {
+    let total = 0, gridVis = 0, listVis = 0;
+    const hero = document.getElementById('heroArticle');
+    const gridItems = document.querySelectorAll('.feed-grid-item');
+    const listItems = document.querySelectorAll('.feed-list-item');
+
+    // hero
+    const heroMatch = matchesFilters(hero);
+    hero.style.display = heroMatch ? '' : 'none';
+    if (heroMatch) total++;
+
+    // grid
+    gridItems.forEach(el => {
+      const v = matchesFilters(el);
+      el.style.display = v ? '' : 'none';
+      if (v) { total++; gridVis++; }
+    });
+
+    // list — re-number visible
+    let listNum = 1;
+    listItems.forEach(el => {
+      const v = matchesFilters(el);
+      el.style.display = v ? '' : 'none';
+      if (v) {
+        el.querySelector('.feed-list-num').textContent = String(listNum).padStart(2,'0');
+        listNum++; total++; listVis++;
+      }
+    });
+
+    document.getElementById('visibleCount').textContent = total;
+    document.getElementById('gridCount').textContent = gridVis + ' feature' + (gridVis !== 1 ? 's' : '');
+    document.getElementById('listCount').textContent = listVis + ' feature' + (listVis !== 1 ? 's' : '');
+    document.getElementById('feedEmpty').classList.toggle('show', total === 0);
+  }
+
+  function setFilter(group, value) {
+    const container = group === 'format'
+      ? document.getElementById('formatFilters')
+      : document.getElementById('disciplineFilters');
+
+    container.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.filter === value);
+    });
+
+    if (group === 'format') activeFormat = value;
+    else activeDiscipline = value;
+
+    applyFilters();
+  }
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => setFilter(btn.dataset.filterGroup, btn.dataset.filter));
+  });
+
+  document.getElementById('filterClear').addEventListener('click', () => {
+    setFilter('format', 'all');
+    setFilter('discipline', 'all');
+  });
+
+})();
+</script>
+</body>
+</html>
