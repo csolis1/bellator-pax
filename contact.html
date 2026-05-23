@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BELLATORPAX — Contact</title>
+<meta name="description" content="Get in touch with Bellatorpax — fight journalism, photography, and cultural documentation."/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #161616;
+  --fg: #fafafa;
+  --muted: rgba(250,250,250,0.45);
+  --dim: rgba(255,255,255,0.08);
+  --ease: cubic-bezier(.23,1,.32,1);
+}
+html { background: var(--bg); scroll-behavior: initial; }
+html, body { width: 100%; min-height: 100%; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 14px; -webkit-font-smoothing: antialiased;
+  overflow-x: hidden; cursor: none;
+}
+::-webkit-scrollbar { display: none; }
+
+/* ── PAGE FADE IN ─────────────────────────────────────── */
+.page-fade {
+  animation: pageFadeIn .7s var(--ease) both;
+}
+@keyframes pageFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── CURSOR ───────────────────────────────────────────── */
+#cursor {
+  position: fixed; width: 40px; height: 40px; border-radius: 50%;
+  background: white; pointer-events: none; z-index: 9998;
+  transform: translate(-50%,-50%); mix-blend-mode: difference;
+  clip-path: circle(0% at 50% 50%);
+  transition: clip-path 0.6s var(--ease), width 0.4s var(--ease), height 0.4s var(--ease);
+  top: 0; left: 0;
+}
+#cursor.visible { clip-path: circle(50% at 50% 50%); }
+#cursor.big { width: 80px; height: 80px; }
+
+/* ── NAV ──────────────────────────────────────────────── */
+.menu {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 2.2vw 3vw; mix-blend-mode: difference; pointer-events: none;
+}
+.menu-link-holder { pointer-events: auto; }
+.menu-logo { display: flex; align-items: center; text-decoration: none; }
+.menu-logo svg { width: 120px; height: auto; }
+.menu-links-holder { display: flex; align-items: center; gap: 2.5vw; pointer-events: auto; }
+.menu-link {
+  color: var(--fg); text-decoration: none;
+  font-size: clamp(.75rem,.875vw,1rem);
+  letter-spacing: .02em; opacity: .85; transition: opacity .3s;
+}
+.menu-link:hover, .menu-link.active { opacity: 1; }
+.menu-link sup { font-size: .6em; opacity: .6; }
+.menu-right {
+  display: flex; align-items: center; gap: .5rem;
+  font-size: clamp(.75rem,.875vw,1rem);
+  color: var(--fg); pointer-events: auto; opacity: .7; letter-spacing: .04em;
+}
+#clock span { animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { visibility: hidden; } }
+
+/* ── PAGE LAYOUT ──────────────────────────────────────── */
+.page {
+  padding: 0 3vw;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+  gap: 0;
+}
+
+/* ── STATEMENT — full width top ───────────────────────── */
+.statement {
+  grid-column: 1 / -1;
+  padding-top: 12vw;
+  padding-bottom: 4vw;
+  border-bottom: 1px solid var(--dim);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4vw;
+  align-items: end;
+  opacity: 0; transform: translateY(18px);
+  transition: opacity 1.2s var(--ease) .3s, transform 1.2s var(--ease) .3s;
+}
+.statement.show { opacity: 1; transform: translateY(0); }
+
+.statement-kicker {
+  font-size: clamp(.55rem,.65vw,.75rem);
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 1.4vw;
+}
+.statement-title {
+  font-size: clamp(2rem,5vw,7rem);
+  font-weight: 300; letter-spacing: -.035em;
+  line-height: .95; color: var(--fg);
+}
+.statement-title em { font-style: italic; }
+
+.statement-body {
+  font-size: clamp(.82rem,1.05vw,1.25rem);
+  color: var(--muted); line-height: 1.75;
+  font-weight: 300; max-width: 46ch;
+  align-self: end;
+}
+.statement-body strong {
+  color: var(--fg); font-weight: 400;
+}
+
+/* ── LEFT COL — info ──────────────────────────────────── */
+.info-col {
+  grid-column: 1;
+  border-right: 1px solid var(--dim);
+  padding: 4vw 4vw 6vw 0;
+  display: flex; flex-direction: column;
+  justify-content: space-between;
+  opacity: 0; transform: translateY(18px);
+  transition: opacity 1.2s var(--ease) .55s, transform 1.2s var(--ease) .55s;
+}
+.info-col.show { opacity: 1; transform: translateY(0); }
+
+.info-section { margin-bottom: 3vw; }
+.info-label {
+  font-size: clamp(.52rem,.62vw,.72rem);
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 1rem;
+}
+.info-link {
+  display: block; text-decoration: none; color: var(--fg);
+  font-size: clamp(.85rem,1.15vw,1.5rem);
+  font-weight: 300; letter-spacing: -.01em;
+  transition: opacity .3s; line-height: 1.5;
+}
+.info-link:hover { opacity: .5; }
+.info-text {
+  font-size: clamp(.72rem,.88vw,1.05rem);
+  color: var(--muted); line-height: 1.8;
+  font-weight: 300;
+}
+
+.info-divider { height: 1px; background: var(--dim); margin: 2.5vw 0; }
+
+.disciplines {
+  display: flex; flex-wrap: wrap; gap: .4rem;
+}
+.disc-tag {
+  font-size: clamp(.48rem,.58vw,.68rem);
+  letter-spacing: .1em; text-transform: uppercase;
+  border: 1px solid rgba(250,250,250,.2);
+  padding: .28rem .7rem; border-radius: 999px;
+  color: var(--muted);
+}
+
+/* ── RIGHT COL — FORM ─────────────────────────────────── */
+.form-col {
+  grid-column: 2;
+  padding: 4vw 0 6vw 4vw;
+  opacity: 0; transform: translateY(18px);
+  transition: opacity 1.2s var(--ease) .7s, transform 1.2s var(--ease) .7s;
+}
+.form-col.show { opacity: 1; transform: translateY(0); }
+
+.form-title {
+  font-size: clamp(.52rem,.62vw,.72rem);
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 2.5vw;
+}
+
+/* form fields */
+.field {
+  margin-bottom: 1.8vw;
+  position: relative;
+}
+.field label {
+  display: block;
+  font-size: clamp(.5rem,.6vw,.7rem);
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: .55rem;
+  transition: color .25s;
+}
+.field:focus-within label { color: var(--fg); }
+
+.field input,
+.field textarea,
+.field select {
+  width: 100%; background: transparent;
+  border: none; border-bottom: 1px solid rgba(250,250,250,.2);
+  color: var(--fg); font-family: inherit;
+  font-size: clamp(.78rem,.95vw,1.15rem);
+  font-weight: 300; padding: .65rem 0;
+  outline: none; appearance: none; -webkit-appearance: none;
+  transition: border-color .3s;
+  cursor: none;
+  border-radius: 0;
+}
+.field input::placeholder,
+.field textarea::placeholder { color: rgba(250,250,250,.2); }
+.field input:focus,
+.field textarea:focus,
+.field select:focus { border-color: var(--fg); }
+
+.field textarea { resize: none; height: 7rem; line-height: 1.65; }
+
+/* select arrow */
+.select-wrap { position: relative; }
+.select-wrap::after {
+  content: '↓';
+  position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+  font-size: .75rem; color: var(--muted); pointer-events: none;
+}
+.field select option { background: #1e1e1e; color: var(--fg); }
+
+/* two-col row */
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 2vw; }
+
+/* underline animation */
+.field::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0;
+  width: 0; height: 1px; background: var(--fg);
+  transition: width .4s var(--ease);
+}
+.field:focus-within::after { width: 100%; }
+
+/* submit */
+.submit-row {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  margin-top: 3vw;
+  border-top: 1px solid var(--dim);
+  padding-top: 2vw;
+}
+.submit-note {
+  font-size: clamp(.5rem,.6vw,.7rem);
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted);
+}
+.submit-btn {
+  background: none; border: 1px solid rgba(250,250,250,.3);
+  color: var(--fg); font-family: inherit;
+  font-size: clamp(.6rem,.72vw,.85rem);
+  letter-spacing: .14em; text-transform: uppercase;
+  padding: .75rem 2rem; cursor: none;
+  transition: background .3s, border-color .3s, color .3s;
+  border-radius: 999px;
+}
+.submit-btn:hover {
+  background: var(--fg); color: var(--bg);
+  border-color: var(--fg);
+}
+.submit-btn:disabled {
+  opacity: .4; pointer-events: none;
+}
+
+/* ── CONFIRMATION ─────────────────────────────────────── */
+.confirmation {
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
+  padding: 4vw 0 6vw 4vw;
+  opacity: 0; transform: translateY(14px);
+  transition: opacity .9s var(--ease), transform .9s var(--ease);
+}
+.confirmation.show-panel { display: flex; }
+.confirmation.animate    { opacity: 1; transform: translateY(0); }
+
+.conf-check {
+  width: 48px; height: 48px; border-radius: 50%;
+  border: 1px solid rgba(250,250,250,.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+}
+.conf-headline {
+  font-size: clamp(1.4rem,2.8vw,4rem);
+  font-weight: 300; letter-spacing: -.03em; line-height: 1;
+}
+.conf-headline em { font-style: italic; }
+.conf-sub {
+  font-size: clamp(.72rem,.88vw,1.05rem);
+  color: var(--muted); line-height: 1.75;
+  font-weight: 300; max-width: 38ch;
+}
+.conf-back {
+  background: none; border: none;
+  color: var(--muted); font-family: inherit;
+  font-size: clamp(.5rem,.6vw,.7rem);
+  letter-spacing: .14em; text-transform: uppercase;
+  cursor: none; padding: 0;
+  transition: color .25s;
+}
+.conf-back:hover { color: var(--fg); }
+
+/* ── MOBILE NAV ───────────────────────────────────────── */
+.menu-burger {
+  display: none;
+  flex-direction: column; gap: 5px;
+  pointer-events: auto; cursor: none;
+  background: none; border: none; padding: 4px;
+}
+.menu-burger span {
+  display: block; width: 22px; height: 1px;
+  background: var(--fg);
+  transition: transform .4s var(--ease), opacity .3s;
+}
+.menu-burger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.menu-burger.open span:nth-child(2) { opacity: 0; }
+.menu-burger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+.mobile-nav {
+  display: none;
+  position: fixed; inset: 0; z-index: 99;
+  background: var(--bg);
+  flex-direction: column;
+  justify-content: center;
+  padding: 6vw 8vw;
+  clip-path: inset(0% 0% 100% 0%);
+  transition: clip-path .7s var(--ease);
+}
+.mobile-nav.open { clip-path: inset(0% 0% 0% 0%); }
+.mobile-nav-links {
+  display: flex; flex-direction: column; gap: 1.2rem;
+  margin-bottom: 3rem;
+}
+.mobile-nav-link {
+  color: var(--fg); text-decoration: none;
+  font-size: clamp(1.6rem, 8vw, 3.2rem);
+  font-weight: 300; letter-spacing: -.025em;
+  opacity: 0; transform: translateX(-12px);
+  transition: opacity .5s var(--ease), transform .5s var(--ease), color .25s;
+}
+.mobile-nav.open .mobile-nav-link { opacity: 1; transform: translateX(0); }
+.mobile-nav.open .mobile-nav-link:nth-child(1) { transition-delay: .08s; }
+.mobile-nav.open .mobile-nav-link:nth-child(2) { transition-delay: .13s; }
+.mobile-nav.open .mobile-nav-link:nth-child(3) { transition-delay: .18s; }
+.mobile-nav.open .mobile-nav-link:nth-child(4) { transition-delay: .23s; }
+.mobile-nav.open .mobile-nav-link:nth-child(5) { transition-delay: .28s; }
+.mobile-nav.open .mobile-nav-link:nth-child(6) { transition-delay: .33s; }
+.mobile-nav.open .mobile-nav-link:nth-child(7) { transition-delay: .38s; }
+.mobile-nav-link:hover, .mobile-nav-link.active { opacity: .4; }
+.mobile-nav-contacts {
+  display: flex; flex-direction: column; gap: .5rem;
+  opacity: 0; transition: opacity .5s var(--ease) .4s;
+}
+.mobile-nav.open .mobile-nav-contacts { opacity: 1; }
+.mobile-nav-contact {
+  font-size: clamp(.7rem, 3.5vw, .9rem);
+  color: var(--muted); letter-spacing: .04em; text-decoration: none;
+}
+
+/* ── HERO IMAGE PLACEHOLDER ───────────────────────────── */
+.hero-img {
+  grid-column: 1 / -1;
+  width: 100%;
+  aspect-ratio: 21/9;
+  background: #111;
+  border-bottom: 1px solid var(--dim);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+  opacity: 0; transform: translateY(10px);
+  transition: opacity 1.2s var(--ease) .1s, transform 1.2s var(--ease) .1s;
+}
+.hero-img.show { opacity: 1; transform: translateY(0); }
+/* Replace the background-color with your image: */
+/* .hero-img { background-image: url('your-image.jpg'); background-size: cover; background-position: center; } */
+.hero-img-inner {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: .8rem;
+  pointer-events: none;
+}
+.hero-img-num {
+  font-size: clamp(3rem,8vw,10rem);
+  font-weight: 200; letter-spacing: -.06em;
+  color: rgba(250,250,250,.04); line-height: 1;
+}
+.hero-img-label {
+  font-size: clamp(.5rem,.6vw,.7rem);
+  letter-spacing: .2em; text-transform: uppercase;
+  color: rgba(250,250,250,.18);
+}
+/* Subtle grain overlay */
+.hero-img::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: .6; pointer-events: none;
+}
+
+/* ── RESPONSIVE ───────────────────────────────────────── */
+@media (max-width: 860px) {
+  .page { grid-template-columns: 1fr; }
+  .hero-img { aspect-ratio: 4/3; }
+  .statement { grid-template-columns: 1fr; padding-top: 8vw; }
+  .info-col { grid-column: 1; border-right: none; padding-right: 0; border-bottom: 1px solid var(--dim); padding-bottom: 6vw; }
+  .form-col, .confirmation { grid-column: 1; padding-left: 0; padding-top: 6vw; }
+  .field-row { grid-template-columns: 1fr; gap: 0; }
+  /* hide desktop nav links, show burger */
+  .menu-links-holder { display: none; }
+  .menu-burger { display: flex; }
+  .mobile-nav { display: flex; }
+  body { cursor: auto; }
+  #cursor { display: none; }
+}
+</style>
+</head>
+<body>
+
+
+<div id="cursor"></div>
+
+<!-- NAV -->
+<nav class="menu page-fade" style="animation-delay:.1s">
+  <div class="menu-link-holder">
+    <a href="/index.html" class="menu-logo">
+      <svg viewBox="0 0 3480.2 449" fill="white" xmlns="http://www.w3.org/2000/svg">
+        <path d="M298.14 264.91 Q298.14 281.07 292.75 296.34 Q287.36 311.61 275.46 326.42 Q263.56 341.24 239.77 350.22 Q215.97 359.20 183.19 359.20 L35.92 359.20 L35.92 31.88 L181.84 31.88 Q212.38 31.88 234.60 40.86 Q256.83 49.84 267.83 63.98 Q278.83 78.13 283.77 91.60 Q288.71 105.07 288.71 118.09 Q288.71 139.19 278.38 154.68 Q268.05 170.17 243.81 185.44 Q298.14 217.32 298.14 264.91 Z M103.27 88.00 L103.27 162.09 L176.46 162.09 Q224.05 162.09 224.05 125.27 Q224.05 88.00 176.46 88.00 Z M103.27 218.21 L103.27 303.07 L183.64 303.07 Q233.48 303.07 233.48 260.87 Q233.48 218.21 183.64 218.21 Z"/>
+        <path d="M430.59 218.21 L430.59 303.07 L607.95 303.07 L607.95 359.20 L363.24 359.20 L363.24 31.88 L599.86 31.88 L599.86 88.00 L430.59 88.00 L430.59 162.09 L587.29 162.09 L587.29 218.21 Z"/>
+        <path d="M740.40 31.88 L740.40 303.07 L897.10 303.07 L897.10 359.20 L673.05 359.20 L673.05 31.88 Z"/>
+        <path d="M1029.56 31.88 L1029.56 303.07 L1186.26 303.07 L1186.26 359.20 L962.21 359.20 L962.21 31.88 Z"/>
+        <path d="M1433.21 293.20 L1310.63 293.20 L1288.63 359.20 L1219.93 359.20 L1336.22 31.88 L1410.76 31.88 L1523.91 359.20 L1454.76 359.20 Z M1414.80 237.07 L1372.14 109.11 L1329.49 237.07 Z"/>
+        <path d="M1719.67 88.00 L1719.67 359.20 L1652.32 359.20 L1652.32 88.00 L1553.09 88.00 L1553.09 31.88 L1815.31 31.88 L1815.31 88.00 Z"/>
+        <path d="M2015.11 26.49 Q2086.05 26.49 2129.61 74.31 Q2173.16 122.13 2173.16 200.25 Q2173.16 272.99 2130.28 321.26 Q2087.40 369.53 2015.56 369.53 Q1944.17 369.53 1901.07 321.48 Q1857.96 273.44 1857.96 198.01 Q1857.96 122.58 1901.29 74.53 Q1944.62 26.49 2015.11 26.49 Z M2015.56 83.96 Q1974.70 83.96 1950.01 115.17 Q1925.31 146.37 1925.31 198.01 Q1925.31 249.64 1950.01 280.85 Q1974.70 312.06 2015.56 312.06 Q2055.97 312.06 2080.89 281.07 Q2105.81 250.09 2105.81 199.80 Q2105.81 146.82 2081.34 115.39 Q2056.87 83.96 2015.56 83.96 Z"/>
+        <path d="M2423.70 303.07 Q2423.70 289.61 2424.15 281.97 Q2424.60 274.34 2424.60 268.50 Q2424.60 247.85 2414.72 238.64 Q2404.84 229.44 2382.84 229.44 L2305.62 229.44 L2305.62 359.20 L2238.27 359.20 L2238.27 31.88 L2413.82 31.88 Q2438.97 31.88 2457.15 40.41 Q2475.34 48.94 2484.54 62.86 Q2493.75 76.78 2497.79 90.92 Q2501.83 105.07 2501.83 120.33 Q2501.83 179.60 2446.60 201.15 Q2458.72 206.09 2464.56 209.01 Q2470.40 211.93 2476.46 218.66 Q2482.52 225.40 2484.54 230.79 Q2486.56 236.17 2488.58 250.54 Q2490.60 264.91 2491.05 278.83 Q2491.50 292.75 2491.95 320.14 Q2491.95 339.00 2506.32 347.08 L2506.32 359.20 L2434.03 359.20 Q2427.74 347.53 2425.72 336.75 Q2423.70 325.97 2423.70 303.07 Z M2434.48 129.76 Q2434.48 104.62 2422.80 96.31 Q2411.13 88.00 2386.88 88.00 L2305.62 88.00 L2305.62 173.31 L2386.88 173.31 Q2410.68 173.31 2422.58 164.78 Q2434.48 156.25 2434.48 129.76 Z"/>
+        <path d="M2641.02 242.46 L2641.02 359.20 L2573.67 359.20 L2573.67 31.88 L2718.25 31.88 Q2769.43 31.88 2796.60 57.92 Q2823.76 83.96 2823.76 133.35 Q2823.76 183.19 2796.82 212.83 Q2769.88 242.46 2724.98 242.46 Z M2641.02 186.33 L2703.88 186.33 Q2756.41 186.33 2756.41 137.39 Q2756.41 112.25 2743.61 100.13 Q2730.82 88.00 2703.88 88.00 L2641.02 88.00 Z"/>
+        <path d="M3070.71 293.20 L2948.13 293.20 L2926.13 359.20 L2857.44 359.20 L2973.73 31.88 L3048.26 31.88 L3161.41 359.20 L3092.26 359.20 Z M3052.30 237.07 L3009.65 109.11 L2966.99 237.07 Z"/>
+        <path d="M3365.26 192.17 L3470.32 359.20 L3390.40 359.20 L3327.54 245.60 L3265.13 359.20 L3187.00 359.20 L3290.27 194.42 L3190.59 31.88 L3270.52 31.88 L3327.99 139.64 L3388.15 31.88 L3466.28 31.88 Z"/>
+      </svg>
+    </a>
+  </div>
+  <div class="menu-links-holder">
+    <a href="/work"          class="menu-link">Fight Styles <sup>(6)</sup></a>
+    <a href="/featured.html" class="menu-link">Featured</a>
+    <a href="/gallery/gallery.html" class="menu-link">Gallery</a>
+    <a href="/martialbody"   class="menu-link">Martial Body: Inherited Motion</a>
+    <a href="/library"       class="menu-link">Technical Library</a>
+    <a href="/community"     class="menu-link">Community</a>
+    <a href="/contact"       class="menu-link active">Contact</a>
+  </div>
+  <div class="menu-right">
+    <span>CPH</span>
+    <p id="clock">12<span>:</span>00</p>
+  </div>
+  <button class="menu-burger" id="menuBurger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <nav class="mobile-nav-links">
+    <a href="/work"          class="mobile-nav-link">Fight Styles</a>
+    <a href="/featured.html" class="mobile-nav-link">Featured</a>
+    <a href="/gallery/gallery.html" class="mobile-nav-link">Gallery</a>
+    <a href="/inprogress.html"   class="mobile-nav-link">Martial Body</a>
+    <a href="/inprogress.html"       class="mobile-nav-link">Technical Library</a>
+    <a href="/inprogress.html"     class="mobile-nav-link">Community</a>
+    <a href="/contact"       class="mobile-nav-link active">Contact</a>
+  </nav>
+  <div class="mobile-nav-contacts">
+    <a href="mailto:hello@bellatorpax.studio" class="mobile-nav-contact">hello@bellatorpax.studio</a>
+    <a href="tel:+14049408834" class="mobile-nav-contact">(+1) 404-940-8834</a>
+  </div>
+</div>
+
+<!-- PAGE -->
+<div class="page">
+
+  <!-- HERO IMAGE -->
+  <div class="hero-img" id="heroImg">
+    <div class="hero-img-inner">
+      <div class="hero-img-num">BP</div>
+      <div class="hero-img-label">Image placeholder — replace src in CSS</div>
+    </div>
+  </div>
+
+  <!-- STATEMENT -->
+  <div class="statement" id="statement">
+    <div>
+      <p class="statement-kicker">Bellatorpax — Contact</p>
+      <h1 class="statement-title">Get in<br/><em>touch.</em></h1>
+    </div>
+    <p class="statement-body">
+      We exist to document <strong>what the body becomes</strong> under the pressure of discipline.
+      Through fight journalism, photography, and cultural deep dives, we record the rituals,
+      the violence, and the grace that live inside every martial art — from the clinch in Bangkok
+      to the mat in São Paulo. If you want to collaborate, pitch a story, or bring us into
+      your world, we want to hear from you.
+  </div>
+
+  <!-- LEFT — INFO -->
+  <div class="info-col" id="infoCol">
+    <div>
+      <div class="info-section">
+        <p class="info-label">Business Inquiries</p>
+        <a href="mailto:newbiz@bellatorpax.studio" class="info-link">newbiz@bellatorpax.studio</a>
+      </div>
+      <div class="info-section">
+        <p class="info-label">General</p>
+        <a href="mailto:hello@bellatorpax.studio" class="info-link">hello@bellatorpax.studio</a>
+      </div>
+      <div class="info-section">
+        <p class="info-label">Phone</p>
+        <a href="tel:+14049408834" class="info-link">(+1) 404-940-8834</a>
+      </div>
+
+      <div class="info-divider"></div>
+
+      <div class="info-section">
+        <p class="info-label">What we cover</p>
+        <div class="disciplines">
+          <span class="disc-tag">Boxing</span>
+          <span class="disc-tag">Muay Thai</span>
+          <span class="disc-tag">BJJ</span>
+          <span class="disc-tag">Taekwondo</span>
+          <span class="disc-tag">Wing Chun</span>
+          <span class="disc-tag">MMA</span>
+          <span class="disc-tag">Wrestling</span>
+          <span class="disc-tag">Judo</span>
+          <span class="disc-tag">Niche Martial Arts</span>
+          <span class="disc-tag">Dance</span>
+          <span class="disc-tag">Meditation</span>
+        </div>
+      </div>
+
+      <div class="info-divider"></div>
+
+      <div class="info-section">
+        <p class="info-label">Socials</p>
+        <a href="https://www.instagram.com/bellatorpax_studio/" target="_blank" rel="noopener" class="info-link">Instagram</a>
+        <a href="https://www.linkedin.com/company/bellatorpax/" target="_blank" rel="noopener" class="info-link">LinkedIn</a>
+      </div>
+    </div>
+
+    <p class="info-text">
+      Based in Atlanta. Working everywhere fights happen.
+    </p>
+  </div>
+
+  <!-- RIGHT — FORM -->
+  <div class="form-col" id="formCol">
+    <p class="form-title">Send a message</p>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="fname">First name</label>
+        <input type="text" id="fname" name="fname" placeholder="Jordan" required/>
+      </div>
+      <div class="field">
+        <label for="lname">Last name</label>
+        <input type="text" id="lname" name="lname" placeholder="Reyes"/>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="email">Email address</label>
+      <input type="email" id="email" name="email" placeholder="you@domain.com" required/>
+    </div>
+
+    <div class="field">
+      <label for="org">Organization / gym / publication</label>
+      <input type="text" id="org" name="org" placeholder="Optional"/>
+    </div>
+
+    <div class="field">
+      <label for="reason">Reason for contact</label>
+      <div class="select-wrap">
+        <select id="reason" name="reason" required>
+          <option value="" disabled selected>Select one</option>
+          <option value="Photography">Photography</option>
+          <option value="Collaboration">Collaboration</option>
+          <option value="Inquiry">Inquiry</option>
+          <option value="Consulting">Consulting</option>
+          <option value="Website Design">Website Design</option>
+          <option value="Feature">Feature</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="message">Message</label>
+      <textarea id="message" name="message" placeholder="Tell us what you're working on…" required></textarea>
+    </div>
+
+    <div class="submit-row">
+      <span class="submit-note">We reply within 48 hours</span>
+      <button class="submit-btn" id="submitBtn" type="button">Send message →</button>
+    </div>
+  </div>
+
+  <!-- CONFIRMATION (swaps in after submit) -->
+  <div class="confirmation" id="confirmation">
+    <div class="conf-check">✓</div>
+    <h2 class="conf-headline">Message<br/><em>received.</em></h2>
+    <p class="conf-sub">
+      Your message is on its way. We read every one and reply within 48 hours —
+      usually much faster. We'll be in touch.
+    </p>
+    <button class="conf-back" id="confBack">← Send another message</button>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+(function () {
+
+  /* ── PAGE REVEAL ────────────────────────────────────── */
+  document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => { document.getElementById('heroImg').classList.add('show'); }, 80);
+    setTimeout(() => {
+      document.getElementById('statement').classList.add('show');
+      document.getElementById('infoCol').classList.add('show');
+    }, 250);
+    setTimeout(() => {
+      document.getElementById('formCol').classList.add('show');
+    }, 420);
+  });
+
+  /* ── MOBILE BURGER ──────────────────────────────────── */
+  const burger    = document.getElementById('menuBurger');
+  const mobileNav = document.getElementById('mobileNav');
+  burger.addEventListener('click', () => {
+    const open = mobileNav.classList.toggle('open');
+    burger.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+  mobileNav.querySelectorAll('.mobile-nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileNav.classList.remove('open');
+      burger.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+
+  /* ── CURSOR ─────────────────────────────────────────── */
+  const cursor = document.getElementById('cursor');
+  let cx = 0, cy = 0;
+  document.addEventListener('mousemove', e => {
+    cx = e.clientX; cy = e.clientY;
+    cursor.classList.add('visible');
+  });
+  (function loop() {
+    cursor.style.left = cx + 'px';
+    cursor.style.top  = cy + 'px';
+    requestAnimationFrame(loop);
+  })();
+  document.querySelectorAll('a, button, select, input, textarea').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('big'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
+  });
+
+  /* ── CLOCK ──────────────────────────────────────────── */
+  const clockEl = document.getElementById('clock');
+  function tick() {
+    const d = new Date();
+    let h = d.getHours(), m = d.getMinutes();
+    if (h < 10) h = '0' + h;
+    if (m < 10) m = '0' + m;
+    clockEl.innerHTML = h + '<span>:</span>' + m;
+  }
+  tick(); setInterval(tick, 1000);
+
+  /* ── FORM SUBMIT ────────────────────────────────────── */
+  const submitBtn   = document.getElementById('submitBtn');
+  const formCol     = document.getElementById('formCol');
+  const confirmation = document.getElementById('confirmation');
+  const confBack    = document.getElementById('confBack');
+
+  /* Field refs */
+  const fname   = document.getElementById('fname');
+  const lname   = document.getElementById('lname');
+  const email   = document.getElementById('email');
+  const org     = document.getElementById('org');
+  const reason  = document.getElementById('reason');
+  const message = document.getElementById('message');
+
+  submitBtn.addEventListener('click', () => {
+    /* Basic validation */
+    if (!fname.value.trim() || !email.value.trim() || !reason.value || !message.value.trim()) {
+      /* Shake invalid empty required fields */
+      [fname, email, reason, message].forEach(el => {
+        if (!el.value.trim()) {
+          el.style.transition = 'border-color .2s';
+          el.style.borderColor = 'rgba(255,100,100,.7)';
+          setTimeout(() => { el.style.borderColor = ''; }, 1500);
+        }
+      });
+      return;
+    }
+
+    /* Build mailto string */
+    const subject = encodeURIComponent(`[Bellatorpax] ${reason.value} — ${fname.value.trim()}`);
+    const body = encodeURIComponent(
+      `Name: ${fname.value.trim()} ${lname.value.trim()}\n` +
+      `Email: ${email.value.trim()}\n` +
+      `Organization: ${org.value.trim() || '—'}\n` +
+      `Reason: ${reason.value}\n\n` +
+      `Message:\n${message.value.trim()}`
+    );
+    window.location.href = `mailto:hello@bellatorpax.studio?subject=${subject}&body=${body}`;
+
+    /* Disable button briefly then show confirmation */
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Opening mail…';
+
+    setTimeout(() => {
+      /* Swap panels */
+      formCol.style.transition = 'opacity .5s var(--ease), transform .5s var(--ease)';
+      formCol.style.opacity = '0';
+      formCol.style.transform = 'translateY(-10px)';
+
+      setTimeout(() => {
+        formCol.style.display = 'none';
+        confirmation.classList.add('show-panel');
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            confirmation.classList.add('animate');
+          });
+        });
+      }, 500);
+    }, 800);
+  });
+
+  /* Reset form */
+  confBack.addEventListener('click', () => {
+    confirmation.classList.remove('show-panel', 'animate');
+    formCol.style.display = '';
+    formCol.style.opacity = '';
+    formCol.style.transform = '';
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Send message →';
+    fname.value = ''; lname.value = ''; email.value = '';
+    org.value = ''; reason.value = ''; message.value = '';
+  });
+
+})();
+</script>
+</body>
+</html>
