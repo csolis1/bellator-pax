@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BELLATORPAX — In Development</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #161616;
+    --fg: #fafafa;
+    --muted: rgba(250,250,250,0.45);
+    --ease: cubic-bezier(.23,1,.32,1);
+  }
+  html { background: var(--bg); scroll-behavior: initial; }
+  html, body { width: 100%; min-height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    cursor: none;
+  }
+  ::-webkit-scrollbar { display: none; }
+
+  /* ---- PRELOADER ---- */
+  #preloader {
+    position: fixed; inset: 0; background: var(--bg); z-index: 9999;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 1.5rem;
+    clip-path: inset(0% 0% 0% 0%);
+    transition: clip-path 1.8s var(--ease);
+  }
+  #preloader.remove { clip-path: inset(0% 0% 100% 0%); }
+  #preloader-logo { width: 60px; height: 60px; animation: spin 3s linear infinite; }
+  #preloader-text { font-size: 11px; letter-spacing: 0.2em; color: var(--fg); opacity: 0.6; }
+  #preloader-bar-wrap { width: 180px; height: 1px; background: rgba(255,255,255,0.15); overflow: hidden; }
+  #preloader-bar { height: 100%; background: white; width: 0%; transition: width 0.4s ease; }
+  #preloader-percent { font-size: 11px; letter-spacing: 0.1em; color: var(--fg); opacity: 0.5; margin-top: 4px; }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  /* ---- CURSOR ---- */
+  #cursor {
+    position: fixed; width: 40px; height: 40px; border-radius: 50%; background: white;
+    pointer-events: none; z-index: 9998; transform: translate(-50%,-50%);
+    mix-blend-mode: difference; clip-path: circle(0% at 50% 50%);
+    transition: clip-path 0.6s var(--ease);
+    top: 0; left: 0;
+  }
+  #cursor.visible { clip-path: circle(50% at 50% 50%); }
+
+  /* ---- NAV ---- */
+  .menu {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 2.2vw 3vw; mix-blend-mode: difference; pointer-events: none;
+  }
+  .menu-logo { display: flex; align-items: center; text-decoration: none; pointer-events: auto; }
+  .menu-logo svg { width: 120px; height: auto; }
+  .menu-links-holder {
+    display: flex; align-items: center; gap: 2.5vw; pointer-events: auto;
+  }
+  .menu-link {
+    color: var(--fg); text-decoration: none;
+    font-size: clamp(0.75rem, 0.875vw, 1rem);
+    letter-spacing: 0.02em; opacity: 0.85; transition: opacity 0.3s;
+  }
+  .menu-link:hover { opacity: 1; }
+  .menu-link sup { font-size: 0.6em; opacity: 0.6; }
+  .menu-right {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-size: clamp(0.75rem, 0.875vw, 1rem);
+    color: var(--fg); pointer-events: auto; opacity: 0.7; letter-spacing: 0.04em;
+  }
+  #clock span { animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { visibility: hidden; } }
+
+  /* ---- PAGE ---- */
+  .page-wrap {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    padding: 0 3vw;
+  }
+
+  /* ---- LEFT: TEXT COLUMN ---- */
+  .text-col {
+    padding-top: 14vw;
+    padding-bottom: 6vw;
+    padding-right: 4vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    border-right: 1px solid rgba(255,255,255,0.08);
+    grid-column: 1;
+    grid-row: 1 / 3;
+  }
+
+  .status-tag {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 2.5vw;
+    opacity: 0; transform: translateY(10px);
+    transition: opacity 1s var(--ease) 0.2s, transform 1s var(--ease) 0.2s;
+  }
+  .status-tag.show { opacity: 1; transform: translateY(0); }
+  .status-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: #fafafa;
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%,100% { opacity: 0.5; transform: scale(1); }
+    50%      { opacity: 1;   transform: scale(1.5); }
+  }
+
+  .hero-headline {
+    font-size: clamp(2.8rem, 6.5vw, 8.5rem);
+    font-weight: 300;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+    color: var(--fg);
+    margin-bottom: 3vw;
+  }
+  .hero-headline .line { display: block; overflow: hidden; }
+  .hero-headline .line span {
+    display: block;
+    transform: translateY(110%);
+    transition: transform 1.6s var(--ease);
+  }
+  .hero-headline.show .line:nth-child(1) span { transform: translateY(0); transition-delay: 0.04s; }
+  .hero-headline.show .line:nth-child(2) span { transform: translateY(0); transition-delay: 0.10s; }
+  .hero-headline.show .line:nth-child(3) span { transform: translateY(0); transition-delay: 0.16s; }
+  .hero-headline .italic { font-style: italic; }
+
+  .hero-sub {
+    font-size: clamp(0.78rem, 1.05vw, 1.3rem);
+    color: var(--muted); font-weight: 300; line-height: 1.65;
+    max-width: 44ch; margin-bottom: 3.5vw;
+    opacity: 0; transform: translateY(12px);
+    transition: opacity 1.2s var(--ease) 0.55s, transform 1.2s var(--ease) 0.55s;
+  }
+  .hero-sub.show { opacity: 1; transform: translateY(0); }
+
+  /* ---- BUILD LOG ---- */
+  .build-log {
+    opacity: 0; transform: translateY(12px);
+    transition: opacity 1.2s var(--ease) 0.75s, transform 1.2s var(--ease) 0.75s;
+  }
+  .build-log.show { opacity: 1; transform: translateY(0); }
+  .build-log-label {
+    font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 1.2rem;
+  }
+  .build-log-items { display: flex; flex-direction: column; }
+  .build-item {
+    display: flex; align-items: baseline; gap: 1rem;
+    border-top: 1px solid rgba(255,255,255,0.06); padding: 0.85rem 0;
+  }
+  .build-item-status {
+    font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+    flex-shrink: 0; width: 52px;
+  }
+  .build-item-status.active  { color: var(--fg); }
+  .build-item-status.pending { color: rgba(250,250,250,0.25); }
+  .build-item-name {
+    font-size: clamp(0.75rem, 0.9vw, 1.1rem); font-weight: 300;
+    color: var(--fg); letter-spacing: -0.01em;
+  }
+  .build-item-name.dim { opacity: 0.3; }
+
+  /* ---- RIGHT: IMAGE COLUMN ---- */
+  .image-col {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 14vw;
+    padding-left: 4vw;
+    padding-bottom: 4vw;
+    opacity: 0; transform: translateY(28px);
+    transition: opacity 1.6s var(--ease) 0.9s, transform 1.6s var(--ease) 0.9s;
+  }
+  .image-col.show { opacity: 1; transform: translateY(0); }
+  .image-col-img {
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    max-height: 60vh;
+    object-fit: contain;
+    display: block;
+  }
+  .img-caption {
+    margin-top: 1.4rem;
+    font-size: clamp(0.75rem, 1.2vw, 0.85rem);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(250,250,250,0.28);
+    line-height: 1.8;
+    text-align: center;
+    width: 100%;
+    max-width: 40ch;
+  }
+  .img-caption em { font-style: italic; letter-spacing: 0; }
+
+  .image-wrapper {
+   display: flex;
+   flex-direction: column;
+   align-items: center;    /* centers image and caption together */
+  }
+
+  /* ---- CONTACT STRIP ---- */
+  .contact-strip {
+    grid-column: 2;
+    grid-row: 2;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 2.5vw 0 6vw 4vw;
+    display: flex; flex-direction: column; gap: 1.4rem;
+    opacity: 0; transform: translateY(10px);
+    transition: opacity 1.2s var(--ease) 1.1s, transform 1.2s var(--ease) 1.1s;
+  }
+  .contact-strip.show { opacity: 1; transform: translateY(0); }
+  .contact-group { display: flex; flex-direction: column; gap: 0.3rem; }
+  .contact-label { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+  .contact-link {
+    color: var(--fg); text-decoration: none;
+    font-size: clamp(0.78rem, 0.95vw, 1.2rem);
+    font-weight: 300; transition: opacity 0.3s;
+  }
+  .contact-link:hover { opacity: 0.5; }
+
+  @media (max-width: 860px) {
+    .page-wrap { grid-template-columns: 1fr; grid-template-rows: auto auto auto; }
+    .text-col { grid-column: 1; grid-row: 1; border-right: none; padding-right: 0; padding-top: 22vw; }
+    .image-col { grid-column: 1; grid-row: 2; padding-left: 0; padding-top: 6vw; align-items: flex-start; }
+    .contact-strip { grid-column: 1; grid-row: 3; padding-left: 0; }
+    .menu-links-holder { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- PRELOADER -->
+<div id="preloader">
+  <svg id="preloader-logo" viewBox="0 0 449 449" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M125.8448,124.9432 C42.9118,207.8772 244.7638,409.7282 327.6968,326.7952 C410.4218,244.0692 208.5718,42.2172 125.8448,124.9432 M70.6248,71.3792 C101.8548,40.1502 135.7728,19.0542 171.3448,8.2992 C207.5368,-2.6608 243.1098,-2.6608 278.6808,7.6792 C314.4598,18.6412 347.7578,39.1152 378.5738,69.9302 C409.1818,100.5402 429.8628,134.0442 440.6168,169.6162 C451.3718,205.6012 451.7848,241.5872 441.2378,278.1932 C430.8978,314.1792 409.8018,348.0972 378.5738,379.3262 C347.5508,410.3482 313.8398,431.2362 278.0608,441.3712 C241.8678,451.5052 206.0888,450.8832 170.1038,440.1302 C134.5318,429.3762 101.2338,408.4872 70.6248,377.8792 C39.8098,347.0632 19.1278,313.9722 8.1668,278.1942 C-2.5872,243.0352 -2.5872,207.4632 7.9608,171.6832 C18.5078,136.3192 39.3968,102.6082 70.6248,71.3792" fill="white"/>
+  </svg>
+  <div id="preloader-text">Loading the archive</div>
+  <div id="preloader-bar-wrap"><div id="preloader-bar"></div></div>
+  <div id="preloader-percent">0%</div>
+</div>
+
+<div id="cursor"></div>
+
+<!-- NAV -->
+<nav class="menu">
+  <a href="/" class="menu-logo">
+    <svg viewBox="0 0 3480.2 449" fill="white" xmlns="http://www.w3.org/2000/svg">
+      <path d="M298.14 264.91 Q298.14 281.07 292.75 296.34 Q287.36 311.61 275.46 326.42 Q263.56 341.24 239.77 350.22 Q215.97 359.20 183.19 359.20 L35.92 359.20 L35.92 31.88 L181.84 31.88 Q212.38 31.88 234.60 40.86 Q256.83 49.84 267.83 63.98 Q278.83 78.13 283.77 91.60 Q288.71 105.07 288.71 118.09 Q288.71 139.19 278.38 154.68 Q268.05 170.17 243.81 185.44 Q298.14 217.32 298.14 264.91 Z M103.27 88.00 L103.27 162.09 L176.46 162.09 Q224.05 162.09 224.05 125.27 Q224.05 88.00 176.46 88.00 Z M103.27 218.21 L103.27 303.07 L183.64 303.07 Q233.48 303.07 233.48 260.87 Q233.48 218.21 183.64 218.21 Z"/>
+      <path d="M430.59 218.21 L430.59 303.07 L607.95 303.07 L607.95 359.20 L363.24 359.20 L363.24 31.88 L599.86 31.88 L599.86 88.00 L430.59 88.00 L430.59 162.09 L587.29 162.09 L587.29 218.21 Z"/>
+      <path d="M740.40 31.88 L740.40 303.07 L897.10 303.07 L897.10 359.20 L673.05 359.20 L673.05 31.88 Z"/>
+      <path d="M1029.56 31.88 L1029.56 303.07 L1186.26 303.07 L1186.26 359.20 L962.21 359.20 L962.21 31.88 Z"/>
+      <path d="M1433.21 293.20 L1310.63 293.20 L1288.63 359.20 L1219.93 359.20 L1336.22 31.88 L1410.76 31.88 L1523.91 359.20 L1454.76 359.20 Z M1414.80 237.07 L1372.14 109.11 L1329.49 237.07 Z"/>
+      <path d="M1719.67 88.00 L1719.67 359.20 L1652.32 359.20 L1652.32 88.00 L1553.09 88.00 L1553.09 31.88 L1815.31 31.88 L1815.31 88.00 Z"/>
+      <path d="M2015.11 26.49 Q2086.05 26.49 2129.61 74.31 Q2173.16 122.13 2173.16 200.25 Q2173.16 272.99 2130.28 321.26 Q2087.40 369.53 2015.56 369.53 Q1944.17 369.53 1901.07 321.48 Q1857.96 273.44 1857.96 198.01 Q1857.96 122.58 1901.29 74.53 Q1944.62 26.49 2015.11 26.49 Z M2015.56 83.96 Q1974.70 83.96 1950.01 115.17 Q1925.31 146.37 1925.31 198.01 Q1925.31 249.64 1950.01 280.85 Q1974.70 312.06 2015.56 312.06 Q2055.97 312.06 2080.89 281.07 Q2105.81 250.09 2105.81 199.80 Q2105.81 146.82 2081.34 115.39 Q2056.87 83.96 2015.56 83.96 Z"/>
+      <path d="M2423.70 303.07 Q2423.70 289.61 2424.15 281.97 Q2424.60 274.34 2424.60 268.50 Q2424.60 247.85 2414.72 238.64 Q2404.84 229.44 2382.84 229.44 L2305.62 229.44 L2305.62 359.20 L2238.27 359.20 L2238.27 31.88 L2413.82 31.88 Q2438.97 31.88 2457.15 40.41 Q2475.34 48.94 2484.54 62.86 Q2493.75 76.78 2497.79 90.92 Q2501.83 105.07 2501.83 120.33 Q2501.83 179.60 2446.60 201.15 Q2458.72 206.09 2464.56 209.01 Q2470.40 211.93 2476.46 218.66 Q2482.52 225.40 2484.54 230.79 Q2486.56 236.17 2488.58 250.54 Q2490.60 264.91 2491.05 278.83 Q2491.50 292.75 2491.95 320.14 Q2491.95 339.00 2506.32 347.08 L2506.32 359.20 L2434.03 359.20 Q2427.74 347.53 2425.72 336.75 Q2423.70 325.97 2423.70 303.07 Z M2434.48 129.76 Q2434.48 104.62 2422.80 96.31 Q2411.13 88.00 2386.88 88.00 L2305.62 88.00 L2305.62 173.31 L2386.88 173.31 Q2410.68 173.31 2422.58 164.78 Q2434.48 156.25 2434.48 129.76 Z"/>
+      <path d="M2641.02 242.46 L2641.02 359.20 L2573.67 359.20 L2573.67 31.88 L2718.25 31.88 Q2769.43 31.88 2796.60 57.92 Q2823.76 83.96 2823.76 133.35 Q2823.76 183.19 2796.82 212.83 Q2769.88 242.46 2724.98 242.46 Z M2641.02 186.33 L2703.88 186.33 Q2756.41 186.33 2756.41 137.39 Q2756.41 112.25 2743.61 100.13 Q2730.82 88.00 2703.88 88.00 L2641.02 88.00 Z"/>
+      <path d="M3070.71 293.20 L2948.13 293.20 L2926.13 359.20 L2857.44 359.20 L2973.73 31.88 L3048.26 31.88 L3161.41 359.20 L3092.26 359.20 Z M3052.30 237.07 L3009.65 109.11 L2966.99 237.07 Z"/>
+      <path d="M3365.26 192.17 L3470.32 359.20 L3390.40 359.20 L3327.54 245.60 L3265.13 359.20 L3187.00 359.20 L3290.27 194.42 L3190.59 31.88 L3270.52 31.88 L3327.99 139.64 L3388.15 31.88 L3466.28 31.88 Z"/>
+    </svg>
+  </a>
+  <div class="menu-links-holder">
+    <a href="/work" class="menu-link">Fight Styles <sup>(6)</sup></a>
+    <a href="/featured.html" class="menu-link">Featured</a>
+    <a href="/gallery/gallery.html" class="menu-link">Gallery</a>
+    <a href="/martialbody" class="menu-link">Martial Body: Inherited Motion</a>
+    <a href="/library" class="menu-link">Technical Library</a>
+    <a href="/community" class="menu-link">Community</a>
+    <a href="/contact.html" class="menu-link">Contact</a>
+  </div>
+  <div class="menu-right">
+    <span>CPH</span>
+    <p id="clock">12<span>:</span>00</p>
+  </div>
+</nav>
+
+<!-- PAGE GRID -->
+<div class="page-wrap">
+
+  <!-- LEFT: TEXT -->
+  <div class="text-col">
+    <div class="status-tag" id="statusTag">
+      <span class="status-dot"></span>
+      <span>Actively in development</span>
+    </div>
+
+    <h1 class="hero-headline" id="heroH1">
+      <span class="line"><span>Work</span></span>
+      <span class="line"><span><em class="italic">in</em></span></span>
+      <span class="line"><span>progress.</span></span>
+    </h1>
+
+    <p class="hero-sub" id="heroSub">
+      This page is being built right now — written, designed, edited because its creator is a perfectionist.
+      The fight game has always moved faster than the press. We're trying to keep up... with style.
+    </p>
+
+    <div class="build-log" id="buildLog">
+      <div class="build-log-label">What's being developed</div>
+      <div class="build-log-items">
+        <div class="build-item">
+          <span class="build-item-status active">Writing</span>
+          <span class="build-item-name">Taekwondo Chronicles: Traveling to Seoul</span>
+        </div>
+        <div class="build-item">
+          <span class="build-item-status active">Writing</span>
+          <span class="build-item-name">Capoeria: Rhythm meets Defense</span>
+        </div>
+        <div class="build-item">
+          <span class="build-item-status pending">Editing</span>
+          <span class="build-item-name dim">Martial artist philosophy — becoming a more enlightened fighter</span>
+        </div>
+        <div class="build-item">
+          <span class="build-item-status pending">Pending</span>
+          <span class="build-item-name dim">Technical Library — visual and written collection of techniques</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: IMAGE -->
+  <div class="image-col" id="imageCol">
+    <img
+      src="images/sumo.jpg"
+      alt="Image of Sumo Wrestlers from Edo Period"
+      class="image-col-img"
+      loading="lazy"
+      decoding="async"
+    />
+    <p class="img-caption">
+      Panel depicting wreslters in practice bouts of Sumo during the Edo Period, c. 17th Century<br/>
+      <em>相撲 — the ancient Japanese martial arts has its roots stretching back to 23 BC</em>
+    </p>
+  </div>
+
+  <!-- CONTACT STRIP -->
+  <div class="contact-strip" id="contactStrip">
+    <div class="contact-group">
+      <span class="contact-label">Business inquiries</span>
+      <a href="mailto:newbiz@bellatorpax.studio" class="contact-link">newbiz@bellatorpax.studio</a>
+    </div>
+    <div class="contact-group">
+      <span class="contact-label">General</span>
+      <a href="mailto:hello@bellatorpax.studio" class="contact-link">hello@bellatorpax.studio</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  const preloader    = document.getElementById('preloader');
+  const preloaderBar = document.getElementById('preloader-bar');
+  const preloaderPct = document.getElementById('preloader-percent');
+  let progress = 0;
+  const iv = setInterval(() => {
+    progress += Math.random() * 18;
+    if (progress >= 100) { progress = 100; clearInterval(iv); finish(); }
+    preloaderBar.style.width = progress + '%';
+    preloaderPct.textContent = Math.floor(progress) + '%';
+  }, 120);
+
+  function finish() {
+    setTimeout(() => preloader.classList.add('remove'), 500);
+    setTimeout(() => {
+      document.getElementById('statusTag').classList.add('show');
+      document.getElementById('heroH1').classList.add('show');
+    }, 900);
+    setTimeout(() => {
+      document.getElementById('heroSub').classList.add('show');
+      document.getElementById('imageCol').classList.add('show');
+    }, 1100);
+    setTimeout(() => {
+      document.getElementById('buildLog').classList.add('show');
+      document.getElementById('contactStrip').classList.add('show');
+    }, 1350);
+  }
+
+  const cursor = document.getElementById('cursor');
+  let cx = 0, cy = 0;
+  document.addEventListener('mousemove', e => { cx = e.clientX; cy = e.clientY; cursor.classList.add('visible'); });
+  (function loop() { cursor.style.left = cx + 'px'; cursor.style.top = cy + 'px'; requestAnimationFrame(loop); })();
+
+  const clockEl = document.getElementById('clock');
+  function tick() {
+    const d = new Date(); let h = d.getHours(), m = d.getMinutes();
+    if (h < 10) h = '0' + h; if (m < 10) m = '0' + m;
+    clockEl.innerHTML = h + '<span>:</span>' + m;
+  }
+  tick(); setInterval(tick, 1000);
+})();
+</script>
+</body>
+</html>
