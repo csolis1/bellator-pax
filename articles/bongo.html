@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en" id="htmlRoot">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Inside the Fighter's Mind | BELLATORPAX</title>
+  <meta name="description" content="Fight journalism, cultural deep dives, and the philosophy of beautiful violence."/>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ------------------- THEME ------------------- */
+    :root {
+      /* Dark mode (default) */
+      --bg: #161616;
+      --fg: #fafafa;
+      --muted: rgba(250,250,250,0.45);
+      --ease: cubic-bezier(.23,1,.32,1);
+      --img-border: 1px solid rgba(250,250,250,0.08);
+      --block-bg: rgba(22,22,22,0.6);
+    }
+    [data-theme="light"] {
+      --bg: #fafafa;
+      --fg: #161616;
+      --muted: rgba(22,22,22,0.45);
+      --img-border: 1px solid rgba(22,22,22,0.08);
+      --block-bg: rgba(240,240,240,0.6);
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      scroll-behavior: smooth;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: clamp(0.9rem, 1.1rem, 1.25rem);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    ::-webkit-scrollbar { display: none; }
+
+
+    /* ------------------- PRELOADER (same) ------------------- */
+    #preloader {
+      position: fixed; inset: 0; background: var(--bg); z-index: 9999;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 1.5rem;
+      clip-path: inset(0% 0% 0% 0%);
+      transition: clip-path 1.8s var(--ease);
+    }
+    #preloader.remove { clip-path: inset(0% 0% 100% 0%); }
+    #preloader-logo {
+      width: 60px; height: 60px;
+      animation: spin 3s linear infinite;
+    }
+    #preloader-text {
+      font-size: 11px; letter-spacing: 0.2em; opacity: 0.6;
+    }
+    #preloader-bar-wrap {
+      width: 180px; height: 1px; background: rgba(255,255,255,0.15);
+      position: relative; overflow: hidden;
+    }
+    #preloader-bar {
+      height: 100%; background: #fff; width: 0%;
+      transition: width 0.4s ease;
+    }
+    #preloader-percent {
+      font-size: 11px; letter-spacing: 0.1em; opacity: 0.5; margin-top: 4px;
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+
+    /* ------------------- CURSOR (same) ------------------- */
+    #cursor {
+      position: fixed; width: 40px; height: 40px; border-radius: 50%; background: #fff;
+      pointer-events: none; z-index: 9998; transform: translate(-50%, -50%);
+      mix-blend-mode: difference; clip-path: circle(0% at 50% 50%);
+      transition: clip-path 0.6s var(--ease), width 0.4s var(--ease), height 0.4s var(--ease);
+      top: 0; left: 0;
+    }
+    #cursor.visible { clip-path: circle(50% at 50% 50%); }
+    #cursor.case-hover { width: 100px; height: 100px; }
+
+
+    /* ------------------- NAV (same) ------------------- */
+    .menu {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 2.2vw 3vw; mix-blend-mode: difference; pointer-events: none;
+    }
+    .menu-link-holder {
+      display: flex; align-items: center; gap: 3vw; pointer-events: auto;
+    }
+    .menu-logo { display: flex; align-items: center; text-decoration: none; }
+    .menu-logo svg { width: 120px; height: auto; }
+    .menu-links-holder {
+      display: flex; align-items: center; gap: 2.5vw; pointer-events: auto;
+    }
+    .menu-link {
+      color: var(--fg); text-decoration: none;
+      font-size: clamp(0.75rem, 0.875vw, 1rem);
+      letter-spacing: 0.02em; opacity: 0.85; transition: opacity 0.3s;
+    }
+    .menu-link:hover { opacity: 1; }
+    .menu-link sup { font-size: 0.6em; opacity: 0.6; }
+    .menu-right {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: clamp(0.75rem, 0.875vw, 1rem);
+      color: var(--fg); pointer-events: auto; opacity: 0.7; letter-spacing: 0.04em;
+    }
+    #menuClock span { animation: blink 1s steps(1) infinite; }
+    @keyframes blink { 50% { visibility: hidden; } }
+
+
+    /* ------------------- THEMING TOGGLE BUTTON ------------------- */
+    .theme-toggle {
+      position: fixed;
+      top: 1.5vw;
+      left: auto; right: 2.5vw; /* same as nav spacing */
+      z-index: 101;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.75rem;
+      background: #00000020;
+      color: var(--fg);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 0.5rem;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: opacity 0.3s, background 0.3s;
+    }
+    .theme-toggle:hover { opacity: 0.8; }
+    .theme-toggle svg {
+      width: 0.8rem; height: 0.8rem; margin-right: 0.3rem; display: inline-block;
+    }
+
+
+    /* ------------------- ARTICLE LAYOUT ------------------- */
+    .article-con {
+      position: relative;
+      padding-top: 11vw; /* same as index hero header */
+      flex: 1;
+    }
+    .article-content {
+      padding: 0 3vw;
+      max-width: 75vw;
+      margin: 0 auto;
+    }
+
+
+    /* ------------------- ARTICLE HEADER ------------------- */
+    .article-header {
+      margin-bottom: 4vw;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding-bottom: 3vw;
+    }
+    .article-title {
+      font-size: clamp(1.4rem, 2.2vw, 2.8rem);
+      line-height: 1.35;
+      letter-spacing: -0.015em;
+      margin-bottom: 0.8rem;
+      opacity: 0;
+      transform: translateY(15px);
+      transition: opacity 1.2s var(--ease), transform 1.2s var(--ease);
+    }
+    .article-title.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .article-meta {
+      font-size: clamp(0.65rem, 0.8vw, 1rem);
+      color: var(--muted);
+      letter-spacing: 0.03em;
+      margin-bottom: 1rem;
+    }
+    .article-meta a {
+      color: inherit;
+      text-decoration: none;
+      opacity: 0.9;
+      transition: opacity 0.3s;
+    }
+    .article-meta a:hover { opacity: 1; }
+
+
+    /* ------------------- ARTICLE BODY ------------------- */
+    .article-body {
+      line-height: 1.6;
+      font-size: clamp(0.95rem, 1.1vw, 1.2rem);
+    }
+    .article-body p {
+      margin-bottom: 1.1rem;
+    }
+    .article-body h2,
+    .article-body h3 {
+      margin: 2.5rem 0 1rem;
+      font-size: clamp(1.1rem, 1.5vw, 1.8rem);
+      letter-spacing: -0.01em;
+      color: var(--fg);
+    }
+    .article-body ul, .article-body ol {
+      margin: 1.1rem 0 1.3rem 2rem;
+    }
+    .article-body li {
+      margin-bottom: 0.4rem;
+    }
+    .article-body blockquote {
+      margin: 1.8rem 0;
+      padding-left: 1.5rem;
+      border-left: 2px solid rgba(255,255,255,0.15);
+      color: var(--muted);
+      font-style: italic;
+    }
+
+
+    /* ------------------- STEADY IMAGE BLOCK ------------------- */
+    .article-img-block {
+      position: relative;
+      margin: 3.5vw 0 1.5rem;
+      background: var(--block-bg);
+      border-radius: 0.5rem;
+      overflow: hidden;
+    }
+    .article-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      background: #00000015;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      border-bottom: var(--img-border);
+    }
+    .article-img-caption {
+      font-size: clamp(0.6rem, 0.8vw, 0.85rem);
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      padding: 0.6rem 1.2rem;
+      line-height: 1.3;
+    }
+    .article-img-caption em {
+      font-style: italic;
+    }
+
+
+    /* ------------------- FOOTER (same) ------------------- */
+    .footer {
+      background: #fafafa; color: #161616;
+      padding: 3vw 3vw 0;
+      margin-top: auto;
+    }
+    .footer-items {
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      padding-bottom: 2vw;
+      margin-bottom: 3vw;
+    }
+    .footer-flex {
+      display: flex;
+      justify-content: flex-end;
+    }
+    .footer-item-holder {
+      display: flex;
+      gap: 2rem;
+    }
+    .footer-link-holder {
+      text-decoration: none;
+      color: #161616;
+      font-size: clamp(0.65rem, 0.8vw, 1rem);
+      opacity: 0.6;
+      transition: opacity 0.3s;
+      letter-spacing: 0.03em;
+    }
+    .footer-link-holder:hover { opacity: 1; }
+    .footer-over-logo-holder {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3vw;
+      margin-bottom: 3vw;
+    }
+    .footer-links-holder {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .footer-main-link {
+      text-decoration: none;
+      color: #161616;
+      font-size: clamp(1.2rem, 2vw, 3rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      transition: opacity 0.3s;
+    }
+    .footer-main-link:hover { opacity: 0.5; }
+    .footer-rights {
+      font-size: clamp(0.65rem, 0.8vw, 1rem);
+      color: rgba(22,22,22,0.4);
+      line-height: 1.6;
+      margin-top: 2rem;
+    }
+    .footer-flex.smaller {
+      justify-content: flex-end;
+      align-items: flex-start;
+      gap: 3vw;
+    }
+    .footer-h3-holder { margin-bottom: 0.6rem; }
+    .footer-h3 {
+      font-size: clamp(0.6rem, 0.7vw, 0.9rem);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(22,22,22,0.45);
+      font-weight: 400;
+    }
+    .footer-info-link {
+      text-decoration: none;
+      color: #161616;
+      font-size: clamp(0.75rem, 0.9vw, 1.1rem);
+      font-weight: 300;
+      transition: opacity 0.3s;
+    }
+    .footer-info-link:hover { opacity: 0.5; }
+    .footer-logo-holder {
+      padding: 3vw 0 4vw;
+      border-top: 1px solid rgba(0,0,0,0.08);
+      margin-top: 2vw;
+    }
+    .footer-logo-svg { width: 100%; height: auto; }
+
+
+    /* ------------------- RESPONSIVE ------------------- */
+    @media (max-width: 768px) {
+      .article-content {
+        padding: 0 5vw;
+        max-width: 95%;
+      }
+      .article-title {
+        font-size: clamp(1.2rem, 3.5vw, 2rem);
+      }
+      .article-meta {
+        font-size: 0.8rem;
+        letter-spacing: 0.05em;
+      }
+      .article-body {
+        font-size: 0.95rem;
+      }
+      .theme-toggle {
+        top: 1rem;
+        right: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+
+<!-- PRELOADER -->
+<div id="preloader">
+  <svg id="preloader-logo" viewBox="0 0 449 449" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M125.8448,124.9432 C42.9118,207.8772 244.7638,409.7282 327.6968,326.7952 C410.4218,244.0692 208.5718,42.2172 125.8448,124.9432 M70.6248,71.3792 C101.8548,40.1502 135.7728,19.0542 171.3448,8.2992 C207.5368,-2.6608 243.1098,-2.6608 278.6808,7.6792 C314.4598,18.6412 347.7578,39.1152 378.5738,69.9302 C409.1818,100.5402 429.8628,134.0442 440.6168,169.6162 C451.3718,205.6012 451.7848,241.5872 441.2378,278.1932 C430.8978,314.1792 409.8018,348.0972 378.5738,379.3262 C347.5508,410.3482 313.8398,431.2362 278.0608,441.3712 C241.8678,451.5052 206.0888,450.8832 170.1038,440.1302 C134.5318,429.3762 101.2338,408.4872 70.6248,377.8792 C39.8098,347.0632 19.1278,313.9722 8.1668,278.1942 C-2.5872,243.0352 -2.5872,207.4632 7.9608,171.6832 C18.5078,136.3192 39.3968,102.6082 70.6248,71.3792" fill="white"/>
+  </svg>
+  <div id="preloader-text">Documenting the art of controlled chaos</div>
+  <div id="preloader-bar-wrap"><div id="preloader-bar"></div></div>
+  <div id="preloader-percent">0%</div>
+</div>
+
+
+<div class="load-overlay" id="loadOverlay"></div>
+<div id="cursor"></div>
+
+
+<!-- NAV -->
+<nav class="menu">
+  <div class="menu-link-holder">
+    <a href="/" class="menu-logo">
+      <svg viewBox="0 0 3480.2 449" fill="white" xmlns="http://www.w3.org/2000/svg">
+        <path d="M298.14 264.91 Q298.14 281.07 292.75 296.34 Q287.36 311.61 275.46 326.42 Q263.56 341.24 239.77 350.22 Q215.97 359.20 183.19 359.20 L35.92 359.20 L35.92 31.88 L181.84 31.88 Q212.38 31.88 234.60 40.86 Q256.83 49.84 267.83 63.98 Q278.83 78.13 283.77 91.60 Q288.71 105.07 288.71 118.09 Q288.71 139.19 278.38 154.68 Q268.05 170.17 243.81 185.44 Q298.14 217.32 298.14 264.91 Z M103.27 88.00 L103.27 162.09 L176.46 162.09 Q224.05 162.09 224.05 125.27 Q224.05 88.00 176.46 88.00 Z M103.27 218.21 L103.27 303.07 L183.64 303.07 Q233.48 303.07 233.48 260.87 Q233.48 218.21 183.64 218.21 Z" fill="white"/>
+        <path d="M430.59 218.21 L430.59 303.07 L607.95 303.07 L607.95 359.20 L363.24 359.20 L363.24 31.88 L599.86 31.88 L599.86 88.00 L430.59 88.00 L430.59 162.09 L587.29 162.09 L587.29 218.21 Z" fill="white"/>
+        <path d="M740.40 31.88 L740.40 303.07 L897.10 303.07 L897.10 359.20 L673.05 359.20 L673.05 31.88 Z" fill="white"/>
+        <path d="M1029.56 31.88 L1029.56 303.07 L1186.26 303.07 L1186.26 359.20 L962.21 359.20 L962.21 31.88 Z" fill="white"/>
+        <path d="M1433.21 293.20 L1310.63 293.20 L1288.63 359.20 L1219.93 359.20 L1336.22 31.88 L1410.76 31.88 L1523.91 359.20 L1454.76 359.20 Z M1414.80 237.07 L1372.14 109.11 L1329.49 237.07 Z" fill="white"/>
+        <path d="M1719.67 88.00 L1719.67 359.20 L1652.32 359.20 L1652.32 88.00 L1553.09 88.00 L1553.09 31.88 L1815.31 31.88 L1815.31 88.00 Z" fill="white"/>
+        <path d="M2015.11 26.49 Q2086.05 26.49 2129.61 74.31 Q2173.16 122.13 2173.16 200.25 Q2173.16 272.99 2130.28 321.26 Q2087.40 369.53 2015.56 369.53 Q1944.17 369.53 1901.07 321.48 Q1857.96 273.44 1857.96 198.01 Q1857.96 122.58 1901.29 74.53 Q1944.62 26.49 2015.11 26.49 Z M2015.56 83.96 Q1974.70 83.96 1950.01 115.17 Q1925.31 146.37 1925.31 198.01 Q1925.31 249.64 1950.01 280.85 Q1974.70 312.06 2015.56 312.06 Q2055.97 312.06 2080.89 281.07 Q2105.81 250.09 2105.81 199.80 Q2105.81 146.82 2081.34 115.39 Q2056.87 83.96 2015.56 83.96 Z" fill="white"/>
+        <path d="M2423.70 303.07 Q2423.70 289.61 2424.15 281.97 Q2424.60 274.34 2424.60 268.50 Q2424.60 247.85 2414.72 238.64 Q2404.84 229.44 2382.84 229.44 L2305.62 229.44 L2305.62 359.20 L2238.27 359.20 L2238.27 31.88 L2413.82 31.88 Q2438.97 31.88 2457.15 40.41 Q2475.34 48.94 2484.54 62.86 Q2493.75 76.78 2497.79 90.92 Q2501.83 105.07 2501.83 120.33 Q2501.83 179.60 2446.60 201.15 Q2458.72 206.09 2464.56 209.01 Q2470.40 211.93 2476.46 218.66 Q2482.52 225.40 2484.54 230.79 Q2486.56 236.17 2488.58 250.54 Q2490.60 264.91 2491.05 278.83 Q2491.50 292.75 2491.95 320.14 Q2491.95 339.00 2506.32 347.08 L2506.32 359.20 L2434.03 359.20 Q2427.74 347.53 2425.72 336.75 Q2423.70 325.97 2423.70 303.07 Z M2434.48 129.76 Q2434.48 104.62 2422.80 96.31 Q2411.13 88.00 2386.88 88.00 L2305.62 88.00 L2305.62 173.31 L2386.88 173.31 Q2410.68 173.31 2422.58 164.78 Q2434.48 156.25 2434.48 129.76 Z" fill="white"/>
+        <path d="M2641.02 242.46 L2641.02 359.20 L2573.67 359.20 L2573.67 31.88 L2718.25 31.88 Q2769.43 31.88 2796.60 57.92 Q2823.76 83.96 2823.76 133.35 Q2823.76 183.19 2796.82 212.83 Q2769.88 242.46 2724.98 242.46 Z M2641.02 186.33 L2703.88 186.33 Q2756.41 186.33 2756.41 137.39 Q2756.41 112.25 2743.61 100.13 Q2730.82 88.00 2703.88 88.00 L2641.02 88.00 Z" fill="white"/>
+        <path d="M3070.71 293.20 L2948.13 293.20 L2926.13 359.20 L2857.44 359.20 L2973.73 31.88 L3048.26 31.88 L3161.41 359.20 L3092.26 359.20 Z M3052.30 237.07 L3009.65 109.11 L2966.99 237.07 Z" fill="white"/>
+        <path d="M3365.26 192.17 L3470.32 359.20 L3390.40 359.20 L3327.54 245.60 L3265.13 359.20 L3187.00 359.20 L3290.27 194.42 L3190.59 31.88 L3270.52 31.88 L3327.99 139.64 L3388.15 31.88 L3466.28 31.88 Z" fill="white"/>
+      </svg>
+    </a>
+  </div>
+  <div class="menu-links-holder">
+    <a href="/work" class="menu-link">Fight Styles <sup>(6)</sup></a>
+    <a href="/featured.html" class="menu-link">Featured</a>
+    <a href="/gallery/gallery.html" class="menu-link">Gallery</a>
+    <a href="/inprogress.html" class="menu-link">Martial Body: Inherited Motion</a>
+    <a href="/inprogress.html" class="menu-link">Technical Library</a>
+    <a href="/inprogress.html" class="menu-link">Community</a>
+    <a href="/contact.html" class="menu-link">Contact</a>
+  </div>
+  <div class="menu-right">
+    <span>CPH</span>
+    <p id="menuClock">12<span>:</span>00</p>
+  </div>
+</nav>
+
+
+<!-- THEME TOGGLE BUTTON -->
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle light / dark mode">
+  <svg viewBox="0 0 24 24" fill="currentColor">
+    <!-- Light icon -->
+    <circle cx="12" cy="12" r="5" />
+    <path d="M12 2V4M12 20V22M4 12H2M22 12H20M18.4 18.4L16.9 16.9M5.7 5.7L4.2 4.2M18.4 5.7L16.9 4.2M5.7 18.4L4.2 16.9" />
+  </svg>
+  <span class="toggle-text">Light</span>
+</button>
+
+
+<!-- MAIN ARTICLE -->
+<main class="article-con">
+  <div class="article-content">
+
+
+    <header class="article-header">
+      <h1 class="article-title" id="articleTitle">
+        <span>Inside The Fighter’s Mind:</span> Name Of The Fighter
+      </h1>
+      <div class="article-meta">
+        <span>By </span>
+        <a href="/contact.html">Your Name</a>
+        <span> • </span>
+        <time datetime="2026-05-25">May 25, 2026</time>
+      </div>
+    </header>
+
+
+    <section class="article-body">
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. In hac habitasse platea dictumst. In gravida purus quis lorem tincidunt, non tincidunt velit fermentum. Nulla facilisi. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+      </p>
+
+      <p>
+        Vivamus sit amet turpis vel ligula tincidunt tincidunt. Donec euismod, nunc in varius tincidunt, nisl mi aliquam nisl, a tincidunt nisl nisl vel nisl. Nulla facilisi. In hac habitasse platea dictumst.
+      </p>
+
+
+      <!-- IMAGE BLOCK 1 -->
+      <figure class="article-img-block">
+        <img
+          class="article-img"
+          src="https://placehold.co/1200x800/e6e6e6/111111?text=Fighter+Photo+1"
+          alt="Artist in the ring, focusing on the task at hand."
+          loading="lazy"
+        />
+        <figcaption class="article-img-caption">
+          Train hard, fight harder. Photograph © BELLATORPAX. May be shared with credit.
+        </figcaption>
+      </figure>
+
+
+      <p>
+        Praesent auctor, dui in dignissim tincidunt, dui elit tincidunt diam, eget tincidunt dolor dolor a erat. Donec tincidunt, dui in dignissim tincidunt, dui elit tincidunt diam, eget tincidunt dolor dolor a erat.
+      </p>
+
+      <p>
+        Fusce tincidunt tincidunt tincidunt. In tincidunt tincidunt tincidunt, tincidunt tincidunt tincidunt. Sed tincidunt tincidunt tincidunt, tincidunt tincidunt tincidunt.
+      </p>
+
+
+      <!-- IMAGE BLOCK 2 -->
+      <figure class="article-img-block">
+        <img
+          class="article-img"
+          src="https://placehold.co/1200x800/e6e6e6/111111?text=Fighter+Photo+2"
+          alt="Preparing for the next round with a focused look."
+          loading="lazy"
+        />
+        <figcaption class="article-img-caption">
+          <em>He doesn’t see an opponent.</em> He sees a problem in three dimensions.
+        </figcaption>
+      </figure>
+
+
+      <h2>Philosophy of the ring</h2>
+      <p>
+        Ut tincidunt tincidunt tincidunt, tincidunt tincidunt tincidunt. In tincidunt tincidunt tincidunt, tincidunt tincidunt tincidunt. Sed tincidunt tincidunt tincidunt, tincidunt tincidunt tincidunt.
+      </p>
+
+      <ul>
+        <li>Train smarter, not just harder.</li>
+        <li>Respect the craft, not just the glory.</li>
+        <li>Find your rhythm in the chaos.</li>
+      </ul>
+
+      <p>
+        Morbi tincidunt tincidunt tincidunt, tincidunt tincidunt tincidunt. In tincidunt tincidunt tincidunt, tincidunt tincidunt tincidunt.
+      </p>
+
+      <blockquote>
+        “I’m not here to win easy fights. I’m here to fight the right ones.”
+      </blockquote>
+
+      <p>
+        Etiam tincidunt tincidunt tincidunt, tincidunt tincidunt tincidunt. In tincidunt tincidunt tincidunt, tincidunt tincidunt tincidunt.
+      </p>
+
+
+      <!-- IMAGE BLOCK 3 -->
+      <figure class="article-img-block">
+        <img
+          class="article-img"
+          src="https://placehold.co/1200x800/e6e6e6/111111?text=Fighter+Photo+3"
+          alt="Showcasing the power and precision of the fighter."
+          loading="lazy"
+        />
+        <figcaption class="article-img-caption">
+          Every shot is a story, and every story is a fight.
+        </figcaption>
+      </figure>
+
+
+      <h2>On the way forward</h2>
+      <p>
+        Curabitur tincidunt tincidunt tincidunt, tincidunt tincidunt tincidunt. In tincidunt tincidunt tincidunt, tincidunt tincidunt tincidunt.
+      </p>
+
+      <p>
+        Maecenas tincidunt tincidunt tincidunt, tincidunt tincidunt tincidunt. In tincidunt tincidunt tincidunt, tincidunt tincidunt tincidunt.
+      </p>
+
+    </section>
+
+  </div>
+</main>
+
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-items">
+    <div class="footer-flex">
+      <div class="footer-item-holder">
+        <a href="https://www.instagram.com/bellatorpax_studio/" target="_blank" rel="noopener" class="footer-link-holder">Instagram</a>
+        <a href="https://www.linkedin.com/company/bellatorpax/" target="_blank" rel="noopener" class="footer-link-holder">LinkedIn</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-over-logo-holder">
+    <div class="footer-links-holder">
+      <a href="/work" class="footer-main-link">Work</a>
+      <a href="/studio" class="footer-main-link">Studio</a>
+      <a href="/contact" class="footer-main-link">Contact</a>
+      <div class="footer-rights">All Rights<br/>Reserved<br/>&#169; 2026</div>
+    </div>
+    <div class="footer-flex smaller">
+      <div class="footer-item-holder" style="flex-direction:column;gap:0.3rem;">
+        <div class="footer-h3-holder"><h3 class="footer-h3">Business Inquiries</h3></div>
+        <a href="mailto:newbiz@bellatorpax.studio" class="footer-info-link">newbiz@bellatorpax.studio</a>
+      </div>
+      <div class="footer-item-holder" style="flex-direction:column;gap:0.3rem;">
+        <div class="footer-h3-holder"><h3 class="footer-h3">General</h3></div>
+        <a href="mailto:hello@bellatorpax.studio" class="footer-info-link">hello@bellatorpax.studio</a>
+      </div>
+      <div class="footer-item-holder" style="flex-direction:column;gap:0.3rem;">
+        <div class="footer-h3-holder"><h3 class="footer-h3">Call Us</h3></div>
+        <a href="tel:+4542760898" class="footer-info-link">(+45) 42 76 08 98</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-logo-holder">
+    <svg class="footer-logo-svg" viewBox="0 0 3480.2 449" fill="#161616" xmlns="http://www.w3.org/2000/svg">
+      <path d="M298.14 264.91 Q298.14 281.07 292.75 296.34 Q287.36 311.61 275.46 326.42 Q263.56 341.24 239.77 350.22 Q215.97 359.20 183.19 359.20 L35.92 359.20 L35.92 31.88 L181.84 31.88 Q212.38 31.88 234.60 40.86 Q256.83 49.84 267.83 63.98 Q278.83 78.13 283.77 91.60 Q288.71 105.07 288.71 118.09 Q288.71 139.19 278.38 154.68 Q268.05 170.17 243.81 185.44 Q298.14 217.32 298.14 264.91 Z M103.27 88.00 L103.27 162.09 L176.46 162.09 Q224.05 162.09 224.05 125.27 Q224.05 88.00 176.46 88.00 Z M103.27 218.21 L103.27 303.07 L183.64 303.07 Q233.48 303.07 233.48 260.87 Q233.48 218.21 183.64 218.21 Z" fill="#161616"/>
+      <path d="M430.59 218.21 L430.59 303.07 L607.95 303.07 L607.95 359.20 L363.24 359.20 L363.24 31.88 L599.86 31.88 L599.86 88.00 L430.59 88.00 L430.59 162.09 L587.29 162.09 L587.29 218.21 Z" fill="#161616"/>
+      <path d="M740.40 31.88 L740.40 303.07 L897.10 303.07 L897.10 359.20 L673.05 359.20 L673.05 31.88 Z" fill="#161616"/>
+      <path d="M1029.56 31.88 L1029.56 303.07 L1186.26 303.07 L1186.26 359.20 L962.21 359.20 L962.21 31.88 Z" fill="#161616"/>
+      <path d="M1433.21 293.20 L1310.63 293.20 L1288.63 359.20 L1219.93 359.20 L1336.22 31.88 L1410.76 31.88 L1523.91 359.20 L1454.76 359.20 Z M1414.80 237.07 L1372.14 109.11 L1329.49 237.07 Z" fill="#161616"/>
+      <path d="M1719.67 88.00 L1719.67 359.20 L1652.32 359.20 L1652.32 88.00 L1553.09 88.00 L1553.09 31.88 L1815.31 31.88 L1815.31 88.00 Z" fill="#161616"/>
+      <path d="M2015.11 26.49 Q2086.05 26.49 2129.61 74.31 Q2173.16 122.13 2173.16 200.25 Q2173.16 272.99 2130.28 321.26 Q2087.40 369.53 2015.56 369.53 Q1944.17 369.53 1901.07 321.48 Q1857.96 273.44 1857.96 198.01 Q1857.96 122.58 1901.29 74.53 Q1944.62 26.49 2015.11 26.49 Z M2015.56 83.96 Q1974.70 83.96 1950.01 115.17 Q1925.31 146.37 1925.31 198.01 Q1925.31 249.64 1950.01 280.85 Q1974.70 312.06 2015.56 312.06 Q2055.97 312.06 2080.89 281.07 Q2105.81 250.09 2105.81 199.80 Q2105.81 146.82 2081.34 115.39 Q2056.87 83.96 2015.56 83.96 Z" fill="#161616"/>
+      <path d="M2423.70 303.07 Q2423.70 289.61 2424.15 281.97 Q2424.60 274.34 2424.60 268.50 Q2424.60 247.85 2414.72 238.64 Q2404.84 229.44 2382.84 229.44 L2305.62 229.44 L2305.62 359.20 L2238.27 359.20 L2238.27 31.88 L2413.82 31.88 Q2438.97 31.88 2457.15 40.41 Q2475.34 48.94 2484.54 62.86 Q2493.75 76.78 2497.79 90.92 Q2501.83 105.07 2501.83 120.33 Q2501.83 179.60 2446.60 201.15 Q2458.72 206.09 2464.56 209.01 Q2470.40 211.93 2476.46 218.66 Q2482.52 225.40 2484.54 230.79 Q2486.56 236.17 2488.58 250.54 Q2490.60 264.91 2491.05 278.83 Q2491.50 292.75 2491.95 320.14 Q2491.95 339.00 2506.32 347.08 L2506.32 359.20 L2434.03 359.20 Q2427.74 347.53 2425.72 336.75 Q2423.70 325.97 2423.70 303.07 Z M2434.48 129.76 Q2434.48 104.62 2422.80 96.31 Q2411.13 88.00 2386.88 88.00 L2305.62 88.00 L2305.62 173.31 L2386.88 173.31 Q2410.68 173.31 2422.58 164.78 Q2434.48 156.25 2434.48 129.76 Z" fill="#161616"/>
+      <path d="M2641.02 242.46 L2641.02 359.20 L2573.67 359.20 L2573.67 31.88 L2718.25 31.88 Q2769.43 31.88 2796.60 57.92 Q2823.76 83.96 2823.76 133.35 Q2823.76 183.19 2796.82 212.83 Q2769.88 242.46 2724.98 242.46 Z M2641.02 186.33 L2703.88 186.33 Q2756.41 186.33 2756.41 137.39 Q2756.41 112.25 2743.61 100.13 Q2730.82 88.00 2703.88 88.00 L2641.02 88.00 Z" fill="#161616"/>
+      <path d="M3070.71 293.20 L2948.13 293.20 L2926.13 359.20 L2857.44 359.20 L2973.73 31.88 L3048.26 31.88 L3161.41 359.20 L3092.26 359.20 Z M3052.30 237.07 L3009.65 109.11 L2966.99 237.07 Z" fill="#161616"/>
+      <path d="M3365.26 192.17 L3470.32 359.20 L3390.40 359.20 L3327.54 245.60 L3265.13 359.20 L3187.00 359.20 L3290.27 194.42 L3190.59 31.88 L3270.52 31.88 L3327.99 139.64 L3388.15 31.88 L3466.28 31.88 Z" fill="#161616"/>
+    </svg>
+  </div>
+</footer>
+
+
+<!-- SCRIPTS -->
+<script>
+  (function () {
+    const preloader      = document.getElementById('preloader');
+    const preloaderBar   = document.getElementById('preloader-bar');
+    const preloaderPct   = document.getElementById('preloader-percent');
+    const articleTitle   = document.getElementById('articleTitle');
+    const cursor         = document.getElementById('cursor');
+    const themeToggle    = document.getElementById('themeToggle');
+    const clockEl        = document.getElementById('menuClock');
+    const htmlRoot       = document.getElementById('htmlRoot');
+
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += Math.random() * 18;
+      if (progress >= 100) {
+        progress = 100;
+        clearInterval(interval);
+        finishPreloader();
+      }
+      preloaderBar.style.width = progress + '%';
+      preloaderPct.textContent = Math.floor(progress) + '%';
+    }, 120);
+
+    function finishPreloader() {
+      setTimeout(() => preloader.classList.add('remove'), 600);
+      setTimeout(() => articleTitle.classList.add('show'), 1000);
+    }
+
+
+    /* ------------------- CURSOR ------------------- */
+    let cx = 0, cy = 0;
+    document.addEventListener('mousemove', e => {
+      cx = e.clientX; cy = e.clientY;
+      cursor.classList.add('visible');
+    });
+    (function loop() {
+      cursor.style.left = cx + 'px';
+      cursor.style.top  = cy + 'px';
+      requestAnimationFrame(loop);
+    })();
+
+
+    /* ------------------- CLOCK ------------------- */
+    function tick() {
+      const d = new Date();
+      let h = d.getHours(), m = d.getMinutes();
+      if (h < 10) h = '0'+h;
+      if (m < 10) m = '0'+m;
+      clockEl.innerHTML = h + '<span>:</span>' + m;
+    }
+    tick(); setInterval(tick, 1000);
+
+
+    /* ------------------- THEME TOGGLE ------------------- */
+    const applyTheme = (theme) => {
+      if (theme === 'light') {
+        htmlRoot.setAttribute('data-theme', 'light');
+        themeToggle.querySelector('.toggle-text').textContent = 'Dark';
+        themeToggle.innerHTML = `
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </svg>
+          <span class="toggle-text">Dark</span>
+        `;
+      } else {
+        htmlRoot.removeAttribute('data-theme');
+        themeToggle.querySelector('.toggle-text').textContent = 'Light';
+        themeToggle.innerHTML = `
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <circle cx="12" cy="12" r="5"/>
+            <path d="M12 2v2M12 20v2M4 12H2M22 12h-2M18.4 5.7 16.9 4.2M5.7 18.4 4.2 16.9M18.4 18.4 16.9 16.9M5.7 5.7 4.2 4.2"/>
+          </svg>
+          <span class="toggle-text">Light</span>
+        `;
+      }
+    };
+
+    // Check stored preference
+    const stored = localStorage.getItem('theme');
+    applyTheme(stored || 'dark');
+
+    themeToggle.addEventListener('click', () => {
+      const current = htmlRoot.hasAttribute('data-theme') ? 'light' : 'dark';
+      const next = current === 'light' ? 'dark' : 'light';
+      localStorage.setItem('theme', next);
+      applyTheme(next);
+    });
+  })();
+</script>
+</body>
+</html>
