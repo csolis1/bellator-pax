@@ -3,8 +3,12 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>BELLATORPAX</title>
+<title>ĒLÝSION DOCTRINE</title>
 <meta name="description" content="fight journalism, cultural deep dives, and the philosophy of beautiful violence."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Khmer:wght@900&display=swap" rel="stylesheet"/>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -26,7 +30,6 @@
   }
   ::-webkit-scrollbar { display: none; }
 
-  /* ---- PRELOADER ---- */
   #preloader {
     position: fixed; inset: 0; background: var(--bg); z-index: 9999;
     display: flex; align-items: center; justify-content: center;
@@ -42,7 +45,6 @@
   #preloader-percent { font-size: 11px; letter-spacing: 0.1em; color: var(--fg); opacity: 0.5; margin-top: 4px; }
   @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-  /* ---- CURSOR ---- */
   #cursor {
     position: fixed; width: 40px; height: 40px; border-radius: 50%; background: white;
     pointer-events: none; z-index: 9998; transform: translate(-50%, -50%);
@@ -53,7 +55,6 @@
   #cursor.visible { clip-path: circle(50% at 50% 50%); }
   #cursor.case-hover { width: 100px; height: 100px; }
 
-  /* ---- NAV ---- */
   .menu {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     display: flex; align-items: center; justify-content: space-between;
@@ -61,7 +62,7 @@
   }
   .menu-link-holder { display: flex; align-items: center; gap: 3vw; pointer-events: auto; }
   .menu-logo { display: flex; align-items: center; text-decoration: none; }
-  .menu-logo svg { width: 120px; height: auto; }
+  .menu-logo svg { width: 180px; height: auto; }
   .menu-links-holder { display: flex; align-items: center; gap: 2.5vw; pointer-events: auto; }
   .menu-link {
     color: var(--fg); text-decoration: none;
@@ -78,7 +79,6 @@
   #clock span { animation: blink 1s steps(1) infinite; }
   @keyframes blink { 50% { visibility: hidden; } }
 
-  /* ---- LAYOUT ---- */
   .con { position: relative; }
   .content { padding-top: 0; }
   .f-header-holder {
@@ -88,33 +88,59 @@
   .f-logo-holder { margin-bottom: 0; }
   .logotype-holder { position: relative; }
 
-  /* ---- HERO LOGO ANIMATION ---- */
-  /* Each path starts clipped/translated down, animates in on .active */
-  .bellatorpax-logo-svg {
-    width: 100%; height: auto; display: block; overflow: visible;
+  /*
+    Hero wordmark animation.
+    We use a single <svg> with per-letter <text> spans inside a foreignObject
+    approach — actually we use the SVG text approach but split by character
+    using tspan/text elements, each clipped individually.
+    The clip-path on SVG text elements works in modern browsers.
+  */
+  .hero-wordmark-wrap {
+    width: 100%;
+    overflow: hidden;
   }
-  .bellatorpax-logo-svg path {
+  .hero-wordmark {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    font-family: "Unbounded", sans-serif;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    color: var(--fg);
+    line-height: 0.92;
+    width: 60%;
+  }
+  .hero-wordmark .word-row {
+    display: flex;
+    align-items: baseline;
+    width: 100%;
+    overflow: hidden;
+  }
+  .hero-wordmark .letter {
+    display: inline-block;
     clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%);
-    transform: translateY(20%);
-    transition: transform 1.8s var(--ease), clip-path 1.8s var(--ease);
-    transform-box: fill-box;
-    transform-origin: bottom center;
+    transform: translateY(18%);
+    transition: transform 1.6s var(--ease), clip-path 1.6s var(--ease);
   }
-  .bellatorpax-logo-svg.active path {
+  .hero-wordmark.active .letter {
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
     transform: translateY(0%);
   }
-  .bellatorpax-logo-svg.active path:nth-child(1) { transition-delay: 0.00s; }
-  .bellatorpax-logo-svg.active path:nth-child(2) { transition-delay: 0.05s; }
-  .bellatorpax-logo-svg.active path:nth-child(3) { transition-delay: 0.10s; }
-  .bellatorpax-logo-svg.active path:nth-child(4) { transition-delay: 0.15s; }
-  .bellatorpax-logo-svg.active path:nth-child(5) { transition-delay: 0.20s; }
-  .bellatorpax-logo-svg.active path:nth-child(6) { transition-delay: 0.25s; }
-  .bellatorpax-logo-svg.active path:nth-child(7) { transition-delay: 0.30s; }
-  .bellatorpax-logo-svg.active path:nth-child(8) { transition-delay: 0.35s; }
-  .bellatorpax-logo-svg.active path:nth-child(9) { transition-delay: 0.40s; }
-  .bellatorpax-logo-svg.active path:nth-child(10) { transition-delay: 0.45s; }
-  .bellatorpax-logo-svg.active path:nth-child(11) { transition-delay: 0.50s; }
+  .hero-wordmark.active .word-row:nth-child(1) .letter:nth-child(1) { transition-delay: 0.00s; }
+  .hero-wordmark.active .word-row:nth-child(1) .letter:nth-child(2) { transition-delay: 0.05s; }
+  .hero-wordmark.active .word-row:nth-child(1) .letter:nth-child(3) { transition-delay: 0.10s; }
+  .hero-wordmark.active .word-row:nth-child(1) .letter:nth-child(4) { transition-delay: 0.15s; }
+  .hero-wordmark.active .word-row:nth-child(1) .letter:nth-child(5) { transition-delay: 0.20s; }
+  .hero-wordmark.active .word-row:nth-child(1) .letter:nth-child(6) { transition-delay: 0.25s; }
+  .hero-wordmark.active .word-row:nth-child(1) .letter:nth-child(7) { transition-delay: 0.30s; }
+  .hero-wordmark.active .word-row:nth-child(2) .letter:nth-child(1) { transition-delay: 0.18s; }
+  .hero-wordmark.active .word-row:nth-child(2) .letter:nth-child(2) { transition-delay: 0.23s; }
+  .hero-wordmark.active .word-row:nth-child(2) .letter:nth-child(3) { transition-delay: 0.28s; }
+  .hero-wordmark.active .word-row:nth-child(2) .letter:nth-child(4) { transition-delay: 0.33s; }
+  .hero-wordmark.active .word-row:nth-child(2) .letter:nth-child(5) { transition-delay: 0.38s; }
+  .hero-wordmark.active .word-row:nth-child(2) .letter:nth-child(6) { transition-delay: 0.43s; }
+  .hero-wordmark.active .word-row:nth-child(2) .letter:nth-child(7) { transition-delay: 0.48s; }
+  .hero-wordmark.active .word-row:nth-child(2) .letter:nth-child(8) { transition-delay: 0.53s; }
 
   .small-header {
     font-size: clamp(0.65rem, 0.8vw, 1rem); color: var(--muted);
@@ -131,7 +157,6 @@
   .h1.show { opacity: 1; transform: translateY(0); }
   .h1 span { font-style: italic; }
 
-  /* ---- CASES ---- */
   .f-cases-holder { padding: 2vw 3vw 0; }
   .f-cases-cl { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5vw; list-style: none; }
   .f-case-holder { position: relative; }
@@ -156,7 +181,6 @@
   .f-case-title-text { font-size: clamp(1rem, 1.6vw, 2.5rem); font-weight: 300; letter-spacing: -0.02em; color: var(--fg); overflow: hidden; margin-bottom: 0.3vw; }
   .f-category-holder { font-size: clamp(0.65rem, 0.8vw, 1rem); color: var(--muted); letter-spacing: 0.04em; }
 
-  /* ---- CONTACT ---- */
   .f-after-cases-holder-2 {
     padding: 8vw 3vw 6vw; display: grid; grid-template-columns: 1fr 1fr; gap: 4vw;
     border-top: 1px solid rgba(255,255,255,0.08); margin-top: 6vw;
@@ -169,7 +193,6 @@
   .contact-info-right { display: flex; align-items: flex-end; }
   .small-contact-text { font-size: clamp(0.8rem, 1.05vw, 1.3rem); line-height: 1.55; color: var(--muted); font-weight: 300; max-width: 36ch; }
 
-  /* ---- FOOTER ---- */
   .footer { background: #fafafa; color: #161616; padding: 3vw 3vw 0; }
   .footer-items { border-bottom: 1px solid rgba(0,0,0,0.08); padding-bottom: 2vw; margin-bottom: 3vw; }
   .footer-flex { display: flex; justify-content: flex-end; }
@@ -186,10 +209,21 @@
   .footer-h3 { font-size: clamp(0.6rem, 0.7vw, 0.9rem); letter-spacing: 0.14em; text-transform: uppercase; color: rgba(22,22,22,0.45); font-weight: 400; }
   .footer-info-link { text-decoration: none; color: #161616; font-size: clamp(0.75rem, 0.9vw, 1.1rem); font-weight: 300; transition: opacity 0.3s; }
   .footer-info-link:hover { opacity: 0.5; }
-  .footer-logo-holder { padding: 3vw 0 4vw; border-top: 1px solid rgba(0,0,0,0.08); margin-top: 2vw; }
-  .footer-logo-svg { width: 100%; height: auto; }
+  .footer-logo-holder { padding: 3vw 0 4vw; border-top: 1px solid rgba(0,0,0,0.08); margin-top: 2vw; overflow: hidden; width: 100%; }
+  .footer-logo-svg { width: 100%; height: auto; display: block; }
 
-  /* ---- LOAD OVERLAY ---- */
+  /* Footer wordmark — same font, dark fill */
+  .footer-wordmark {
+    font-family:'Unbounded', sans-serif;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    color: #161616;
+    line-height: 0.92;
+    white-space: nowrap;
+    display: block;
+    width: 100%;
+  }
+
   .load-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 9000; clip-path: inset(100% 0% 0% 0%); pointer-events: none; }
   .load-overlay.loading { animation: loadoverlay 1.2s cubic-bezier(.645,.045,.355,1) forwards; }
   @keyframes loadoverlay {
@@ -228,18 +262,11 @@
 <nav class="menu">
   <div class="menu-link-holder">
     <a href="/" class="menu-logo">
-      <svg viewBox="0 0 3480.2 449" fill="white" xmlns="http://www.w3.org/2000/svg">
-        <path d="M298.14 264.91 Q298.14 281.07 292.75 296.34 Q287.36 311.61 275.46 326.42 Q263.56 341.24 239.77 350.22 Q215.97 359.20 183.19 359.20 L35.92 359.20 L35.92 31.88 L181.84 31.88 Q212.38 31.88 234.60 40.86 Q256.83 49.84 267.83 63.98 Q278.83 78.13 283.77 91.60 Q288.71 105.07 288.71 118.09 Q288.71 139.19 278.38 154.68 Q268.05 170.17 243.81 185.44 Q298.14 217.32 298.14 264.91 Z M103.27 88.00 L103.27 162.09 L176.46 162.09 Q224.05 162.09 224.05 125.27 Q224.05 88.00 176.46 88.00 Z M103.27 218.21 L103.27 303.07 L183.64 303.07 Q233.48 303.07 233.48 260.87 Q233.48 218.21 183.64 218.21 Z"/>
-            <path d="M430.59 218.21 L430.59 303.07 L607.95 303.07 L607.95 359.20 L363.24 359.20 L363.24 31.88 L599.86 31.88 L599.86 88.00 L430.59 88.00 L430.59 162.09 L587.29 162.09 L587.29 218.21 Z"/>
-            <path d="M740.40 31.88 L740.40 303.07 L897.10 303.07 L897.10 359.20 L673.05 359.20 L673.05 31.88 Z"/>
-            <path d="M1029.56 31.88 L1029.56 303.07 L1186.26 303.07 L1186.26 359.20 L962.21 359.20 L962.21 31.88 Z"/>
-            <path d="M1433.21 293.20 L1310.63 293.20 L1288.63 359.20 L1219.93 359.20 L1336.22 31.88 L1410.76 31.88 L1523.91 359.20 L1454.76 359.20 Z M1414.80 237.07 L1372.14 109.11 L1329.49 237.07 Z"/>
-            <path d="M1719.67 88.00 L1719.67 359.20 L1652.32 359.20 L1652.32 88.00 L1553.09 88.00 L1553.09 31.88 L1815.31 31.88 L1815.31 88.00 Z"/>
-            <path d="M2015.11 26.49 Q2086.05 26.49 2129.61 74.31 Q2173.16 122.13 2173.16 200.25 Q2173.16 272.99 2130.28 321.26 Q2087.40 369.53 2015.56 369.53 Q1944.17 369.53 1901.07 321.48 Q1857.96 273.44 1857.96 198.01 Q1857.96 122.58 1901.29 74.53 Q1944.62 26.49 2015.11 26.49 Z M2015.56 83.96 Q1974.70 83.96 1950.01 115.17 Q1925.31 146.37 1925.31 198.01 Q1925.31 249.64 1950.01 280.85 Q1974.70 312.06 2015.56 312.06 Q2055.97 312.06 2080.89 281.07 Q2105.81 250.09 2105.81 199.80 Q2105.81 146.82 2081.34 115.39 Q2056.87 83.96 2015.56 83.96 Z"/>
-            <path d="M2423.70 303.07 Q2423.70 289.61 2424.15 281.97 Q2424.60 274.34 2424.60 268.50 Q2424.60 247.85 2414.72 238.64 Q2404.84 229.44 2382.84 229.44 L2305.62 229.44 L2305.62 359.20 L2238.27 359.20 L2238.27 31.88 L2413.82 31.88 Q2438.97 31.88 2457.15 40.41 Q2475.34 48.94 2484.54 62.86 Q2493.75 76.78 2497.79 90.92 Q2501.83 105.07 2501.83 120.33 Q2501.83 179.60 2446.60 201.15 Q2458.72 206.09 2464.56 209.01 Q2470.40 211.93 2476.46 218.66 Q2482.52 225.40 2484.54 230.79 Q2486.56 236.17 2488.58 250.54 Q2490.60 264.91 2491.05 278.83 Q2491.50 292.75 2491.95 320.14 Q2491.95 339.00 2506.32 347.08 L2506.32 359.20 L2434.03 359.20 Q2427.74 347.53 2425.72 336.75 Q2423.70 325.97 2423.70 303.07 Z M2434.48 129.76 Q2434.48 104.62 2422.80 96.31 Q2411.13 88.00 2386.88 88.00 L2305.62 88.00 L2305.62 173.31 L2386.88 173.31 Q2410.68 173.31 2422.58 164.78 Q2434.48 156.25 2434.48 129.76 Z"/>
-            <path d="M2641.02 242.46 L2641.02 359.20 L2573.67 359.20 L2573.67 31.88 L2718.25 31.88 Q2769.43 31.88 2796.60 57.92 Q2823.76 83.96 2823.76 133.35 Q2823.76 183.19 2796.82 212.83 Q2769.88 242.46 2724.98 242.46 Z M2641.02 186.33 L2703.88 186.33 Q2756.41 186.33 2756.41 137.39 Q2756.41 112.25 2743.61 100.13 Q2730.82 88.00 2703.88 88.00 L2641.02 88.00 Z"/>
-            <path d="M3070.71 293.20 L2948.13 293.20 L2926.13 359.20 L2857.44 359.20 L2973.73 31.88 L3048.26 31.88 L3161.41 359.20 L3092.26 359.20 Z M3052.30 237.07 L3009.65 109.11 L2966.99 237.07 Z"/>
-            <path d="M3365.26 192.17 L3470.32 359.20 L3390.40 359.20 L3327.54 245.60 L3265.13 359.20 L3187.00 359.20 L3290.27 194.42 L3190.59 31.88 L3270.52 31.88 L3327.99 139.64 L3388.15 31.88 L3466.28 31.88 Z"/>
+      <svg viewBox="0 0 820 80" fill="white" xmlns="http://www.w3.org/2000/svg">
+        <text x="0" y="68"
+          font-family="'Unbounded', sans-serif"
+          font-size="72" font-weight="900" letter-spacing="-1"
+        >ĒLÝSION DOCTRINE</text>
       </svg>
     </a>
   </div>
@@ -250,7 +277,6 @@
     <a href="/inprogress.html" class="menu-link">Martial Body: Inherited Motion</a>
     <a href="/inprogress.html" class="menu-link">Technical Library</a>
     <a href="/inprogress.html" class="menu-link">Community</a>
-    <a href="/contact.html" class="menu-link">Contact</a>
   </div>
   <div class="menu-right">
     <span>CPH</span>
@@ -261,27 +287,25 @@
 <!-- MAIN -->
 <main class="con">
   <div class="content">
-
     <div class="f-header-holder">
       <div class="f-logo-holder">
         <div class="logotype-holder">
-          <svg id="heroBpLogo" class="bellatorpax-logo-svg" viewBox="0 0 3480.2 449" fill="white" xmlns="http://www.w3.org/2000/svg">
-            <path d="M298.14 264.91 Q298.14 281.07 292.75 296.34 Q287.36 311.61 275.46 326.42 Q263.56 341.24 239.77 350.22 Q215.97 359.20 183.19 359.20 L35.92 359.20 L35.92 31.88 L181.84 31.88 Q212.38 31.88 234.60 40.86 Q256.83 49.84 267.83 63.98 Q278.83 78.13 283.77 91.60 Q288.71 105.07 288.71 118.09 Q288.71 139.19 278.38 154.68 Q268.05 170.17 243.81 185.44 Q298.14 217.32 298.14 264.91 Z M103.27 88.00 L103.27 162.09 L176.46 162.09 Q224.05 162.09 224.05 125.27 Q224.05 88.00 176.46 88.00 Z M103.27 218.21 L103.27 303.07 L183.64 303.07 Q233.48 303.07 233.48 260.87 Q233.48 218.21 183.64 218.21 Z"/>
-            <path d="M430.59 218.21 L430.59 303.07 L607.95 303.07 L607.95 359.20 L363.24 359.20 L363.24 31.88 L599.86 31.88 L599.86 88.00 L430.59 88.00 L430.59 162.09 L587.29 162.09 L587.29 218.21 Z"/>
-            <path d="M740.40 31.88 L740.40 303.07 L897.10 303.07 L897.10 359.20 L673.05 359.20 L673.05 31.88 Z"/>
-            <path d="M1029.56 31.88 L1029.56 303.07 L1186.26 303.07 L1186.26 359.20 L962.21 359.20 L962.21 31.88 Z"/>
-            <path d="M1433.21 293.20 L1310.63 293.20 L1288.63 359.20 L1219.93 359.20 L1336.22 31.88 L1410.76 31.88 L1523.91 359.20 L1454.76 359.20 Z M1414.80 237.07 L1372.14 109.11 L1329.49 237.07 Z"/>
-            <path d="M1719.67 88.00 L1719.67 359.20 L1652.32 359.20 L1652.32 88.00 L1553.09 88.00 L1553.09 31.88 L1815.31 31.88 L1815.31 88.00 Z"/>
-            <path d="M2015.11 26.49 Q2086.05 26.49 2129.61 74.31 Q2173.16 122.13 2173.16 200.25 Q2173.16 272.99 2130.28 321.26 Q2087.40 369.53 2015.56 369.53 Q1944.17 369.53 1901.07 321.48 Q1857.96 273.44 1857.96 198.01 Q1857.96 122.58 1901.29 74.53 Q1944.62 26.49 2015.11 26.49 Z M2015.56 83.96 Q1974.70 83.96 1950.01 115.17 Q1925.31 146.37 1925.31 198.01 Q1925.31 249.64 1950.01 280.85 Q1974.70 312.06 2015.56 312.06 Q2055.97 312.06 2080.89 281.07 Q2105.81 250.09 2105.81 199.80 Q2105.81 146.82 2081.34 115.39 Q2056.87 83.96 2015.56 83.96 Z"/>
-            <path d="M2423.70 303.07 Q2423.70 289.61 2424.15 281.97 Q2424.60 274.34 2424.60 268.50 Q2424.60 247.85 2414.72 238.64 Q2404.84 229.44 2382.84 229.44 L2305.62 229.44 L2305.62 359.20 L2238.27 359.20 L2238.27 31.88 L2413.82 31.88 Q2438.97 31.88 2457.15 40.41 Q2475.34 48.94 2484.54 62.86 Q2493.75 76.78 2497.79 90.92 Q2501.83 105.07 2501.83 120.33 Q2501.83 179.60 2446.60 201.15 Q2458.72 206.09 2464.56 209.01 Q2470.40 211.93 2476.46 218.66 Q2482.52 225.40 2484.54 230.79 Q2486.56 236.17 2488.58 250.54 Q2490.60 264.91 2491.05 278.83 Q2491.50 292.75 2491.95 320.14 Q2491.95 339.00 2506.32 347.08 L2506.32 359.20 L2434.03 359.20 Q2427.74 347.53 2425.72 336.75 Q2423.70 325.97 2423.70 303.07 Z M2434.48 129.76 Q2434.48 104.62 2422.80 96.31 Q2411.13 88.00 2386.88 88.00 L2305.62 88.00 L2305.62 173.31 L2386.88 173.31 Q2410.68 173.31 2422.58 164.78 Q2434.48 156.25 2434.48 129.76 Z"/>
-            <path d="M2641.02 242.46 L2641.02 359.20 L2573.67 359.20 L2573.67 31.88 L2718.25 31.88 Q2769.43 31.88 2796.60 57.92 Q2823.76 83.96 2823.76 133.35 Q2823.76 183.19 2796.82 212.83 Q2769.88 242.46 2724.98 242.46 Z M2641.02 186.33 L2703.88 186.33 Q2756.41 186.33 2756.41 137.39 Q2756.41 112.25 2743.61 100.13 Q2730.82 88.00 2703.88 88.00 L2641.02 88.00 Z"/>
-            <path d="M3070.71 293.20 L2948.13 293.20 L2926.13 359.20 L2857.44 359.20 L2973.73 31.88 L3048.26 31.88 L3161.41 359.20 L3092.26 359.20 Z M3052.30 237.07 L3009.65 109.11 L2966.99 237.07 Z"/>
-            <path d="M3365.26 192.17 L3470.32 359.20 L3390.40 359.20 L3327.54 245.60 L3265.13 359.20 L3187.00 359.20 L3290.27 194.42 L3190.59 31.88 L3270.52 31.88 L3327.99 139.64 L3388.15 31.88 L3466.28 31.88 Z"/>
-          </svg>
+          <!--
+            Hero wordmark: Barlow Condensed 400 — same visual weight and
+            condensed proportion as Baseborn's custom path letterforms.
+            Each letter is a separate inline-block span so the
+            clip-path + translateY stagger animation works per-character.
+          -->
+          <div class="hero-wordmark-wrap">
+            <div class="hero-wordmark" id="heroWordmark">
+              <div class="word-row" id="wordRow1"><span class="letter">Ē</span><span class="letter">L</span><span class="letter">Ý</span><span class="letter">S</span><span class="letter">I</span><span class="letter">O</span><span class="letter">N</span></div>
+              <div class="word-row" id="wordRow2"><span class="letter">D</span><span class="letter">O</span><span class="letter">C</span><span class="letter">T</span><span class="letter">R</span><span class="letter">I</span><span class="letter">N</span><span class="letter">E</span></div>
+            </div>
+          </div>
         </div>
         <div class="small-header">
-          <span>/ˌbɛləˈtɔːpæks/<em> noun</em></span><br/>
-          warrior of peace; one who fights for harmony
+          <span>/ˌɛˈliːʒən ˈdɒktrɪn/<em> noun</em></span><br/>
+          the philosophy of the blessed; a doctrine of sacred discipline through honor and flow state
         </div>
       </div>
       <div class="f-intro-text-holder">
@@ -381,15 +405,9 @@
     <div class="f-after-cases-holder-2">
       <div class="contact-info-left">
         <div class="contact-info-holder">
-          <h3 class="small-h3">Business Inquiries</h3>
-          <a href="mailto:newbiz@bellatorpax.studio" class="about-services-list-holder">
-            <div class="about-services-list-text">newbiz@bellatorpax.studio</div>
-          </a>
-        </div>
-        <div class="contact-info-holder">
-          <h3 class="small-h3">General</h3>
-          <a href="mailto:hello@bellatorpax.studio" class="about-services-list-holder">
-            <div class="about-services-list-text">hello@bellatorpax.studio</div>
+          <h3 class="small-h3">General & Business Inquiries</h3>
+          <a href="mailto:elysiondoctrine@gmail.com" class="about-services-list-holder">
+            <div class="about-services-list-text">newbiz@elysion-doctrine.studio</div>
           </a>
         </div>
         <div class="contact-info-holder">
@@ -405,7 +423,6 @@
         </p>
       </div>
     </div>
-
   </div>
 </main>
 
@@ -413,8 +430,8 @@
   <div class="footer-items">
     <div class="footer-flex">
       <div class="footer-item-holder">
-        <a href="https://www.instagram.com/bellatorpax_studio/" target="_blank" rel="noopener" class="footer-link-holder">Instagram</a>
-        <a href="https://www.linkedin.com/company/bellatorpax/" target="_blank" rel="noopener" class="footer-link-holder">LinkedIn</a>
+        <a href="https://www.instagram.com/elysion_doctrine/" target="_blank" rel="noopener" class="footer-link-holder">Instagram</a>
+        <a href="https://www.linkedin.com/company/elysion-doctrine/" target="_blank" rel="noopener" class="footer-link-holder">LinkedIn</a>
       </div>
     </div>
   </div>
@@ -422,17 +439,17 @@
     <div class="footer-links-holder">
       <a href="/work" class="footer-main-link">Work</a>
       <a href="/studio" class="footer-main-link">Studio</a>
-      <a href="/contact" class="footer-main-link">Contact</a>
+      <a href="/contact.html" class="footer-main-link">Contact</a>
       <div class="footer-rights">All Rights<br/>Reserved<br/>&#169; 2026</div>
     </div>
     <div class="footer-flex smaller">
       <div class="footer-item-holder" style="flex-direction:column;gap:0.3rem;">
-        <div class="footer-h3-holder"><h3 class="footer-h3">Business Inquiries</h3></div>
-        <a href="mailto:newbiz@bellatorpax.studio" class="footer-info-link">newbiz@bellatorpax.studio</a>
+        <div class="footer-h3-holder"><h3 class="footer-h3">Art District Creative</h3></div>
+        <a href="mailto:artdistrict.creative@gmail.com" class="footer-info-link">artdistrict.creative@gmail.com</a>
       </div>
       <div class="footer-item-holder" style="flex-direction:column;gap:0.3rem;">
-        <div class="footer-h3-holder"><h3 class="footer-h3">General</h3></div>
-        <a href="mailto:hello@bellatorpax.studio" class="footer-info-link">hello@bellatorpax.studio</a>
+        <div class="footer-h3-holder"><h3 class="footer-h3">Student Of Life Travel</h3></div>
+        <a href="mailto:csolis.studentoflife@gmail.com" class="footer-info-link">csolis.studentoflife@gmail.com</a>
       </div>
       <div class="footer-item-holder" style="flex-direction:column;gap:0.3rem;">
         <div class="footer-h3-holder"><h3 class="footer-h3">Call Us</h3></div>
@@ -441,30 +458,54 @@
     </div>
   </div>
   <div class="footer-logo-holder">
-    <svg class="footer-logo-svg" viewBox="0 0 3480.2 449" fill="#161616" xmlns="http://www.w3.org/2000/svg">
-      <path d="M298.14 264.91 Q298.14 281.07 292.75 296.34 Q287.36 311.61 275.46 326.42 Q263.56 341.24 239.77 350.22 Q215.97 359.20 183.19 359.20 L35.92 359.20 L35.92 31.88 L181.84 31.88 Q212.38 31.88 234.60 40.86 Q256.83 49.84 267.83 63.98 Q278.83 78.13 283.77 91.60 Q288.71 105.07 288.71 118.09 Q288.71 139.19 278.38 154.68 Q268.05 170.17 243.81 185.44 Q298.14 217.32 298.14 264.91 Z M103.27 88.00 L103.27 162.09 L176.46 162.09 Q224.05 162.09 224.05 125.27 Q224.05 88.00 176.46 88.00 Z M103.27 218.21 L103.27 303.07 L183.64 303.07 Q233.48 303.07 233.48 260.87 Q233.48 218.21 183.64 218.21 Z"/>
-            <path d="M430.59 218.21 L430.59 303.07 L607.95 303.07 L607.95 359.20 L363.24 359.20 L363.24 31.88 L599.86 31.88 L599.86 88.00 L430.59 88.00 L430.59 162.09 L587.29 162.09 L587.29 218.21 Z"/>
-            <path d="M740.40 31.88 L740.40 303.07 L897.10 303.07 L897.10 359.20 L673.05 359.20 L673.05 31.88 Z"/>
-            <path d="M1029.56 31.88 L1029.56 303.07 L1186.26 303.07 L1186.26 359.20 L962.21 359.20 L962.21 31.88 Z"/>
-            <path d="M1433.21 293.20 L1310.63 293.20 L1288.63 359.20 L1219.93 359.20 L1336.22 31.88 L1410.76 31.88 L1523.91 359.20 L1454.76 359.20 Z M1414.80 237.07 L1372.14 109.11 L1329.49 237.07 Z"/>
-            <path d="M1719.67 88.00 L1719.67 359.20 L1652.32 359.20 L1652.32 88.00 L1553.09 88.00 L1553.09 31.88 L1815.31 31.88 L1815.31 88.00 Z"/>
-            <path d="M2015.11 26.49 Q2086.05 26.49 2129.61 74.31 Q2173.16 122.13 2173.16 200.25 Q2173.16 272.99 2130.28 321.26 Q2087.40 369.53 2015.56 369.53 Q1944.17 369.53 1901.07 321.48 Q1857.96 273.44 1857.96 198.01 Q1857.96 122.58 1901.29 74.53 Q1944.62 26.49 2015.11 26.49 Z M2015.56 83.96 Q1974.70 83.96 1950.01 115.17 Q1925.31 146.37 1925.31 198.01 Q1925.31 249.64 1950.01 280.85 Q1974.70 312.06 2015.56 312.06 Q2055.97 312.06 2080.89 281.07 Q2105.81 250.09 2105.81 199.80 Q2105.81 146.82 2081.34 115.39 Q2056.87 83.96 2015.56 83.96 Z"/>
-            <path d="M2423.70 303.07 Q2423.70 289.61 2424.15 281.97 Q2424.60 274.34 2424.60 268.50 Q2424.60 247.85 2414.72 238.64 Q2404.84 229.44 2382.84 229.44 L2305.62 229.44 L2305.62 359.20 L2238.27 359.20 L2238.27 31.88 L2413.82 31.88 Q2438.97 31.88 2457.15 40.41 Q2475.34 48.94 2484.54 62.86 Q2493.75 76.78 2497.79 90.92 Q2501.83 105.07 2501.83 120.33 Q2501.83 179.60 2446.60 201.15 Q2458.72 206.09 2464.56 209.01 Q2470.40 211.93 2476.46 218.66 Q2482.52 225.40 2484.54 230.79 Q2486.56 236.17 2488.58 250.54 Q2490.60 264.91 2491.05 278.83 Q2491.50 292.75 2491.95 320.14 Q2491.95 339.00 2506.32 347.08 L2506.32 359.20 L2434.03 359.20 Q2427.74 347.53 2425.72 336.75 Q2423.70 325.97 2423.70 303.07 Z M2434.48 129.76 Q2434.48 104.62 2422.80 96.31 Q2411.13 88.00 2386.88 88.00 L2305.62 88.00 L2305.62 173.31 L2386.88 173.31 Q2410.68 173.31 2422.58 164.78 Q2434.48 156.25 2434.48 129.76 Z"/>
-            <path d="M2641.02 242.46 L2641.02 359.20 L2573.67 359.20 L2573.67 31.88 L2718.25 31.88 Q2769.43 31.88 2796.60 57.92 Q2823.76 83.96 2823.76 133.35 Q2823.76 183.19 2796.82 212.83 Q2769.88 242.46 2724.98 242.46 Z M2641.02 186.33 L2703.88 186.33 Q2756.41 186.33 2756.41 137.39 Q2756.41 112.25 2743.61 100.13 Q2730.82 88.00 2703.88 88.00 L2641.02 88.00 Z"/>
-            <path d="M3070.71 293.20 L2948.13 293.20 L2926.13 359.20 L2857.44 359.20 L2973.73 31.88 L3048.26 31.88 L3161.41 359.20 L3092.26 359.20 Z M3052.30 237.07 L3009.65 109.11 L2966.99 237.07 Z"/>
-            <path d="M3365.26 192.17 L3470.32 359.20 L3390.40 359.20 L3327.54 245.60 L3265.13 359.20 L3187.00 359.20 L3290.27 194.42 L3190.59 31.88 L3270.52 31.88 L3327.99 139.64 L3388.15 31.88 L3466.28 31.88 Z"/>
-    </svg>
+    <span class="footer-wordmark" id="footerWordmark">ĒLÝSION DOCTRINE</span>
   </div>
 </footer>
 
 <script>
 (function() {
-  const preloader      = document.getElementById('preloader');
-  const preloaderBar   = document.getElementById('preloader-bar');
-  const preloaderPct   = document.getElementById('preloader-percent');
-  const heroBpLogo     = document.getElementById('heroBpLogo');
-  const heroH1         = document.getElementById('heroH1');
-  const caseLinks      = document.querySelectorAll('.f-case-link');
+  const preloader    = document.getElementById('preloader');
+  const preloaderBar = document.getElementById('preloader-bar');
+  const preloaderPct = document.getElementById('preloader-percent');
+  const heroWordmark = document.getElementById('heroWordmark');
+  const heroH1       = document.getElementById('heroH1');
+  const caseLinks    = document.querySelectorAll('.f-case-link');
+
+  /* Auto-size each word row to exactly fill the container width */
+  function fitWordmark() {
+    const rows = heroWordmark.querySelectorAll('.word-row');
+    const containerW = heroWordmark.offsetWidth;
+    rows.forEach(row => {
+      let lo = 10, hi = 500, mid;
+      row.style.fontSize = hi + 'px';
+      for (let i = 0; i < 20; i++) {
+        mid = (lo + hi) / 2;
+        row.style.fontSize = mid + 'px';
+        if (row.scrollWidth <= containerW) lo = mid;
+        else hi = mid;
+      }
+      row.style.fontSize = lo + 'px';
+    });
+
+    /* Footer wordmark — single line, fit to full width */
+    const fw = document.getElementById('footerWordmark');
+    if (fw) {
+      const fContainerW = fw.parentElement.offsetWidth;
+      let lo = 10, hi = 800, mid;
+      fw.style.fontSize = hi + 'px';
+      for (let i = 0; i < 20; i++) {
+        mid = (lo + hi) / 2;
+        fw.style.fontSize = mid + 'px';
+        if (fw.scrollWidth <= fContainerW) lo = mid;
+        else hi = mid;
+      }
+      fw.style.fontSize = lo + 'px';
+    }
+  }
+
+  /* Run on load and resize */
+  document.fonts.ready.then(fitWordmark);
+  window.addEventListener('resize', fitWordmark);
 
   let progress = 0;
   const interval = setInterval(() => {
@@ -481,7 +522,7 @@
   function finishPreloader() {
     setTimeout(() => preloader.classList.add('remove'), 600);
     setTimeout(() => {
-      heroBpLogo.classList.add('active');
+      heroWordmark.classList.add('active');
       heroH1.classList.add('show');
     }, 1000);
     setTimeout(() => caseLinks.forEach(l => l.classList.add('show')), 1400);
