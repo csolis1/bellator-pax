@@ -90,10 +90,6 @@
 
   /*
     Hero wordmark animation.
-    We use a single <svg> with per-letter <text> spans inside a foreignObject
-    approach — actually we use the SVG text approach but split by character
-    using tspan/text elements, each clipped individually.
-    The clip-path on SVG text elements works in modern browsers.
   */
   .hero-wordmark-wrap {
     width: 100%;
@@ -185,6 +181,39 @@
     padding: 8vw 3vw 6vw; display: grid; grid-template-columns: 1fr 1fr; gap: 4vw;
     border-top: 1px solid rgba(255,255,255,0.08); margin-top: 6vw;
   }
+
+        /* Coming Soon Overlay */
+      .coming-soon-overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        display: flex;
+        align-items: flex-end;
+        padding: 1.2vw 1.4vw;
+        pointer-events: none;
+      }
+
+      .coming-soon-badge {
+        font-size: clamp(0.5rem, 0.65vw, 0.75rem);
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: rgba(250,250,250,0.5);
+        border: 1px solid rgba(250,250,250,0.2);
+        padding: 0.35rem 0.75rem;
+        backdrop-filter: blur(4px);
+        background: rgba(22,22,22,0.4);
+        border-radius: 2px;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        font-weight: 400;
+      }
+
+      /* Dim the image when coming soon */
+      .f-case-link.coming-soon .f-case-img {
+        filter: grayscale(30%) brightness(0.6);
+        transform: none !important; /* disable hover zoom */
+      }  
+
+  
   .contact-info-left { display: flex; flex-direction: column; gap: 3vw; }
   .small-h3 { font-size: clamp(0.6rem, 0.75vw, 1rem); letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.8rem; font-weight: 400; }
   .about-services-list-holder { text-decoration: none; display: inline-block; }
@@ -212,7 +241,7 @@
   .footer-logo-holder { padding: 3vw 0 4vw; border-top: 1px solid rgba(0,0,0,0.08); margin-top: 2vw; overflow: hidden; width: 100%; }
   .footer-logo-svg { width: 100%; height: auto; display: block; }
 
-  /* Footer wordmark — same font, dark fill */
+  /* Footer wordmark*/
   .footer-wordmark {
     font-family:'Unbounded', sans-serif;
     font-weight: 900;
@@ -271,10 +300,10 @@
     </a>
   </div>
   <div class="menu-links-holder">
-    <a href="/work" class="menu-link">Fight Styles <sup>(6)</sup></a>
+    <a href="#" class="menu-link">Fight Styles <sup>(6)</sup></a>
     <a href="/featured.html" class="menu-link">Featured</a>
     <a href="/gallery/gallery.html" class="menu-link">Gallery</a>
-    <a href="/inprogress.html" class="menu-link">Martial Body: Inherited Motion</a>
+    <a href="/virtuscorporis.html" class="menu-link">Virtus Corporis: Inherited Motion</a>
     <a href="/inprogress.html" class="menu-link">Technical Library</a>
     <a href="/inprogress.html" class="menu-link">Community</a>
   </div>
@@ -290,12 +319,6 @@
     <div class="f-header-holder">
       <div class="f-logo-holder">
         <div class="logotype-holder">
-          <!--
-            Hero wordmark: Barlow Condensed 400 — same visual weight and
-            condensed proportion as Baseborn's custom path letterforms.
-            Each letter is a separate inline-block span so the
-            clip-path + translateY stagger animation works per-character.
-          -->
           <div class="hero-wordmark-wrap">
             <div class="hero-wordmark" id="heroWordmark">
               <div class="word-row" id="wordRow1"><span class="letter">Ē</span><span class="letter">L</span><span class="letter">Ý</span><span class="letter">S</span><span class="letter">I</span><span class="letter">O</span><span class="letter">N</span></div>
@@ -314,77 +337,85 @@
         </h1>
       </div>
     </div>
-
+      
     <div class="f-cases-holder">
-      <ul class="f-cases-cl" id="casesList">
-        <li class="f-case-holder">
-          <a href="Boxing/index.html" class="f-case-link" id="case0">
-            <img class="f-case-img" src="https://cdn.prod.website-files.com/63640f262fc5ea1d18eb1986/65d207ba76d61ba2f8ac146f_65d2077fa7c957c2dfd3e7df_Canairi-baseborn-header.webp" alt="Boxing" loading="lazy"/>
-            <div class="grid-hover">
-              <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
-                <source src="https://simonholml.com/Canairi/Canairi_3D_Half_video_2.mp4" type="video/mp4"/>
-              </video>
+        <ul class="f-cases-cl" id="casesList">
+
+          <li class="f-case-holder">
+            <a href="#" class="f-case-link coming-soon" id="case0">
+              <img class="f-case-img" src="images/box.jpg" alt="Boxing" loading="lazy"/>
+              <div class="grid-hover"></div>
+              <div class="coming-soon-overlay">
+                <span class="coming-soon-badge">In Construction</span>
+              </div>
+            </a>
+            <div class="f-grid-info-holder">
+              <div class="f-case-title-text">Boxing</div>
+              <div class="f-category-holder">Where rhythm meets consequence</div>
             </div>
-          </a>
-          <div class="f-grid-info-holder">
-            <div class="f-case-title-text">Boxing</div>
-            <div class="f-category-holder">Where rhythm meets consequence</div>
-          </div>
-        </li>
-        <li class="f-case-holder">
-          <a href="MuayThai/index.html" class="f-case-link" id="case1">
-            <video autoplay muted loop playsinline class="f-case-video">
-              <source src="https://assets.curbcph.tv/Kategori%20-%20Film_small.mp4" type="video/mp4"/>
-            </video>
-            <div class="grid-hover" style="background:#0a0a0a;"></div>
-          </a>
-          <div class="f-grid-info-holder">
-            <div class="f-case-title-text">Muay Thai</div>
-            <div class="f-category-holder">Clinched up and out of mercy</div>
-          </div>
-        </li>
-        <li class="f-case-holder">
-          <a href="BJJ/index.html" class="f-case-link" id="case2">
-            <video autoplay muted loop playsinline class="f-case-video">
-              <source src="https://assets.website-files.com/645aacb0e2b5dc8254a63e55/6508e6ebbc6d90669d06408c_Story-transcode.mp4" type="video/mp4"/>
-            </video>
-            <div class="grid-hover">
-              <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
-                <source src="https://simonholml.com/MixMob/MixMox-Spin-Breaker-2.mp4" type="video/mp4"/>
-              </video>
+          </li>
+
+          <li class="f-case-holder">
+            <a href="#" class="f-case-link coming-soon" id="case1">
+              <img class="f-case-img" src="images/nakmouy.jpg" alt="Muay Thai" loading="lazy"/>
+              <div class="grid-hover"></div>
+              <div class="coming-soon-overlay">
+                <span class="coming-soon-badge">In Construction</span>
+              </div>
+            </a>
+            <div class="f-grid-info-holder">
+              <div class="f-case-title-text">Muay Thai</div>
+              <div class="f-category-holder">Clinched up and out of mercy</div>
             </div>
-          </a>
-          <div class="f-grid-info-holder">
-            <div class="f-case-title-text">Brazilian Jujitsu</div>
-            <div class="f-category-holder">Efficiency at ground level</div>
-          </div>
-        </li>
-        <li class="f-case-holder">
-          <a href="TKD/index.html" class="f-case-link" id="case3">
-            <img class="f-case-img" src="https://cdn.prod.website-files.com/63640f262fc5ea1d18eb1986/651e68bc799bcbc1409a0a84_651e67f4caa28de3251e22bb_palette-thumb.webp" alt="Taekwondo" loading="lazy"/>
-            <div class="grid-hover">
-              <img src="https://cdn.prod.website-files.com/63640f262fc5ea1d18eb1986/652cfcd6ab4df64e485eed19_Palette_HeroLogo_Fullscreen_Img.webp" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;" alt="Taekwondo hover"/>
+          </li>
+
+          <li class="f-case-holder">
+            <a href="#" class="f-case-link coming-soon" id="case2">
+              <img class="f-case-img" src="images/gi.jpg" alt="Brazilian Jujitsu" loading="lazy"/>
+              <div class="grid-hover"></div>
+              <div class="coming-soon-overlay">
+                <span class="coming-soon-badge">In Construction</span>
+              </div>
+            </a>
+            <div class="f-grid-info-holder">
+              <div class="f-case-title-text">Brazilian Jujitsu</div>
+              <div class="f-category-holder">Efficiency at ground level</div>
             </div>
-          </a>
-          <div class="f-grid-info-holder">
-            <div class="f-case-title-text">Taekwondo</div>
-            <div class="f-category-holder">Polite distance. Impolite speed</div>
-          </div>
-        </li>
-        <li class="f-case-holder">
-          <a href="WingChun/index.html" class="f-case-link" id="case4">
-            <img class="f-case-img" src="https://cdn.prod.website-files.com/63640f262fc5ea1d18eb1986/65d27490eafc1e4b5951065a_191601da19cc67c03f3eb195790eba38e5adf95d-2806x1870.webp" alt="Wing Chun" loading="lazy"/>
-            <div class="grid-hover">
-              <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
-                <source src="https://simonholml.com/PW/PW-social-video-4.mp4" type="video/mp4"/>
-              </video>
+          </li>
+
+          <li class="f-case-holder">
+            <a href="#" class="f-case-link coming-soon" id="case3">
+              <img class="f-case-img" src="images/TDKdemo.jpg" alt="Taekwondo" loading="lazy"/>
+              <div class="grid-hover"></div>
+              <div class="coming-soon-overlay">
+                <span class="coming-soon-badge">In Construction</span>
+              </div>
+            </a>
+            <div class="f-grid-info-holder">
+              <div class="f-case-title-text">Taekwondo</div>
+              <div class="f-category-holder">Polite distance. Impolite speed</div>
             </div>
-          </a>
-          <div class="f-grid-info-holder">
-            <div class="f-case-title-text">Wing Chun</div>
-            <div class="f-category-holder">Close range. Clear mind. No wasted motion</div>
-          </div>
-        </li>
+          </li>
+
+          <li class="f-case-holder">
+            <a href="#" class="f-case-link coming-soon" id="case4">
+              <img class="f-case-img" src="images/Ipandbrucelee.jpg" alt="Wing Chun" loading="lazy"/>
+              <div class="grid-hover"></div>
+              <div class="coming-soon-overlay">
+                <span class="coming-soon-badge">In Construction</span>
+              </div>
+            </a>
+            <div class="f-grid-info-holder">
+              <div class="f-case-title-text">Wing Chun</div>
+              <div class="f-category-holder">Close range. Clear mind. No wasted motion</div>
+            </div>
+          </li>
+
+        </ul>
+      </div>
+
+    
+        <!--
         <li class="f-case-holder">
           <a href="#" class="f-case-link" id="case5">
             <video autoplay muted loop playsinline class="f-case-video">
@@ -401,13 +432,14 @@
         </li>
       </ul>
     </div>
+  -->
 
     <div class="f-after-cases-holder-2">
       <div class="contact-info-left">
         <div class="contact-info-holder">
           <h3 class="small-h3">General & Business Inquiries</h3>
           <a href="mailto:elysiondoctrine@gmail.com" class="about-services-list-holder">
-            <div class="about-services-list-text">newbiz@elysion-doctrine.studio</div>
+            <div class="about-services-list-text">elysiondoctrine@gmail.com</div>
           </a>
         </div>
         <div class="contact-info-holder">
@@ -426,19 +458,21 @@
   </div>
 </main>
 
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
 <footer class="footer">
   <div class="footer-items">
     <div class="footer-flex">
       <div class="footer-item-holder">
         <a href="https://www.instagram.com/elysion_doctrine/" target="_blank" rel="noopener" class="footer-link-holder">Instagram</a>
-        <a href="https://www.linkedin.com/company/elysion-doctrine/" target="_blank" rel="noopener" class="footer-link-holder">LinkedIn</a>
       </div>
     </div>
   </div>
   <div class="footer-over-logo-holder">
     <div class="footer-links-holder">
-      <a href="/work" class="footer-main-link">Work</a>
-      <a href="/studio" class="footer-main-link">Studio</a>
+     <!-- <a href="/" class="footer-main-link">Work</a> -->
+      <a href="/gallery/gallery.html" class="footer-main-link">Studio/Gallery</a>
       <a href="/contact.html" class="footer-main-link">Contact</a>
       <div class="footer-rights">All Rights<br/>Reserved<br/>&#169; 2026</div>
     </div>
@@ -452,8 +486,8 @@
         <a href="mailto:csolis.studentoflife@gmail.com" class="footer-info-link">csolis.studentoflife@gmail.com</a>
       </div>
       <div class="footer-item-holder" style="flex-direction:column;gap:0.3rem;">
-        <div class="footer-h3-holder"><h3 class="footer-h3">Call Us</h3></div>
-        <a href="tel:+4542760898" class="footer-info-link">(+45) 42 76 08 98</a>
+        <div class="footer-h3-holder"><h3 class="footer-h3">Fancy a Chat?</h3></div>
+        <a href="tel:+4542760898" class="footer-info-link">(+1)4049408834</a>
       </div>
     </div>
   </div>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>BELLATORPAX — Featured</title>
+<title>— ĒLÝSION DOCTRINE Featured</title>
 <meta name="description" content="Fight journalism, cultural deep dives, and the philosophy of beautiful violence."/>
 <style>
 /* ============================================================
@@ -48,9 +48,6 @@ img, video { display: block; }
 #cursor.visible { clip-path: circle(50% at 50% 50%); }
 #cursor.hover   { width: 70px; height: 70px; }
 
-/* ============================================================
-   NAV — identical to index
-   ============================================================ */
 .menu {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
@@ -58,7 +55,7 @@ img, video { display: block; }
 }
 .menu-link-holder { display: flex; align-items: center; gap: 3vw; pointer-events: auto; }
 .menu-logo { display: flex; align-items: center; text-decoration: none; }
-.menu-logo svg { width: 120px; height: auto; }
+.menu-logo svg { width: 180px; height: auto; }
 .menu-links-holder { display: flex; align-items: center; gap: 2.5vw; pointer-events: auto; }
 .menu-link {
   color: var(--fg); text-decoration: none;
@@ -460,7 +457,7 @@ img, video { display: block; }
 .feed-empty.show { display: block; }
 
 /* ============================================================
-   FOOTER — identical to index
+   FOOTER
    ============================================================ */
 .footer { background: #fafafa; color: #161616; padding: 3vw 3vw 0; }
 .footer-items { border-bottom: 1px solid rgba(0,0,0,.08); padding-bottom: 2vw; margin-bottom: 3vw; }
@@ -478,8 +475,20 @@ img, video { display: block; }
 .footer-h3 { font-size: clamp(.6rem,.7vw,.9rem); letter-spacing: .14em; text-transform: uppercase; color: rgba(22,22,22,.45); font-weight: 400; }
 .footer-info-link { text-decoration: none; color: #161616; font-size: clamp(.75rem,.9vw,1.1rem); font-weight: 300; transition: opacity .3s; }
 .footer-info-link:hover { opacity: .5; }
-.footer-logo-holder { padding: 3vw 0 4vw; border-top: 1px solid rgba(0,0,0,.08); margin-top: 2vw; }
-.footer-logo-svg { width: 100%; height: auto; }
+.footer-logo-holder { padding: 3vw 0 4vw; border-top: 1px solid rgba(0,0,0,.08); margin-top: 2vw; overflow: hidden; width: 100%; }
+.footer-logo-svg { width: 100%; height: auto; display: block;}
+
+.footer-wordmark {
+    font-family:'Unbounded', sans-serif;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    color: #161616;
+    line-height: 0.92;
+    white-space: nowrap;
+    display: block;
+    width: 100%;
+    font-size: clamp(3rem, 10vw, 14rem)
+  }
 
 /* ============================================================
    RESPONSIVE
@@ -514,29 +523,21 @@ img, video { display: block; }
 <nav class="menu">
   <div class="menu-link-holder">
     <a href="/index.html" class="menu-logo">
-      <svg viewBox="0 0 3480.2 449" fill="white" xmlns="http://www.w3.org/2000/svg">
-        <path d="M298.14 264.91 Q298.14 281.07 292.75 296.34 Q287.36 311.61 275.46 326.42 Q263.56 341.24 239.77 350.22 Q215.97 359.20 183.19 359.20 L35.92 359.20 L35.92 31.88 L181.84 31.88 Q212.38 31.88 234.60 40.86 Q256.83 49.84 267.83 63.98 Q278.83 78.13 283.77 91.60 Q288.71 105.07 288.71 118.09 Q288.71 139.19 278.38 154.68 Q268.05 170.17 243.81 185.44 Q298.14 217.32 298.14 264.91 Z M103.27 88.00 L103.27 162.09 L176.46 162.09 Q224.05 162.09 224.05 125.27 Q224.05 88.00 176.46 88.00 Z M103.27 218.21 L103.27 303.07 L183.64 303.07 Q233.48 303.07 233.48 260.87 Q233.48 218.21 183.64 218.21 Z"/>
-        <path d="M430.59 218.21 L430.59 303.07 L607.95 303.07 L607.95 359.20 L363.24 359.20 L363.24 31.88 L599.86 31.88 L599.86 88.00 L430.59 88.00 L430.59 162.09 L587.29 162.09 L587.29 218.21 Z"/>
-        <path d="M740.40 31.88 L740.40 303.07 L897.10 303.07 L897.10 359.20 L673.05 359.20 L673.05 31.88 Z"/>
-        <path d="M1029.56 31.88 L1029.56 303.07 L1186.26 303.07 L1186.26 359.20 L962.21 359.20 L962.21 31.88 Z"/>
-        <path d="M1433.21 293.20 L1310.63 293.20 L1288.63 359.20 L1219.93 359.20 L1336.22 31.88 L1410.76 31.88 L1523.91 359.20 L1454.76 359.20 Z M1414.80 237.07 L1372.14 109.11 L1329.49 237.07 Z"/>
-        <path d="M1719.67 88.00 L1719.67 359.20 L1652.32 359.20 L1652.32 88.00 L1553.09 88.00 L1553.09 31.88 L1815.31 31.88 L1815.31 88.00 Z"/>
-        <path d="M2015.11 26.49 Q2086.05 26.49 2129.61 74.31 Q2173.16 122.13 2173.16 200.25 Q2173.16 272.99 2130.28 321.26 Q2087.40 369.53 2015.56 369.53 Q1944.17 369.53 1901.07 321.48 Q1857.96 273.44 1857.96 198.01 Q1857.96 122.58 1901.29 74.53 Q1944.62 26.49 2015.11 26.49 Z M2015.56 83.96 Q1974.70 83.96 1950.01 115.17 Q1925.31 146.37 1925.31 198.01 Q1925.31 249.64 1950.01 280.85 Q1974.70 312.06 2015.56 312.06 Q2055.97 312.06 2080.89 281.07 Q2105.81 250.09 2105.81 199.80 Q2105.81 146.82 2081.34 115.39 Q2056.87 83.96 2015.56 83.96 Z"/>
-        <path d="M2423.70 303.07 Q2423.70 289.61 2424.15 281.97 Q2424.60 274.34 2424.60 268.50 Q2424.60 247.85 2414.72 238.64 Q2404.84 229.44 2382.84 229.44 L2305.62 229.44 L2305.62 359.20 L2238.27 359.20 L2238.27 31.88 L2413.82 31.88 Q2438.97 31.88 2457.15 40.41 Q2475.34 48.94 2484.54 62.86 Q2493.75 76.78 2497.79 90.92 Q2501.83 105.07 2501.83 120.33 Q2501.83 179.60 2446.60 201.15 Q2458.72 206.09 2464.56 209.01 Q2470.40 211.93 2476.46 218.66 Q2482.52 225.40 2484.54 230.79 Q2486.56 236.17 2488.58 250.54 Q2490.60 264.91 2491.05 278.83 Q2491.50 292.75 2491.95 320.14 Q2491.95 339.00 2506.32 347.08 L2506.32 359.20 L2434.03 359.20 Q2427.74 347.53 2425.72 336.75 Q2423.70 325.97 2423.70 303.07 Z M2434.48 129.76 Q2434.48 104.62 2422.80 96.31 Q2411.13 88.00 2386.88 88.00 L2305.62 88.00 L2305.62 173.31 L2386.88 173.31 Q2410.68 173.31 2422.58 164.78 Q2434.48 156.25 2434.48 129.76 Z"/>
-        <path d="M2641.02 242.46 L2641.02 359.20 L2573.67 359.20 L2573.67 31.88 L2718.25 31.88 Q2769.43 31.88 2796.60 57.92 Q2823.76 83.96 2823.76 133.35 Q2823.76 183.19 2796.82 212.83 Q2769.88 242.46 2724.98 242.46 Z M2641.02 186.33 L2703.88 186.33 Q2756.41 186.33 2756.41 137.39 Q2756.41 112.25 2743.61 100.13 Q2730.82 88.00 2703.88 88.00 L2641.02 88.00 Z"/>
-        <path d="M3070.71 293.20 L2948.13 293.20 L2926.13 359.20 L2857.44 359.20 L2973.73 31.88 L3048.26 31.88 L3161.41 359.20 L3092.26 359.20 Z M3052.30 237.07 L3009.65 109.11 L2966.99 237.07 Z"/>
-        <path d="M3365.26 192.17 L3470.32 359.20 L3390.40 359.20 L3327.54 245.60 L3265.13 359.20 L3187.00 359.20 L3290.27 194.42 L3190.59 31.88 L3270.52 31.88 L3327.99 139.64 L3388.15 31.88 L3466.28 31.88 Z"/>
+      <svg viewBox="0 0 820 80" fill="white" xmlns="http://www.w3.org/2000/svg">
+        <text x="0" y="68"
+          font-family="'Unbounded', sans-serif"
+          font-size="72" font-weight="900" letter-spacing="-1"
+        >ĒLÝSION DOCTRINE</text>
       </svg>
     </a>
   </div>
   <div class="menu-links-holder">
-    <a href="/work"      class="menu-link">Fight Styles <sup>(6)</sup></a>
+    <a href="/index.html"      class="menu-link">Fight Styles <sup>(6)</sup></a>
     <a href="/featured.html"   class="menu-link active">Featured</a>
     <a href="/gallery/gallery.html"  class="menu-link">Gallery</a>
-    <a href="/inprogress.html"     class="menu-link">Martial Body: Inherited Motion</a>
+    <a href="/virtuscorporis.html"     class="menu-link">Virtus Corporis: Inherited Motion</a>
     <a href="/inprogress.html"  class="menu-link">Technical Library</a>
     <a href="/inprogress.html"class="menu-link">Community</a>
-    <a href="/contact.html"  class="menu-link">Contact</a>
   </div>
   <div class="menu-right">
     <span>CPH</span>
@@ -551,13 +552,16 @@ img, video { display: block; }
   <div class="page-header-inner">
     <div>
       <p class="page-kicker">The Body as Battlefield, Instrument, and Art Form</p>
-      <!-- Replace text logo with SVG path set if you want animated reveal like index -->
+      <p>We examine the strange and beautiful territories, people and philosophies where movement, meaning, and combat intersect.</p>
+    </br>
+
+      <!-- Replace text logo with SVG path set if I decide I want animated reveal like the homepage -->
       <svg id="pageTitle" class="page-title-svg" viewBox="0 0 820 100" fill="white" xmlns="http://www.w3.org/2000/svg">
         <text y="82" font-family="'Helvetica Neue',Helvetica,Arial,sans-serif" font-size="100" font-weight="200" letter-spacing="-4">Featured</text>
       </svg>
     </div>
     <div class="header-meta">
-      <div class="header-meta-count" id="visibleCount">12</div>
+      <div class="header-meta-count" id="visibleCount">1</div>
       <div class="header-meta-label">Features</div>
     </div>
   </div>
@@ -624,125 +628,34 @@ img, video { display: block; }
       </div>
       <div class="feed-hero-bottom">
         <a href="articles/bongo.html" class="feed-hero-read">Read Feature</a>
-        <span style="font-size:clamp(.55rem,.65vw,.75rem);letter-spacing:.08em;color:var(--dim);">4 min read</span>
+        <span style="font-size:clamp(.55rem,.65vw,.75rem);letter-spacing:.08em;color:var(--dim);">7 min read</span>
       </div>
     </div>
   </article>
 
   <!-- ── GRID: recent features ──────────────────────────────── -->
   <div class="section-row">
-    <span class="section-row-label">Recent Features</span>
-    <span class="section-row-count" id="gridCount">6 features</span>
+    <span class="section-row-label">Field Notes</span>
+    <span class="section-row-count" id="gridCount"> 1 feature</span>
   </div>
 
   <div class="feed-grid" id="feedGrid">
 
     <!-- Grid item 1 -->
     <a href="#" class="feed-grid-item"
-       data-format="article" data-discipline="bjj">
-      <div class="feed-grid-item-media">
-        <!-- REPLACE: 800x500 image -->
-        <div class="feed-grid-item-media-placeholder">Image Placeholder</div>
-      </div>
-      <div class="tags">
-        <span class="tag tag-format">Article</span>
-        <span class="tag tag-bjj">BJJ</span>
-      </div>
-      <div class="feed-grid-item-title">Closed Guard Is Not Dead</div>
-      <div class="feed-grid-item-excerpt">Why the old-school position is having a quiet renaissance at the highest levels of submission grappling.</div>
-      <div class="feed-grid-item-meta">
-        <span class="feed-grid-item-date">May 14, 2026</span>
-        <span style="font-size:clamp(.5rem,.58vw,.7rem);letter-spacing:.06em;color:var(--dim);">8 min read</span>
-      </div>
-    </a>
-
-    <!-- Grid item 2 -->
-    <a href="#" class="feed-grid-item"
-       data-format="opinion" data-discipline="boxing">
-      <div class="feed-grid-item-media">
-        <div class="feed-grid-item-media-placeholder">Image Placeholder</div>
-      </div>
-      <div class="tags">
-        <span class="tag tag-format">Opinion</span>
-        <span class="tag tag-boxing">Boxing</span>
-      </div>
-      <div class="feed-grid-item-title">The Problem with Modern Heavyweight Boxing</div>
-      <div class="feed-grid-item-excerpt">Fifteen rounds of holding, clinching, and mandatory eight-counts. Something has to give.</div>
-      <div class="feed-grid-item-meta">
-        <span class="feed-grid-item-date">May 10, 2026</span>
-        <span style="font-size:clamp(.5rem,.58vw,.7rem);letter-spacing:.06em;color:var(--dim);">6 min read</span>
-      </div>
-    </a>
-
-    <!-- Grid item 3 -->
-    <a href="#" class="feed-grid-item"
-       data-format="podcast" data-discipline="mma">
-      <div class="feed-grid-item-media">
-        <div class="feed-grid-item-media-placeholder">Image Placeholder</div>
-      </div>
-      <div class="tags">
-        <span class="tag tag-format">Podcast</span>
-        <span class="tag tag-mma">MMA</span>
-      </div>
-      <div class="feed-grid-item-title">Ep. 41 — The Psychology of the Cage Walk</div>
-      <div class="feed-grid-item-excerpt">Sport psychologist Dr. Mirela Voss on pre-fight mental states, persona construction, and controlled aggression.</div>
-      <div class="feed-grid-item-meta">
-        <span class="feed-grid-item-date">May 6, 2026</span>
-        <span style="font-size:clamp(.5rem,.58vw,.7rem);letter-spacing:.06em;color:var(--dim);">62 min listen</span>
-      </div>
-    </a>
-
-    <!-- Grid item 4 -->
-    <a href="#" class="feed-grid-item"
        data-format="shortvideo" data-discipline="tkd">
       <div class="feed-grid-item-media">
-        <div class="feed-grid-item-media-placeholder">Image Placeholder</div>
-      </div>
-      <div class="tags">
-        <span class="tag tag-format">Short Video</span>
-        <span class="tag tag-tkd">Taekwondo</span>
-      </div>
-      <div class="feed-grid-item-title">One Second Breakdown: The Spinning Back Kick</div>
-      <div class="feed-grid-item-excerpt">Frame-by-frame dissection of the most mechanically demanding kick in Olympic combat sport.</div>
-      <div class="feed-grid-item-meta">
-        <span class="feed-grid-item-date">April 29, 2026</span>
-        <span style="font-size:clamp(.5rem,.58vw,.7rem);letter-spacing:.06em;color:var(--dim);">7 min watch</span>
-      </div>
-    </a>
-
-    <!-- Grid item 5 -->
-    <a href="#" class="feed-grid-item"
-       data-format="blog" data-discipline="wingchun">
-      <div class="feed-grid-item-media">
-        <div class="feed-grid-item-media-placeholder">Image Placeholder</div>
-      </div>
-      <div class="tags">
-        <span class="tag tag-format">Blog Post</span>
-        <span class="tag tag-wingchun">Wing Chun</span>
-      </div>
-      <div class="feed-grid-item-title">Training Log: Six Months With a Sifu</div>
-      <div class="feed-grid-item-excerpt">What happens when a grappler goes all-in on a classical striking system with no sparring tradition?</div>
-      <div class="feed-grid-item-meta">
-        <span class="feed-grid-item-date">April 22, 2026</span>
-        <span style="font-size:clamp(.5rem,.58vw,.7rem);letter-spacing:.06em;color:var(--dim);">11 min read</span>
-      </div>
-    </a>
-
-    <!-- Grid item 6 -->
-    <a href="#" class="feed-grid-item"
-       data-format="article" data-discipline="wrestling">
-      <div class="feed-grid-item-media">
-        <div class="feed-grid-item-media-placeholder">Image Placeholder</div>
+        <img src="images/MokDong.jpg">
       </div>
       <div class="tags">
         <span class="tag tag-format">Article</span>
-        <span class="tag tag-wrestling">Wrestling</span>
+        <span class="tag tag-tkd">Taekwondo</span>
       </div>
-      <div class="feed-grid-item-title">The Mat Is Its Own Language</div>
-      <div class="feed-grid-item-excerpt">Inside the culture of American folkstyle wrestling and why its alumni dominate modern MMA.</div>
+      <div class="feed-grid-item-title"> COMING SOON ~ Return to Sender: My Return to My First Martial Arts</div>
+      <div class="feed-grid-item-excerpt"> Traveling to Seoul to relearn Taekwondo at the International Kumgang Taekwondo Center</div>
       <div class="feed-grid-item-meta">
-        <span class="feed-grid-item-date">April 15, 2026</span>
-        <span style="font-size:clamp(.5rem,.58vw,.7rem);letter-spacing:.06em;color:var(--dim);">9 min read</span>
+        <span class="feed-grid-item-date">March 28, 2025</span>
+        <span style="font-size:clamp(.5rem,.58vw,.7rem);letter-spacing:.06em;color:var(--dim);">7 min read</span>
       </div>
     </a>
 
@@ -751,98 +664,27 @@ img, video { display: block; }
   <!-- ── LIST: archive ──────────────────────────────────────── -->
   <div class="section-row" style="margin-top:3vw;">
     <span class="section-row-label">Archive</span>
-    <span class="section-row-count" id="listCount">5 features</span>
+    <span class="section-row-count" id="listCount">1 feature</span>
   </div>
 
   <div class="feed-list" id="feedList">
-
     <!-- List item 1 -->
-    <a href="#" class="feed-list-item"
-       data-format="documentary" data-discipline="judo">
-      <span class="feed-list-num">01</span>
-      <div class="feed-list-info">
-        <div class="tags">
-          <span class="tag tag-format">Documentary</span>
-          <span class="tag tag-judo">Judo</span>
-        </div>
-        <div class="feed-list-title">Ippon or Nothing — The All-Japan Championships</div>
-        <span style="font-size:clamp(.55rem,.65vw,.75rem);color:var(--dim);letter-spacing:.06em;">April 8, 2026 · 38 min watch</span>
-      </div>
-      <div class="feed-list-thumb">
-        <!-- REPLACE: 400x300 thumb -->
-        <div class="feed-list-thumb-placeholder">Img</div>
-      </div>
-    </a>
-
-    <!-- List item 2 -->
-    <a href="#" class="feed-list-item"
-       data-format="opinion" data-discipline="muaythai">
-      <span class="feed-list-num">02</span>
-      <div class="feed-list-info">
-        <div class="tags">
-          <span class="tag tag-format">Opinion</span>
-          <span class="tag tag-muaythai">Muay Thai</span>
-        </div>
-        <div class="feed-list-title">What Western Promotions Keep Getting Wrong About Thai Boxing</div>
-        <span style="font-size:clamp(.55rem,.65vw,.75rem);color:var(--dim);letter-spacing:.06em;">March 31, 2026 · 5 min read</span>
-      </div>
-      <div class="feed-list-thumb">
-        <div class="feed-list-thumb-placeholder">Img</div>
-      </div>
-    </a>
-
-    <!-- List item 3 -->
-    <a href="#" class="feed-list-item"
-       data-format="podcast" data-discipline="bjj">
-      <span class="feed-list-num">03</span>
-      <div class="feed-list-info">
-        <div class="tags">
-          <span class="tag tag-format">Podcast</span>
-          <span class="tag tag-bjj">BJJ</span>
-        </div>
-        <div class="feed-list-title">Ep. 39 — Leg Locks, Lineage & the New Grappling Economy</div>
-        <span style="font-size:clamp(.55rem,.65vw,.75rem);color:var(--dim);letter-spacing:.06em;">March 22, 2026 · 74 min listen</span>
-      </div>
-      <div class="feed-list-thumb">
-        <div class="feed-list-thumb-placeholder">Img</div>
-      </div>
-    </a>
-
-    <!-- List item 4 -->
     <a href="#" class="feed-list-item"
        data-format="blog" data-discipline="boxing">
       <span class="feed-list-num">04</span>
       <div class="feed-list-info">
         <div class="tags">
           <span class="tag tag-format">Blog Post</span>
-          <span class="tag tag-boxing">Boxing</span>
         </div>
-        <div class="feed-list-title">Three Rounds at a South Side Gym: Notes on Amateur Boxing Culture</div>
-        <span style="font-size:clamp(.55rem,.65vw,.75rem);color:var(--dim);letter-spacing:.06em;">March 14, 2026 · 13 min read</span>
+        <div class="feed-list-title">Burn After Reading: What Are We and Where We Are Going? </div>
+        <span style="font-size:clamp(.55rem,.65vw,.75rem);color:var(--dim);letter-spacing:.06em;">March 14, 2026 · 5 min read</span>
       </div>
       <div class="feed-list-thumb">
-        <div class="feed-list-thumb-placeholder">Img</div>
+        <img src="images/what.png">
       </div>
     </a>
-
-    <!-- List item 5 -->
-    <a href="#" class="feed-list-item"
-       data-format="shortvideo" data-discipline="mma">
-      <span class="feed-list-num">05</span>
-      <div class="feed-list-info">
-        <div class="tags">
-          <span class="tag tag-format">Short Video</span>
-          <span class="tag tag-mma">MMA</span>
-        </div>
-        <div class="feed-list-title">Body Language: Reading a Fighter Before the First Exchange</div>
-        <span style="font-size:clamp(.55rem,.65vw,.75rem);color:var(--dim);letter-spacing:.06em;">March 5, 2026 · 9 min watch</span>
-      </div>
-      <div class="feed-list-thumb">
-        <div class="feed-list-thumb-placeholder">Img</div>
-      </div>
-    </a>
-
-  </div><!-- /feed-list -->
+  </div>
+  <!-- /feed-list -->
 
   <div class="feed-empty" id="feedEmpty">No features match the selected filters.</div>
 
@@ -856,14 +698,12 @@ img, video { display: block; }
     <div class="footer-flex">
       <div class="footer-item-holder">
         <a href="https://www.instagram.com/elysion_doctrine/" target="_blank" rel="noopener" class="footer-link-holder">Instagram</a>
-        <a href="https://www.linkedin.com/company/elysion-doctrine/" target="_blank" rel="noopener" class="footer-link-holder">LinkedIn</a>
       </div>
     </div>
   </div>
   <div class="footer-over-logo-holder">
     <div class="footer-links-holder">
-      <a href="/work" class="footer-main-link">Work</a>
-      <a href="/studio" class="footer-main-link">Studio</a>
+      <a href="/gallery/gallery.html" class="footer-main-link">Studio/Gallery</a>
       <a href="/contact.html" class="footer-main-link">Contact</a>
       <div class="footer-rights">All Rights<br/>Reserved<br/>&#169; 2026</div>
     </div>
@@ -877,8 +717,8 @@ img, video { display: block; }
         <a href="mailto:csolis.studentoflife@gmail.com" class="footer-info-link">csolis.studentoflife@gmail.com</a>
       </div>
       <div class="footer-item-holder" style="flex-direction:column;gap:0.3rem;">
-        <div class="footer-h3-holder"><h3 class="footer-h3">Call Us</h3></div>
-        <a href="tel:+4542760898" class="footer-info-link">(+45) 42 76 08 98</a>
+        <div class="footer-h3-holder"><h3 class="footer-h3">Fancy a Chat?</h3></div>
+        <a href="tel:+14049408834" class="footer-info-link">(+1)4049408834</a>
       </div>
     </div>
   </div>
