@@ -3,12 +3,51 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>ĒLÝSION DOCTRINE</title>
-<meta name="description" content="fight journalism, cultural deep dives, and the philosophy of beautiful violence."/>
+<title>ĒLÝSION DOCTRINE — Fight Journalism & the Philosophy of Beautiful Violence</title>
+
+<!-- SEO Meta -->
+<meta name="description" content="Ēlýsion Doctrine: fight journalism, cultural deep dives, and the philosophy of beautiful violence. Covering Boxing, Muay Thai, BJJ, Taekwondo, Wing Chun and more."/>
+<meta name="keywords" content="fight journalism, muay thai, boxing, BJJ, taekwondo, wing chun, martial arts, combat sports, fight culture"/>
+<meta name="author" content="Ēlýsion Doctrine"/>
+<meta name="robots" content="index, follow"/>
+<link rel="canonical" href="https://elysiondoctrine.com/"/>
+
+<!-- Open Graph -->
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://elysiondoctrine.com/"/>
+<meta property="og:title" content="ĒLÝSION DOCTRINE — Fight Journalism & the Philosophy of Beautiful Violence"/>
+<meta property="og:description" content="Inside the fight game through raw storytelling. Fight journalism, cultural deep dives, and the philosophy of beautiful violence."/>
+<meta property="og:image" content="https://elysiondoctrine.com/images/og-image.jpg"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="Ēlýsion Doctrine"/>
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="ĒLÝSION DOCTRINE — Fight Journalism & the Philosophy of Beautiful Violence"/>
+<meta name="twitter:description" content="Inside the fight game through raw storytelling. Fight journalism, cultural deep dives, and the philosophy of beautiful violence."/>
+<meta name="twitter:image" content="https://elysiondoctrine.com/images/og-image.jpg"/>
+
+<!-- Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Ēlýsion Doctrine",
+  "url": "https://elysiondoctrine.com",
+  "description": "Fight journalism, cultural deep dives, and the philosophy of beautiful violence.",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://elysiondoctrine.com/search?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Khmer:wght@900&display=swap" rel="stylesheet"/>
+
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -28,8 +67,33 @@
     overflow-x: hidden;
     cursor: none;
   }
+
+  /* Remove custom cursor on touch/mobile */
+  @media (hover: none), (pointer: coarse) {
+    body { cursor: auto; }
+    #cursor { display: none !important; }
+  }
+
   ::-webkit-scrollbar { display: none; }
 
+  /* Skip link */
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    z-index: 99999;
+    background: var(--fg);
+    color: var(--bg);
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    transition: top 0.2s;
+    border-radius: 2px;
+  }
+  .skip-link:focus { top: 1rem; }
+
+  /* Preloader */
   #preloader {
     position: fixed; inset: 0; background: var(--bg); z-index: 9999;
     display: flex; align-items: center; justify-content: center;
@@ -39,12 +103,13 @@
   }
   #preloader.remove { clip-path: inset(0% 0% 100% 0%); }
   #preloader-logo { width: 60px; height: 60px; animation: spin 3s linear infinite; }
-  #preloader-text { font-size: 11px; letter-spacing: 0.2em; color: var(--fg); opacity: 0.6; }
+  #preloader-text { font-size: 11px; letter-spacing: 0.2em; color: var(--fg); opacity: 0.6; text-align: center; padding: 0 1rem; }
   #preloader-bar-wrap { width: 180px; height: 1px; background: rgba(255,255,255,0.15); position: relative; overflow: hidden; }
   #preloader-bar { height: 100%; background: white; width: 0%; transition: width 0.4s ease; }
   #preloader-percent { font-size: 11px; letter-spacing: 0.1em; color: var(--fg); opacity: 0.5; margin-top: 4px; }
   @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
+  /* Cursor */
   #cursor {
     position: fixed; width: 40px; height: 40px; border-radius: 50%; background: white;
     pointer-events: none; z-index: 9998; transform: translate(-50%, -50%);
@@ -55,6 +120,7 @@
   #cursor.visible { clip-path: circle(50% at 50% 50%); }
   #cursor.case-hover { width: 100px; height: 100px; }
 
+  /* Nav */
   .menu {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     display: flex; align-items: center; justify-content: space-between;
@@ -70,6 +136,7 @@
     letter-spacing: 0.02em; opacity: 0.85; transition: opacity 0.3s;
   }
   .menu-link:hover { opacity: 1; }
+  .menu-link:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; border-radius: 2px; }
   .menu-link sup { font-size: 0.6em; opacity: 0.6; }
   .menu-right {
     display: flex; align-items: center; gap: 0.5rem;
@@ -79,6 +146,82 @@
   #clock span { animation: blink 1s steps(1) infinite; }
   @keyframes blink { 50% { visibility: hidden; } }
 
+  /* Hamburger button */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 36px;
+    height: 36px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    pointer-events: auto;
+    padding: 4px;
+    position: relative;
+    z-index: 101;
+  }
+  .hamburger-line {
+    display: block;
+    width: 100%;
+    height: 1.5px;
+    background: var(--fg);
+    transition: transform 0.4s var(--ease), opacity 0.3s var(--ease);
+    transform-origin: center;
+  }
+  .hamburger[aria-expanded="true"] .hamburger-line:nth-child(1) {
+    transform: translateY(6.5px) rotate(45deg);
+  }
+  .hamburger[aria-expanded="true"] .hamburger-line:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  .hamburger[aria-expanded="true"] .hamburger-line:nth-child(3) {
+    transform: translateY(-6.5px) rotate(-45deg);
+  }
+  .hamburger:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; border-radius: 2px; }
+
+  /* Mobile menu overlay */
+  .mobile-menu-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 99;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 6rem 6vw 4rem;
+    gap: 1.6rem;
+    opacity: 0;
+    transform: translateY(-12px);
+    transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+    pointer-events: none;
+  }
+  .mobile-menu-overlay.open {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .mobile-menu-overlay .menu-link {
+    font-size: clamp(1.4rem, 6vw, 2.8rem);
+    font-weight: 300;
+    letter-spacing: -0.01em;
+    opacity: 0.85;
+    pointer-events: auto;
+  }
+  .mobile-menu-right {
+    margin-top: auto;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  /* Main */
   .con { position: relative; }
   .content { padding-top: 0; }
   .f-header-holder {
@@ -88,13 +231,8 @@
   .f-logo-holder { margin-bottom: 0; }
   .logotype-holder { position: relative; }
 
-  /*
-    Hero wordmark animation.
-  */
-  .hero-wordmark-wrap {
-    width: 100%;
-    overflow: hidden;
-  }
+  /* Hero wordmark */
+  .hero-wordmark-wrap { width: 100%; overflow: hidden; }
   .hero-wordmark {
     display: flex;
     flex-direction: column;
@@ -153,6 +291,7 @@
   .h1.show { opacity: 1; transform: translateY(0); }
   .h1 span { font-style: italic; }
 
+  /* Cases */
   .f-cases-holder { padding: 2vw 3vw 0; }
   .f-cases-cl { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5vw; list-style: none; }
   .f-case-holder { position: relative; }
@@ -162,11 +301,7 @@
     background: #1e1e1e; aspect-ratio: 16/10;
   }
   .f-case-link.show { clip-path: inset(0% 0% 0% 0%); }
-  .f-case-link:nth-child(2) { transition-delay: 0.1s; }
-  .f-case-link:nth-child(3) { transition-delay: 0.2s; }
-  .f-case-link:nth-child(4) { transition-delay: 0.3s; }
-  .f-case-link:nth-child(5) { transition-delay: 0.4s; }
-  .f-case-link:nth-child(6) { transition-delay: 0.5s; }
+  .f-case-link:focus-visible { outline: 2px solid var(--fg); outline-offset: 4px; }
   .f-case-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.8s var(--ease); }
   .f-case-link:hover .f-case-img { transform: scale(1.04); }
   .f-case-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
@@ -177,71 +312,69 @@
   .f-case-title-text { font-size: clamp(1rem, 1.6vw, 2.5rem); font-weight: 300; letter-spacing: -0.02em; color: var(--fg); overflow: hidden; margin-bottom: 0.3vw; }
   .f-category-holder { font-size: clamp(0.65rem, 0.8vw, 1rem); color: var(--muted); letter-spacing: 0.04em; }
 
+  /* Coming soon */
+  .coming-soon-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    align-items: flex-end;
+    padding: 1.2vw 1.4vw;
+    pointer-events: none;
+  }
+  .coming-soon-badge {
+    font-size: clamp(0.5rem, 0.65vw, 0.75rem);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(250,250,250,0.5);
+    border: 1px solid rgba(250,250,250,0.2);
+    padding: 0.35rem 0.75rem;
+    backdrop-filter: blur(4px);
+    background: rgba(22,22,22,0.4);
+    border-radius: 2px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 400;
+  }
+  .f-case-link.coming-soon .f-case-img {
+    filter: grayscale(30%) brightness(0.6);
+    transform: none !important;
+  }
+
+  /* After cases */
   .f-after-cases-holder-2 {
     padding: 8vw 3vw 6vw; display: grid; grid-template-columns: 1fr 1fr; gap: 4vw;
     border-top: 1px solid rgba(255,255,255,0.08); margin-top: 6vw;
   }
-
-        /* Coming Soon Overlay */
-      .coming-soon-overlay {
-        position: absolute;
-        inset: 0;
-        z-index: 2;
-        display: flex;
-        align-items: flex-end;
-        padding: 1.2vw 1.4vw;
-        pointer-events: none;
-      }
-
-      .coming-soon-badge {
-        font-size: clamp(0.5rem, 0.65vw, 0.75rem);
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: rgba(250,250,250,0.5);
-        border: 1px solid rgba(250,250,250,0.2);
-        padding: 0.35rem 0.75rem;
-        backdrop-filter: blur(4px);
-        background: rgba(22,22,22,0.4);
-        border-radius: 2px;
-        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-        font-weight: 400;
-      }
-
-      /* Dim the image when coming soon */
-      .f-case-link.coming-soon .f-case-img {
-        filter: grayscale(30%) brightness(0.6);
-        transform: none !important; /* disable hover zoom */
-      }  
-
-  
   .contact-info-left { display: flex; flex-direction: column; gap: 3vw; }
   .small-h3 { font-size: clamp(0.6rem, 0.75vw, 1rem); letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.8rem; font-weight: 400; }
   .about-services-list-holder { text-decoration: none; display: inline-block; }
   .about-services-list-text { font-size: clamp(0.85rem, 1.1vw, 1.4rem); color: var(--fg); font-weight: 300; letter-spacing: -0.01em; transition: opacity 0.3s; }
   .about-services-list-holder:hover .about-services-list-text { opacity: 0.6; }
+  .about-services-list-holder:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; border-radius: 2px; }
   .contact-info-right { display: flex; align-items: flex-end; }
   .small-contact-text { font-size: clamp(0.8rem, 1.05vw, 1.3rem); line-height: 1.55; color: var(--muted); font-weight: 300; max-width: 36ch; }
 
+  /* Footer */
   .footer { background: #fafafa; color: #161616; padding: 3vw 3vw 0; }
   .footer-items { border-bottom: 1px solid rgba(0,0,0,0.08); padding-bottom: 2vw; margin-bottom: 3vw; }
   .footer-flex { display: flex; justify-content: flex-end; }
   .footer-item-holder { display: flex; gap: 2rem; }
   .footer-link-holder { text-decoration: none; color: #161616; font-size: clamp(0.65rem, 0.8vw, 1rem); opacity: 0.6; transition: opacity 0.3s; letter-spacing: 0.03em; }
   .footer-link-holder:hover { opacity: 1; }
+  .footer-link-holder:focus-visible { outline: 2px solid #161616; outline-offset: 3px; border-radius: 2px; }
   .footer-over-logo-holder { display: grid; grid-template-columns: 1fr 1fr; gap: 3vw; margin-bottom: 3vw; }
   .footer-links-holder { display: flex; flex-direction: column; gap: 1rem; }
   .footer-main-link { text-decoration: none; color: #161616; font-size: clamp(1.2rem, 2vw, 3rem); font-weight: 300; letter-spacing: -0.02em; line-height: 1.1; transition: opacity 0.3s; }
   .footer-main-link:hover { opacity: 0.5; }
+  .footer-main-link:focus-visible { outline: 2px solid #161616; outline-offset: 3px; border-radius: 2px; }
   .footer-rights { font-size: clamp(0.65rem, 0.8vw, 1rem); color: rgba(22,22,22,0.4); line-height: 1.6; margin-top: 2rem; }
   .footer-flex.smaller { justify-content: flex-end; align-items: flex-start; gap: 3vw; }
   .footer-h3-holder { margin-bottom: 0.6rem; }
   .footer-h3 { font-size: clamp(0.6rem, 0.7vw, 0.9rem); letter-spacing: 0.14em; text-transform: uppercase; color: rgba(22,22,22,0.45); font-weight: 400; }
   .footer-info-link { text-decoration: none; color: #161616; font-size: clamp(0.75rem, 0.9vw, 1.1rem); font-weight: 300; transition: opacity 0.3s; }
   .footer-info-link:hover { opacity: 0.5; }
+  .footer-info-link:focus-visible { outline: 2px solid #161616; outline-offset: 3px; border-radius: 2px; }
   .footer-logo-holder { padding: 3vw 0 4vw; border-top: 1px solid rgba(0,0,0,0.08); margin-top: 2vw; overflow: hidden; width: 100%; }
-  .footer-logo-svg { width: 100%; height: auto; display: block; }
-
-  /* Footer wordmark*/
   .footer-wordmark {
     font-family:'Unbounded', sans-serif;
     font-weight: 900;
@@ -253,6 +386,7 @@
     width: 100%;
   }
 
+  /* Load overlay */
   .load-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 9000; clip-path: inset(100% 0% 0% 0%); pointer-events: none; }
   .load-overlay.loading { animation: loadoverlay 1.2s cubic-bezier(.645,.045,.355,1) forwards; }
   @keyframes loadoverlay {
@@ -262,36 +396,106 @@
     100% { clip-path: inset(0%   0% 100% 0%); }
   }
 
-  @media (max-width: 768px) {
-    .f-cases-cl { grid-template-columns: 1fr; }
-    .f-after-cases-holder-2 { grid-template-columns: 1fr; }
-    .footer-over-logo-holder { grid-template-columns: 1fr; }
-    .footer-flex.smaller { flex-direction: column; gap: 2rem; }
-    .menu-links-holder { gap: 4vw; }
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .menu-links-holder { display: none; }
+    .menu-right { display: none; }
+    .hamburger { display: flex; }
+
+    .menu-logo svg { width: clamp(120px, 38vw, 180px); }
+    .menu { padding: 4vw 4vw; }
+
+    /* Hero wordmark full width on mobile */
+    .hero-wordmark { width: 100%; }
+    .f-header-holder { padding-top: 22vw; padding-left: 4vw; padding-right: 4vw; }
+    .small-header { font-size: clamp(0.7rem, 2.8vw, 1rem); margin-top: 3vw; }
+    .f-intro-text-holder { max-width: 100%; padding: 6vw 0 3vw; }
     .h1 { font-size: clamp(1rem, 4vw, 2rem); }
+
+    .f-cases-holder { padding: 4vw 4vw 0; }
+    .f-cases-cl { grid-template-columns: 1fr; gap: 4vw; }
+    .f-grid-info-holder { padding: 2vw 0 3vw; }
+    .f-case-title-text { font-size: clamp(1.1rem, 5vw, 2rem); }
+    .f-category-holder { font-size: clamp(0.7rem, 2.5vw, 1rem); }
+
+    .coming-soon-overlay { padding: 3vw; }
+    .coming-soon-badge { font-size: clamp(0.55rem, 2vw, 0.75rem); }
+
+    .f-after-cases-holder-2 {
+      grid-template-columns: 1fr;
+      padding: 10vw 4vw 8vw;
+      margin-top: 8vw;
+      gap: 6vw;
+    }
+    .contact-info-left { gap: 5vw; }
+    .small-h3 { font-size: clamp(0.65rem, 2.5vw, 1rem); }
+    .about-services-list-text { font-size: clamp(0.9rem, 3.5vw, 1.4rem); }
+    .small-contact-text { font-size: clamp(0.85rem, 3.2vw, 1.2rem); max-width: 100%; }
+
+    .footer { padding: 6vw 4vw 0; }
+    .footer-items { padding-bottom: 4vw; margin-bottom: 5vw; }
+    .footer-over-logo-holder { grid-template-columns: 1fr; gap: 6vw; }
+    .footer-flex.smaller { flex-direction: column; gap: 4vw; justify-content: flex-start; }
+    .footer-item-holder { flex-direction: column; gap: 0.3rem; }
+    .footer-main-link { font-size: clamp(1.4rem, 6vw, 2.5rem); }
+    .footer-h3 { font-size: clamp(0.6rem, 2.2vw, 0.9rem); }
+    .footer-info-link { font-size: clamp(0.8rem, 3vw, 1.1rem); }
+  }
+
+  @media (max-width: 480px) {
+    .menu { padding: 5vw 5vw; }
+    .menu-logo svg { width: clamp(100px, 45vw, 150px); }
+    .f-header-holder { padding-top: 28vw; padding-left: 5vw; padding-right: 5vw; }
+    .f-cases-holder { padding: 5vw 5vw 0; }
+    .footer { padding: 8vw 5vw 0; }
   }
 </style>
 </head>
 <body>
 
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
 <!-- PRELOADER -->
-<div id="preloader">
-  <svg id="preloader-logo" viewBox="0 0 449 449" fill="none" xmlns="http://www.w3.org/2000/svg">
+<div id="preloader" role="status" aria-label="Loading Ēlýsion Doctrine">
+  <svg id="preloader-logo" viewBox="0 0 449 449" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <path d="M125.8448,124.9432 C42.9118,207.8772 244.7638,409.7282 327.6968,326.7952 C410.4218,244.0692 208.5718,42.2172 125.8448,124.9432 M70.6248,71.3792 C101.8548,40.1502 135.7728,19.0542 171.3448,8.2992 C207.5368,-2.6608 243.1098,-2.6608 278.6808,7.6792 C314.4598,18.6412 347.7578,39.1152 378.5738,69.9302 C409.1818,100.5402 429.8628,134.0442 440.6168,169.6162 C451.3718,205.6012 451.7848,241.5872 441.2378,278.1932 C430.8978,314.1792 409.8018,348.0972 378.5738,379.3262 C347.5508,410.3482 313.8398,431.2362 278.0608,441.3712 C241.8678,451.5052 206.0888,450.8832 170.1038,440.1302 C134.5318,429.3762 101.2338,408.4872 70.6248,377.8792 C39.8098,347.0632 19.1278,313.9722 8.1668,278.1942 C-2.5872,243.0352 -2.5872,207.4632 7.9608,171.6832 C18.5078,136.3192 39.3968,102.6082 70.6248,71.3792" fill="white"/>
   </svg>
   <div id="preloader-text">Documenting the art of controlled chaos</div>
-  <div id="preloader-bar-wrap"><div id="preloader-bar"></div></div>
-  <div id="preloader-percent">0%</div>
+  <div id="preloader-bar-wrap" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+    <div id="preloader-bar"></div>
+  </div>
+  <div id="preloader-percent" aria-live="polite">0%</div>
 </div>
 
-<div class="load-overlay" id="loadOverlay"></div>
-<div id="cursor"></div>
+<div class="load-overlay" id="loadOverlay" aria-hidden="true"></div>
+<div id="cursor" aria-hidden="true"></div>
+
+<!-- Mobile menu overlay -->
+<div
+  class="mobile-menu-overlay"
+  id="mobileMenu"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Navigation menu"
+  hidden
+>
+  <a href="#" class="menu-link">Fight Styles <sup>(6)</sup></a>
+  <a href="/featured.html" class="menu-link">Featured</a>
+  <a href="/gallery/gallery.html" class="menu-link">Gallery</a>
+  <a href="/virtuscorporis.html" class="menu-link">Virtus Corporis: Inherited Motion</a>
+  <a href="/inprogress.html" class="menu-link">Technical Library</a>
+  <a href="/inprogress.html" class="menu-link">Community</a>
+  <div class="mobile-menu-right" aria-label="Current time">
+    <span>CPH</span>
+    <p id="clockMobile">12<span aria-hidden="true">:</span>00</p>
+  </div>
+</div>
 
 <!-- NAV -->
-<nav class="menu">
+<nav class="menu" aria-label="Main navigation">
   <div class="menu-link-holder">
-    <a href="/" class="menu-logo">
-      <svg viewBox="0 0 820 80" fill="white" xmlns="http://www.w3.org/2000/svg">
+    <a href="/" class="menu-logo" aria-label="Ēlýsion Doctrine — Home">
+      <svg viewBox="0 0 820 80" fill="white" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
         <text x="0" y="68"
           font-family="'Unbounded', sans-serif"
           font-size="72" font-weight="900" letter-spacing="-1"
@@ -307,145 +511,140 @@
     <a href="/inprogress.html" class="menu-link">Technical Library</a>
     <a href="/inprogress.html" class="menu-link">Community</a>
   </div>
-  <div class="menu-right">
+  <div class="menu-right" aria-label="Current time in Copenhagen">
     <span>CPH</span>
-    <p id="clock">12<span>:</span>00</p>
+    <p id="clock">12<span aria-hidden="true">:</span>00</p>
   </div>
+  <button
+    class="hamburger"
+    id="hamburgerBtn"
+    aria-controls="mobileMenu"
+    aria-expanded="false"
+    aria-label="Open navigation menu"
+  >
+    <span class="hamburger-line" aria-hidden="true"></span>
+    <span class="hamburger-line" aria-hidden="true"></span>
+    <span class="hamburger-line" aria-hidden="true"></span>
+  </button>
 </nav>
 
 <!-- MAIN -->
-<main class="con">
+<main class="con" id="main-content">
   <div class="content">
     <div class="f-header-holder">
       <div class="f-logo-holder">
         <div class="logotype-holder">
           <div class="hero-wordmark-wrap">
-            <div class="hero-wordmark" id="heroWordmark">
-              <div class="word-row" id="wordRow1"><span class="letter">Ē</span><span class="letter">L</span><span class="letter">Ý</span><span class="letter">S</span><span class="letter">I</span><span class="letter">O</span><span class="letter">N</span></div>
-              <div class="word-row" id="wordRow2"><span class="letter">D</span><span class="letter">O</span><span class="letter">C</span><span class="letter">T</span><span class="letter">R</span><span class="letter">I</span><span class="letter">N</span><span class="letter">E</span></div>
+            <div class="hero-wordmark" id="heroWordmark" aria-label="Ēlýsion Doctrine">
+              <div class="word-row" id="wordRow1" aria-hidden="true">
+                <span class="letter">Ē</span><span class="letter">L</span><span class="letter">Ý</span><span class="letter">S</span><span class="letter">I</span><span class="letter">O</span><span class="letter">N</span>
+              </div>
+              <div class="word-row" id="wordRow2" aria-hidden="true">
+                <span class="letter">D</span><span class="letter">O</span><span class="letter">C</span><span class="letter">T</span><span class="letter">R</span><span class="letter">I</span><span class="letter">N</span><span class="letter">E</span>
+              </div>
             </div>
           </div>
         </div>
-        <div class="small-header">
+        <p class="small-header">
           <span>/ˌɛˈliːʒən ˈdɒktrɪn/<em> noun</em></span><br/>
           the philosophy of the blessed; a doctrine of sacred discipline through honor and flow state
-        </div>
+        </p>
       </div>
       <div class="f-intro-text-holder">
         <h1 class="h1" id="heroH1">
-          <span>Inside the fight game through raw storytelling</span> - Fight journalism, cultural deep dives, and the philosophy of beautiful violence.
+          <span>Inside the fight game through raw storytelling</span> — Fight journalism, cultural deep dives, and the philosophy of beautiful violence.
         </h1>
       </div>
     </div>
-      
-    <div class="f-cases-holder">
-        <ul class="f-cases-cl" id="casesList">
 
-          <li class="f-case-holder">
-            <a href="#" class="f-case-link coming-soon" id="case0">
-              <img class="f-case-img" src="images/box.jpg" alt="Boxing" loading="lazy"/>
-              <div class="grid-hover"></div>
-              <div class="coming-soon-overlay">
-                <span class="coming-soon-badge">In Construction</span>
-              </div>
-            </a>
-            <div class="f-grid-info-holder">
-              <div class="f-case-title-text">Boxing</div>
-              <div class="f-category-holder">Where rhythm meets consequence</div>
-            </div>
-          </li>
+    <section class="f-cases-holder" aria-label="Fight disciplines">
+      <ul class="f-cases-cl" id="casesList">
 
-          <li class="f-case-holder">
-            <a href="#" class="f-case-link coming-soon" id="case1">
-              <img class="f-case-img" src="images/nakmouy.jpg" alt="Muay Thai" loading="lazy"/>
-              <div class="grid-hover"></div>
-              <div class="coming-soon-overlay">
-                <span class="coming-soon-badge">In Construction</span>
-              </div>
-            </a>
-            <div class="f-grid-info-holder">
-              <div class="f-case-title-text">Muay Thai</div>
-              <div class="f-category-holder">Clinched up and out of mercy</div>
-            </div>
-          </li>
-
-          <li class="f-case-holder">
-            <a href="#" class="f-case-link coming-soon" id="case2">
-              <img class="f-case-img" src="images/gi.jpg" alt="Brazilian Jujitsu" loading="lazy"/>
-              <div class="grid-hover"></div>
-              <div class="coming-soon-overlay">
-                <span class="coming-soon-badge">In Construction</span>
-              </div>
-            </a>
-            <div class="f-grid-info-holder">
-              <div class="f-case-title-text">Brazilian Jujitsu</div>
-              <div class="f-category-holder">Efficiency at ground level</div>
-            </div>
-          </li>
-
-          <li class="f-case-holder">
-            <a href="#" class="f-case-link coming-soon" id="case3">
-              <img class="f-case-img" src="images/TDKdemo.jpg" alt="Taekwondo" loading="lazy"/>
-              <div class="grid-hover"></div>
-              <div class="coming-soon-overlay">
-                <span class="coming-soon-badge">In Construction</span>
-              </div>
-            </a>
-            <div class="f-grid-info-holder">
-              <div class="f-case-title-text">Taekwondo</div>
-              <div class="f-category-holder">Polite distance. Impolite speed</div>
-            </div>
-          </li>
-
-          <li class="f-case-holder">
-            <a href="#" class="f-case-link coming-soon" id="case4">
-              <img class="f-case-img" src="images/Ipandbrucelee.jpg" alt="Wing Chun" loading="lazy"/>
-              <div class="grid-hover"></div>
-              <div class="coming-soon-overlay">
-                <span class="coming-soon-badge">In Construction</span>
-              </div>
-            </a>
-            <div class="f-grid-info-holder">
-              <div class="f-case-title-text">Wing Chun</div>
-              <div class="f-category-holder">Close range. Clear mind. No wasted motion</div>
-            </div>
-          </li>
-
-        </ul>
-      </div>
-
-    
-        <!--
         <li class="f-case-holder">
-          <a href="#" class="f-case-link" id="case5">
-            <video autoplay muted loop playsinline class="f-case-video">
-              <source src="https://cdn.prod.website-files.com/602aae8e1071667af79ea33a/63ecf1cc4f21a9162b7ffa54_frontpage_teaser1-transcode.mp4" type="video/mp4"/>
-            </video>
-            <div class="grid-hover">
-              <img src="https://cdn.prod.website-files.com/63640f262fc5ea1d18eb1986/65d1eeac50a2ea9f70c623e2_65d1ee633dcf2f045574d828_trwm-breaker.webp" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;" alt="Ride hover"/>
+          <a href="#" class="f-case-link coming-soon" id="case0" aria-label="Boxing — in construction">
+            <img class="f-case-img" src="images/box.jpg" alt="Two boxers in the ring, gloves raised" loading="lazy" width="800" height="500"/>
+            <div class="grid-hover" aria-hidden="true"></div>
+            <div class="coming-soon-overlay" aria-hidden="true">
+              <span class="coming-soon-badge">In Construction</span>
             </div>
           </a>
           <div class="f-grid-info-holder">
-            <div class="f-case-title-text">Take A Ride With Me</div>
-            <div class="f-category-holder">Downhill Mountainbike</div>
+            <p class="f-case-title-text">Boxing</p>
+            <p class="f-category-holder">Where rhythm meets consequence</p>
           </div>
         </li>
-      </ul>
-    </div>
-  -->
 
-    <div class="f-after-cases-holder-2">
+        <li class="f-case-holder">
+          <a href="#" class="f-case-link coming-soon" id="case1" aria-label="Muay Thai — in construction">
+            <img class="f-case-img" src="images/nakmouy.jpg" alt="Muay Thai fighter in a clinch, throwing a knee" loading="lazy" width="800" height="500"/>
+            <div class="grid-hover" aria-hidden="true"></div>
+            <div class="coming-soon-overlay" aria-hidden="true">
+              <span class="coming-soon-badge">In Construction</span>
+            </div>
+          </a>
+          <div class="f-grid-info-holder">
+            <p class="f-case-title-text">Muay Thai</p>
+            <p class="f-category-holder">Clinched up and out of mercy</p>
+          </div>
+        </li>
+
+        <li class="f-case-holder">
+          <a href="#" class="f-case-link coming-soon" id="case2" aria-label="Brazilian Jiu-Jitsu — in construction">
+            <img class="f-case-img" src="images/gi.jpg" alt="BJJ practitioner in a gi applying a submission" loading="lazy" width="800" height="500"/>
+            <div class="grid-hover" aria-hidden="true"></div>
+            <div class="coming-soon-overlay" aria-hidden="true">
+              <span class="coming-soon-badge">In Construction</span>
+            </div>
+          </a>
+          <div class="f-grid-info-holder">
+            <p class="f-case-title-text">Brazilian Jiu-Jitsu</p>
+            <p class="f-category-holder">Efficiency at ground level</p>
+          </div>
+        </li>
+
+        <li class="f-case-holder">
+          <a href="#" class="f-case-link coming-soon" id="case3" aria-label="Taekwondo — in construction">
+            <img class="f-case-img" src="images/TDKdemo.jpg" alt="Taekwondo athlete executing a high kick" loading="lazy" width="800" height="500"/>
+            <div class="grid-hover" aria-hidden="true"></div>
+            <div class="coming-soon-overlay" aria-hidden="true">
+              <span class="coming-soon-badge">In Construction</span>
+            </div>
+          </a>
+          <div class="f-grid-info-holder">
+            <p class="f-case-title-text">Taekwondo</p>
+            <p class="f-category-holder">Polite distance. Impolite speed</p>
+          </div>
+        </li>
+
+        <li class="f-case-holder">
+          <a href="#" class="f-case-link coming-soon" id="case4" aria-label="Wing Chun — in construction">
+            <img class="f-case-img" src="images/Ipandbrucelee.jpg" alt="Wing Chun practitioners demonstrating close-range techniques" loading="lazy" width="800" height="500"/>
+            <div class="grid-hover" aria-hidden="true"></div>
+            <div class="coming-soon-overlay" aria-hidden="true">
+              <span class="coming-soon-badge">In Construction</span>
+            </div>
+          </a>
+          <div class="f-grid-info-holder">
+            <p class="f-case-title-text">Wing Chun</p>
+            <p class="f-category-holder">Close range. Clear mind. No wasted motion</p>
+          </div>
+        </li>
+
+      </ul>
+    </section>
+
+    <section class="f-after-cases-holder-2" aria-label="Contact">
       <div class="contact-info-left">
         <div class="contact-info-holder">
-          <h3 class="small-h3">General & Business Inquiries</h3>
+          <h2 class="small-h3">General &amp; Business Inquiries</h2>
           <a href="mailto:elysiondoctrine@gmail.com" class="about-services-list-holder">
-            <div class="about-services-list-text">elysiondoctrine@gmail.com</div>
+            <p class="about-services-list-text">elysiondoctrine@gmail.com</p>
           </a>
         </div>
         <div class="contact-info-holder">
-          <h3 class="small-h3">Call us</h3>
+          <h2 class="small-h3">Call us</h2>
           <a href="tel:+14049408834" class="about-services-list-holder">
-            <div class="about-services-list-text">(+1) 404-940-8834</div>
+            <p class="about-services-list-text">(+1) 404-940-8834</p>
           </a>
         </div>
       </div>
@@ -454,27 +653,24 @@
           We're always looking for events and fighters to work with internationally and domestically.
         </p>
       </div>
-    </div>
+    </section>
   </div>
 </main>
 
-<!-- ============================================================
-     FOOTER
-     ============================================================ -->
+<!-- FOOTER -->
 <footer class="footer">
   <div class="footer-items">
     <div class="footer-flex">
       <div class="footer-item-holder">
-        <a href="https://www.instagram.com/elysion_doctrine/" target="_blank" rel="noopener" class="footer-link-holder">Instagram</a>
+        <a href="https://www.instagram.com/elysion_doctrine/" target="_blank" rel="noopener noreferrer" class="footer-link-holder" aria-label="Follow Ēlýsion Doctrine on Instagram (opens in new tab)">Instagram</a>
       </div>
     </div>
   </div>
   <div class="footer-over-logo-holder">
     <div class="footer-links-holder">
-     <!-- <a href="/" class="footer-main-link">Work</a> -->
       <a href="/gallery/gallery.html" class="footer-main-link">Studio/Gallery</a>
       <a href="/contact.html" class="footer-main-link">Contact</a>
-      <div class="footer-rights">All Rights<br/>Reserved<br/>&#169; 2026</div>
+      <p class="footer-rights">All Rights<br/>Reserved<br/>&copy; 2026</p>
     </div>
     <div class="footer-flex smaller">
       <div class="footer-item-holder" style="flex-direction:column;gap:0.3rem;">
@@ -487,62 +683,59 @@
       </div>
       <div class="footer-item-holder" style="flex-direction:column;gap:0.3rem;">
         <div class="footer-h3-holder"><h3 class="footer-h3">Fancy a Chat?</h3></div>
-        <a href="tel:+4542760898" class="footer-info-link">(+1)4049408834</a>
+        <a href="tel:+14049408834" class="footer-info-link">(+1) 404-940-8834</a>
       </div>
     </div>
   </div>
-  <div class="footer-logo-holder">
+  <div class="footer-logo-holder" aria-hidden="true">
     <span class="footer-wordmark" id="footerWordmark">ĒLÝSION DOCTRINE</span>
   </div>
 </footer>
 
 <script>
-(function() {
-  const preloader    = document.getElementById('preloader');
-  const preloaderBar = document.getElementById('preloader-bar');
-  const preloaderPct = document.getElementById('preloader-percent');
-  const heroWordmark = document.getElementById('heroWordmark');
-  const heroH1       = document.getElementById('heroH1');
-  const caseLinks    = document.querySelectorAll('.f-case-link');
-
-  /* Auto-size each word row to exactly fill the container width */
+(function () {
+  /* ── Wordmark auto-fit ── */
   function fitWordmark() {
-    const rows = heroWordmark.querySelectorAll('.word-row');
-    const containerW = heroWordmark.offsetWidth;
-    rows.forEach(row => {
-      let lo = 10, hi = 500, mid;
+    var heroWordmark = document.getElementById('heroWordmark');
+    var rows = heroWordmark.querySelectorAll('.word-row');
+    var containerW = heroWordmark.offsetWidth;
+    rows.forEach(function(row) {
+      var lo = 10, hi = 500, mid;
       row.style.fontSize = hi + 'px';
-      for (let i = 0; i < 20; i++) {
+      for (var i = 0; i < 20; i++) {
         mid = (lo + hi) / 2;
         row.style.fontSize = mid + 'px';
-        if (row.scrollWidth <= containerW) lo = mid;
-        else hi = mid;
+        if (row.scrollWidth <= containerW) lo = mid; else hi = mid;
       }
       row.style.fontSize = lo + 'px';
     });
-
-    /* Footer wordmark — single line, fit to full width */
-    const fw = document.getElementById('footerWordmark');
+    var fw = document.getElementById('footerWordmark');
     if (fw) {
-      const fContainerW = fw.parentElement.offsetWidth;
-      let lo = 10, hi = 800, mid;
+      var fW = fw.parentElement.offsetWidth;
+      var lo = 10, hi = 800, mid;
       fw.style.fontSize = hi + 'px';
-      for (let i = 0; i < 20; i++) {
+      for (var i = 0; i < 20; i++) {
         mid = (lo + hi) / 2;
         fw.style.fontSize = mid + 'px';
-        if (fw.scrollWidth <= fContainerW) lo = mid;
-        else hi = mid;
+        if (fw.scrollWidth <= fW) lo = mid; else hi = mid;
       }
       fw.style.fontSize = lo + 'px';
     }
   }
-
-  /* Run on load and resize */
   document.fonts.ready.then(fitWordmark);
   window.addEventListener('resize', fitWordmark);
 
-  let progress = 0;
-  const interval = setInterval(() => {
+  /* ── Preloader ── */
+  var preloader    = document.getElementById('preloader');
+  var preloaderBar = document.getElementById('preloader-bar');
+  var preloaderPct = document.getElementById('preloader-percent');
+  var preloaderBarWrap = document.getElementById('preloader-bar-wrap');
+  var heroWordmark = document.getElementById('heroWordmark');
+  var heroH1       = document.getElementById('heroH1');
+  var caseLinks    = document.querySelectorAll('.f-case-link');
+
+  var progress = 0;
+  var interval = setInterval(function() {
     progress += Math.random() * 18;
     if (progress >= 100) {
       progress = 100;
@@ -550,54 +743,106 @@
       finishPreloader();
     }
     preloaderBar.style.width = progress + '%';
+    preloaderBarWrap.setAttribute('aria-valuenow', Math.floor(progress));
     preloaderPct.textContent = Math.floor(progress) + '%';
   }, 120);
 
   function finishPreloader() {
-    setTimeout(() => preloader.classList.add('remove'), 600);
-    setTimeout(() => {
+    setTimeout(function() {
+      preloader.classList.add('remove');
+      preloader.setAttribute('aria-hidden', 'true');
+    }, 600);
+    setTimeout(function() {
       heroWordmark.classList.add('active');
       heroH1.classList.add('show');
     }, 1000);
-    setTimeout(() => caseLinks.forEach(l => l.classList.add('show')), 1400);
+    setTimeout(function() {
+      caseLinks.forEach(function(l) { l.classList.add('show'); });
+    }, 1400);
   }
 
-  const cursor = document.getElementById('cursor');
-  let cx = 0, cy = 0;
-  document.addEventListener('mousemove', e => {
-    cx = e.clientX; cy = e.clientY;
-    cursor.classList.add('visible');
-  });
-  (function loop() {
-    cursor.style.left = cx + 'px';
-    cursor.style.top  = cy + 'px';
-    requestAnimationFrame(loop);
-  })();
-  caseLinks.forEach(l => {
-    l.addEventListener('mouseenter', () => cursor.classList.add('case-hover'));
-    l.addEventListener('mouseleave', () => cursor.classList.remove('case-hover'));
-  });
+  /* ── Custom cursor — desktop pointer only ── */
+  var cursor = document.getElementById('cursor');
+  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    var cx = 0, cy = 0;
+    document.addEventListener('mousemove', function(e) {
+      cx = e.clientX; cy = e.clientY;
+      cursor.classList.add('visible');
+    });
+    (function loop() {
+      cursor.style.left = cx + 'px';
+      cursor.style.top  = cy + 'px';
+      requestAnimationFrame(loop);
+    })();
+    caseLinks.forEach(function(l) {
+      l.addEventListener('mouseenter', function() { cursor.classList.add('case-hover'); });
+      l.addEventListener('mouseleave', function() { cursor.classList.remove('case-hover'); });
+    });
+  }
 
-  const clockEl = document.getElementById('clock');
+  /* ── Clock ── */
   function tick() {
-    const d = new Date();
-    let h = d.getHours(), m = d.getMinutes();
-    if (h < 10) h = '0'+h;
-    if (m < 10) m = '0'+m;
-    clockEl.innerHTML = h + '<span>:</span>' + m;
+    var d = new Date(), h = d.getHours(), m = d.getMinutes();
+    if (h < 10) h = '0' + h;
+    if (m < 10) m = '0' + m;
+    var html = h + '<span aria-hidden="true">:</span>' + m;
+    document.getElementById('clock').innerHTML = html;
+    var mob = document.getElementById('clockMobile');
+    if (mob) mob.innerHTML = html;
   }
   tick(); setInterval(tick, 1000);
 
-  const titles = document.querySelectorAll('.f-case-title-text');
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
+  /* ── Hamburger / mobile menu ── */
+  var hamburgerBtn = document.getElementById('hamburgerBtn');
+  var mobileMenu   = document.getElementById('mobileMenu');
+  var menuOpen = false;
+
+  function openMenu() {
+    menuOpen = true;
+    mobileMenu.removeAttribute('hidden');
+    requestAnimationFrame(function() { mobileMenu.classList.add('open'); });
+    hamburgerBtn.setAttribute('aria-expanded', 'true');
+    hamburgerBtn.setAttribute('aria-label', 'Close navigation menu');
+    document.body.style.overflow = 'hidden';
+    var first = mobileMenu.querySelector('a');
+    if (first) first.focus();
+  }
+
+  function closeMenu() {
+    menuOpen = false;
+    mobileMenu.classList.remove('open');
+    hamburgerBtn.setAttribute('aria-expanded', 'false');
+    hamburgerBtn.setAttribute('aria-label', 'Open navigation menu');
+    document.body.style.overflow = '';
+    mobileMenu.addEventListener('transitionend', function handler() {
+      if (!menuOpen) mobileMenu.setAttribute('hidden', '');
+      mobileMenu.removeEventListener('transitionend', handler);
+    });
+  }
+
+  hamburgerBtn.addEventListener('click', function() {
+    menuOpen ? closeMenu() : openMenu();
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && menuOpen) { closeMenu(); hamburgerBtn.focus(); }
+  });
+
+  mobileMenu.querySelectorAll('a').forEach(function(link) {
+    link.addEventListener('click', closeMenu);
+  });
+
+  /* ── Scroll reveal for case titles ── */
+  var titles = document.querySelectorAll('.f-case-title-text');
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
       if (e.isIntersecting) {
         e.target.style.opacity = '1';
         e.target.style.transform = 'translateY(0)';
       }
     });
   }, { threshold: 0.1 });
-  titles.forEach(t => {
+  titles.forEach(function(t) {
     t.style.opacity = '0';
     t.style.transform = 'translateY(12px)';
     t.style.transition = 'opacity 1s cubic-bezier(.23,1,.32,1), transform 1s cubic-bezier(.23,1,.32,1)';
