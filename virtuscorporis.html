@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Martial Body: Inherited Motion — BellatorPax</title>
+<title>The Exquisite Body: Inherited Motion — Elysion Doctrine</title>
 <meta name="description" content="A documentary journalism project exploring how movement and the body are celebrated across culture, age, gender, and income."/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet"/>
@@ -49,7 +49,7 @@ a{color:inherit;text-decoration:none}
   display:flex;align-items:center;justify-content:space-between;
   padding:2.2vw 3vw;mix-blend-mode:difference;pointer-events:none}
 .menu-logo{pointer-events:auto}
-.menu-logo svg{width:110px;height:auto;display:block}
+.menu-logo svg{width:180px;height:auto;display:block}
 .menu-links-holder{display:flex;align-items:center;gap:2.5vw;pointer-events:auto}
 .menu-link{color:var(--fg);font-size:clamp(.7rem,.85vw,1rem);letter-spacing:.02em;opacity:.8;transition:opacity .3s}
 .menu-link:hover{opacity:1}
@@ -65,11 +65,39 @@ a{color:inherit;text-decoration:none}
 /* HERO */
 .hero{position:relative;min-height:100vh;display:flex;flex-direction:column;
   justify-content:flex-end;padding:0 3vw 5vw;overflow:hidden}
-.hero-bg{position:absolute;inset:0;background:linear-gradient(160deg,#0e0e0e 0%,#1a1a1a 60%,#0a0a0a 100%)}
-.hero-grain{position:absolute;inset:0;opacity:.04;
+
+/* Parallax image — taller than viewport so it can travel */
+.hero-img{
+  position:absolute;
+  left:0;
+  top:-5%;
+  width:100%;
+  height:110%;
+  object-fit:cover;
+  object-position:center 30%;
+  display:block;
+  will-change:transform;
+  z-index:0;
+}
+/* Dark overlay for text contrast — gradient darkens bottom where text sits */
+.hero-overlay{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(10,10,10,0.45) 0%,
+      rgba(10,10,10,0.35) 40%,
+      rgba(10,10,10,0.72) 75%,
+      rgba(10,10,10,0.88) 100%
+    );
+}
+.hero-grain{position:absolute;inset:0;opacity:.04;z-index:1;
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size:200px 200px}
 .hero-content{position:relative;z-index:2}
+.hero-scroll-indicator{z-index:2 !important}
 .hero-eyebrow{font-size:clamp(.65rem,.8vw,.9rem);letter-spacing:.18em;text-transform:uppercase;
   color:var(--muted);margin-bottom:1.8vw;opacity:0;transform:translateY(10px);
   transition:opacity 1s var(--ease) .2s,transform 1s var(--ease) .2s}
@@ -110,20 +138,49 @@ a{color:inherit;text-decoration:none}
 .section-title em{font-style:italic}
 .section-count{font-size:clamp(.65rem,.8vw,.9rem);color:var(--muted);letter-spacing:.06em}
 
-/* SCROLL STRIPS */
+/* SCROLL STRIPS
+   KEY FIX: reveal uses opacity+translateY instead of clip-path.
+   clip-path on the parent was clipping the absolutely-positioned child image. */
 .scroll-strips{padding:0 3vw}
-.strip{position:relative;overflow:hidden;margin-bottom:1.2vw;
-  clip-path:inset(100% 0 0 0);transition:clip-path 1.4s var(--ease)}
-.strip.revealed{clip-path:inset(0 0 0 0)}
-.strip-full{height:70vh}
+
+.strip{
+  position:relative;
+  overflow:hidden;
+  margin-bottom:1.2vw;
+  opacity:0;
+  transform:translateY(40px);
+  transition:opacity 1.4s var(--ease), transform 1.4s var(--ease);
+}
+.strip.revealed{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.strip-full{height:70vh;position: relative;overflow: hidden;}
 .strip-row{display:grid;grid-template-columns:1fr 1fr;gap:1.2vw;margin-bottom:1.2vw}
 .strip-half{height:55vh}
 .strip-trio{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.2vw;margin-bottom:1.2vw}
 .strip-third{height:45vh}
-.strip-img{position:absolute;inset:-15%;width:110%;height:130%;object-fit:cover;
-  display:block;transition:transform .1s linear;will-change:transform;filter:brightness(.6)}
-.strip:hover .strip-img{filter:brightness(.75);transition:filter .6s var(--ease)}
-.strip-text{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;
+
+/* Image: 140% tall, offset -20% from top so it's centred.
+   Parallax JS then applies a small translateY on top of this. */
+.strip-img{
+  position:absolute;
+  left:0;
+  top:-20%;
+  width:100%;
+  height:140%;
+  object-fit:cover;
+  display:block;
+  will-change:transform;
+  filter:brightness(.6);
+  transition:filter .6s var(--ease);
+}
+.strip:hover .strip-img{filter:brightness(.75)}
+
+.strip-text{position:absolute;bottom: 2.5vw;left: 2.5vw;max-width: 480px;padding: 1.5rem 1.8rem;background: rgba(22, 22, 22, 0.72);
+backdrop-filter: blur(8px);-webkit-backdrop-filter: blur(8px);border: 1px solid rgba(250, 250, 250, 0.07);
+z-index:2;display:flex;flex-direction:column;
   justify-content:flex-end;padding:3vw}
 .strip-kicker{font-size:clamp(.6rem,.72vw,.82rem);letter-spacing:.16em;text-transform:uppercase;
   color:rgba(250,250,250,.5);margin-bottom:.7rem}
@@ -239,6 +296,7 @@ a{color:inherit;text-decoration:none}
   opacity:0;pointer-events:none;transition:opacity .5s}
 #panel-backdrop.show{opacity:1;pointer-events:auto}
 
+
 /* ABOUT */
 .about-section{padding:6vw 3vw;display:grid;grid-template-columns:1fr 1fr;gap:6vw;
   border-top:1px solid rgba(255,255,255,.07)}
@@ -273,14 +331,24 @@ footer{background:#fafafa;color:#161616;padding:3vw 3vw 0;margin-top:6vw}
 .footer-logo-strip{padding:3vw 0 3.5vw;border-top:1px solid rgba(0,0,0,.08);margin-top:2vw}
 .footer-logo-strip svg{width:100%;height:auto;fill:#161616;display:block}
 
+.footer-wordmark {
+    font-family:'Unbounded', sans-serif;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    color: #161616;
+    line-height: 0.92;
+    white-space: nowrap;
+    display: block;
+    width: 100%;
+    font-size: clamp(3rem, 10vw, 14rem)
+  }
+
 /* RESPONSIVE */
 @media(max-width:900px){
   .strip-row,.strip-trio{grid-template-columns:1fr}
   .manifesto,.about-section,.footer-grid{grid-template-columns:1fr}
   .hero-title{font-size:clamp(2.5rem,10vw,6rem)}
   .menu-links-holder{display:none}
-  .panel-body,.panel-header{padding-left:1.5rem;padding-right:1.5rem}
-  #region-panel{width:100vw}
 }
 @media(max-width:600px){
   .strip-full{height:50vh}
@@ -296,38 +364,31 @@ footer{background:#fafafa;color:#161616;padding:3vw 3vw 0;margin-top:6vw}
   <svg id="preloader-logo" viewBox="0 0 449 449" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M125.8448,124.9432 C42.9118,207.8772 244.7638,409.7282 327.6968,326.7952 C410.4218,244.0692 208.5718,42.2172 125.8448,124.9432 M70.6248,71.3792 C101.8548,40.1502 135.7728,19.0542 171.3448,8.2992 C207.5368,-2.6608 243.1098,-2.6608 278.6808,7.6792 C314.4598,18.6412 347.7578,39.1152 378.5738,69.9302 C409.1818,100.5402 429.8628,134.0442 440.6168,169.6162 C451.3718,205.6012 451.7848,241.5872 441.2378,278.1932 C430.8978,314.1792 409.8018,348.0972 378.5738,379.3262 C347.5508,410.3482 313.8398,431.2362 278.0608,441.3712 C241.8678,451.5052 206.0888,450.8832 170.1038,440.1302 C134.5318,429.3762 101.2338,408.4872 70.6248,377.8792 C39.8098,347.0632 19.1278,313.9722 8.1668,278.1942 C-2.5872,243.0352 -2.5872,207.4632 7.9608,171.6832 C18.5078,136.3192 39.3968,102.6082 70.6248,71.3792" fill="white"/>
   </svg>
-  <div id="preloader-eyebrow">BellatorPax — Documentary Series</div>
-  <div id="preloader-title">Martial Body: Inherited Motion</div>
+  <div id="preloader-eyebrow">Virtus Corporis — Documentary Series</div>
+  <div id="preloader-title">Virtus Corporis: Inherited Motion</div>
   <div id="preloader-bar-wrap"><div id="preloader-bar"></div></div>
   <div id="preloader-percent">0%</div>
 </div>
 
 <div class="load-overlay" id="loadOverlay"></div>
 <div id="cursor"></div>
-<div id="panel-backdrop"></div>
 
 <!-- NAV -->
 <nav class="menu" aria-label="Main navigation">
-  <a href="index.html" class="menu-logo" aria-label="BellatorPax home">
-    <svg viewBox="0 0 3480.2 449" fill="white" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M298.14 264.91 Q298.14 281.07 292.75 296.34 Q287.36 311.61 275.46 326.42 Q263.56 341.24 239.77 350.22 Q215.97 359.20 183.19 359.20 L35.92 359.20 L35.92 31.88 L181.84 31.88 Q212.38 31.88 234.60 40.86 Q256.83 49.84 267.83 63.98 Q278.83 78.13 283.77 91.60 Q288.71 105.07 288.71 118.09 Q288.71 139.19 278.38 154.68 Q268.05 170.17 243.81 185.44 Q298.14 217.32 298.14 264.91 Z M103.27 88.00 L103.27 162.09 L176.46 162.09 Q224.05 162.09 224.05 125.27 Q224.05 88.00 176.46 88.00 Z M103.27 218.21 L103.27 303.07 L183.64 303.07 Q233.48 303.07 233.48 260.87 Q233.48 218.21 183.64 218.21 Z"/>
-      <path d="M430.59 218.21 L430.59 303.07 L607.95 303.07 L607.95 359.20 L363.24 359.20 L363.24 31.88 L599.86 31.88 L599.86 88.00 L430.59 88.00 L430.59 162.09 L587.29 162.09 L587.29 218.21 Z"/>
-      <path d="M740.40 31.88 L740.40 303.07 L897.10 303.07 L897.10 359.20 L673.05 359.20 L673.05 31.88 Z"/>
-      <path d="M1029.56 31.88 L1029.56 303.07 L1186.26 303.07 L1186.26 359.20 L962.21 359.20 L962.21 31.88 Z"/>
-      <path d="M1433.21 293.20 L1310.63 293.20 L1288.63 359.20 L1219.93 359.20 L1336.22 31.88 L1410.76 31.88 L1523.91 359.20 L1454.76 359.20 Z M1414.80 237.07 L1372.14 109.11 L1329.49 237.07 Z"/>
-      <path d="M1719.67 88.00 L1719.67 359.20 L1652.32 359.20 L1652.32 88.00 L1553.09 88.00 L1553.09 31.88 L1815.31 31.88 L1815.31 88.00 Z"/>
-      <path d="M2015.11 26.49 Q2086.05 26.49 2129.61 74.31 Q2173.16 122.13 2173.16 200.25 Q2173.16 272.99 2130.28 321.26 Q2087.40 369.53 2015.56 369.53 Q1944.17 369.53 1901.07 321.48 Q1857.96 273.44 1857.96 198.01 Q1857.96 122.58 1901.29 74.53 Q1944.62 26.49 2015.11 26.49 Z M2015.56 83.96 Q1974.70 83.96 1950.01 115.17 Q1925.31 146.37 1925.31 198.01 Q1925.31 249.64 1950.01 280.85 Q1974.70 312.06 2015.56 312.06 Q2055.97 312.06 2080.89 281.07 Q2105.81 250.09 2105.81 199.80 Q2105.81 146.82 2081.34 115.39 Q2056.87 83.96 2015.56 83.96 Z"/>
-      <path d="M2641.02 242.46 L2641.02 359.20 L2573.67 359.20 L2573.67 31.88 L2718.25 31.88 Q2769.43 31.88 2796.60 57.92 Q2823.76 83.96 2823.76 133.35 Q2823.76 183.19 2796.82 212.83 Q2769.88 242.46 2724.98 242.46 Z M2641.02 186.33 L2703.88 186.33 Q2756.41 186.33 2756.41 137.39 Q2756.41 112.25 2743.61 100.13 Q2730.82 88.00 2703.88 88.00 L2641.02 88.00 Z"/>
-      <path d="M3070.71 293.20 L2948.13 293.20 L2926.13 359.20 L2857.44 359.20 L2973.73 31.88 L3048.26 31.88 L3161.41 359.20 L3092.26 359.20 Z M3052.30 237.07 L3009.65 109.11 L2966.99 237.07 Z"/>
-      <path d="M3365.26 192.17 L3470.32 359.20 L3390.40 359.20 L3327.54 245.60 L3265.13 359.20 L3187.00 359.20 L3290.27 194.42 L3190.59 31.88 L3270.52 31.88 L3327.99 139.64 L3388.15 31.88 L3466.28 31.88 Z"/>
+  <a href="index.html" class="menu-logo" aria-label="Elysion Doctrine home">
+    <svg viewBox="0 0 820 80" fill="white" xmlns="http://www.w3.org/2000/svg">
+        <text x="0" y="68"
+          font-family="'Unbounded', sans-serif"
+          font-size="72" font-weight="900" letter-spacing="-1"
+        >ĒLÝSION DOCTRINE</text>
     </svg>
   </a>
   <div class="menu-links-holder">
     <a href="index.html" class="menu-link">Fight Styles</a>
-    <a href="#" class="menu-link active" aria-current="page">Martial Body</a>
-    <a href="#" class="menu-link">Gallery</a>
-    <a href="#" class="menu-link">Technical Library</a>
-    <a href="#" class="menu-link">Contact</a>
+    <a href="virtuscorporis.html" class="menu-link active" aria-current="page">Virtus corporis</a>
+    <a href="gallery/gallery.html" class="menu-link">Gallery</a>
+    <a href="inprogress.html" class="menu-link">Technical Library</a>
+    <a href="inprogress.html" class="menu-link">Community</a>
   </div>
   <div class="menu-right" aria-live="polite" aria-label="Current time">
     <span>CPH</span>
@@ -338,16 +399,17 @@ footer{background:#fafafa;color:#161616;padding:3vw 3vw 0;margin-top:6vw}
 <main>
   <!-- HERO -->
   <section class="hero" id="hero" aria-labelledby="heroLine1">
-    <div class="hero-bg" aria-hidden="true"></div>
+    <img class="hero-img js-hero-parallax" src="/images/rugby.jpg" alt="" aria-hidden="true"/>
+    <div class="hero-overlay" aria-hidden="true"></div>
     <div class="hero-grain" aria-hidden="true"></div>
     <div class="hero-content">
-      <div class="hero-eyebrow" id="heroEyebrow">BellatorPax — Documentary Series / Vol. 01</div>
+      <div class="hero-eyebrow" id="heroEyebrow">Elysion Doctrine — Documentary Series / Vol. 01</div>
       <h1 class="hero-title">
-        <span class="hero-title-line" id="heroLine1">Martial Body:</span>
+        <span class="hero-title-line" id="heroLine1">Virtus corporis:</span>
         <span class="hero-title-line" id="heroLine2">Inherited Motion</span>
       </h1>
       <p class="hero-subtitle" id="heroSub">
-        An ongoing documentary journalism project. Every culture on earth has given its body to movement — in combat, in ceremony, in sport, in protest. This is an archive of that inheritance.
+        An ongoing documentary journalism project. Every culture on earth has given its body to movement as the greatest form of expression— in combat, in ceremony, in sport, in protest. This is an archive of that inheritance.
       </p>
       <div class="hero-meta" id="heroMeta">
         <div class="hero-meta-item"><strong>72+</strong>Disciplines documented</div>
@@ -361,122 +423,6 @@ footer{background:#fafafa;color:#161616;padding:3vw 3vw 0;margin-top:6vw}
     </div>
   </section>
 
-  <!-- CH 01: FIGHTING -->
-  <div class="section-header">
-    <div><div class="section-eyebrow">Chapter 01</div><div class="section-title">The <em>Fighting</em> Body</div></div>
-    <div class="section-count">12 disciplines</div>
-  </div>
-  <div class="scroll-strips">
-    <div class="strip strip-full js-strip js-parallax">
-      <img class="strip-img" src="https://images.unsplash.com/photo-1555597673-b21d5c935865?w=1600&q=80&auto=format&fit=crop" alt="Capoeira practitioners" loading="lazy"/>
-      <div class="strip-text">
-        <span class="strip-kicker">Brazil — Martial Art / Dance</span>
-        <h2 class="strip-headline">Capoeira: The <em>Disguised</em> Fight</h2>
-        <p class="strip-body">Born in the quilombos of 16th-century Brazil among enslaved Africans, Capoeira encoded combat as dance so it could be practiced openly. Every ginga carries that original act of resistance.</p>
-      </div>
-      <div class="strip-tag">Martial Art</div>
-    </div>
-    <div class="strip-row">
-      <div class="strip strip-half js-strip js-parallax">
-        <img class="strip-img" src="https://images.unsplash.com/photo-1517649763962-0c623066013b?w=900&q=75&auto=format&fit=crop" alt="Muay Thai fighter" loading="lazy"/>
-        <div class="strip-text">
-          <span class="strip-kicker">Thailand — 2000 Years</span>
-          <h2 class="strip-headline">Muay Thai &amp; the <em>Art of Eight Limbs</em></h2>
-          <p class="strip-body">A battlefield system that became national identity. Wai Kru is prayer and protocol — connecting fighter to lineage before a single strike is thrown.</p>
-        </div>
-        <div class="strip-tag">Combat Sport</div>
-      </div>
-      <div class="strip strip-half js-strip js-parallax">
-        <img class="strip-img" src="https://images.unsplash.com/photo-1605296867304-46d5465a13f1?w=900&q=75&auto=format&fit=crop" alt="Judo throw" loading="lazy"/>
-        <div class="strip-text">
-          <span class="strip-kicker">Japan — 1882</span>
-          <h2 class="strip-headline">Judo: <em>The Gentle Way</em></h2>
-          <p class="strip-body">Jigoro Kano distilled jujutsu into a philosophy of maximum efficiency with minimum effort. A system that became an Olympic sport without losing its soul.</p>
-        </div>
-        <div class="strip-tag">Martial Art</div>
-      </div>
-    </div>
-    <div class="strip-trio">
-      <div class="strip strip-third js-strip js-parallax">
-        <img class="strip-img" src="https://images.unsplash.com/photo-1549576490-b0b4831ef60a?w=700&q=70&auto=format&fit=crop" alt="Taekwondo kick" loading="lazy"/>
-        <div class="strip-text"><span class="strip-kicker">Korea</span><h2 class="strip-headline"><em>Taekwondo</em></h2><p class="strip-body">Polite distance. Impolite speed. The foot as precision instrument.</p></div>
-        <div class="strip-tag">Olympic Sport</div>
-      </div>
-      <div class="strip strip-third js-strip js-parallax">
-        <img class="strip-img" src="https://images.unsplash.com/photo-1575052814086-f385e2e2ad1b?w=700&q=70&auto=format&fit=crop" alt="Wrestling" loading="lazy"/>
-        <div class="strip-text"><span class="strip-kicker">Ancient — Global</span><h2 class="strip-headline"><em>Wrestling</em></h2><p class="strip-body">The oldest sport in recorded human history. From Gilgamesh to the Olympic games.</p></div>
-        <div class="strip-tag">Ancient Sport</div>
-      </div>
-      <div class="strip strip-third js-strip js-parallax">
-        <img class="strip-img" src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=700&q=70&auto=format&fit=crop" alt="Pencak Silat" loading="lazy"/>
-        <div class="strip-text"><span class="strip-kicker">Southeast Asia</span><h2 class="strip-headline"><em>Pencak Silat</em></h2><p class="strip-body">800+ styles. UNESCO-listed. A living system of movement and meaning.</p></div>
-        <div class="strip-tag">UNESCO Heritage</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- PULL QUOTE 1 -->
-  <div class="pull-quote-section">
-    <blockquote class="pull-quote js-reveal">
-      "The body is the first archive. Before writing, before language — we danced what we feared, fought what threatened us, and moved what we loved."
-    </blockquote>
-    <p class="pull-quote-attr">— Martial Body: Inherited Motion, series thesis</p>
-  </div>
-
-  <!-- CH 02: DANCING -->
-  <div class="section-header">
-    <div><div class="section-eyebrow">Chapter 02</div><div class="section-title">The <em>Dancing</em> Body</div></div>
-    <div class="section-count">18 traditions</div>
-  </div>
-  <div class="scroll-strips">
-    <div class="strip-row">
-      <div class="strip strip-half js-strip js-parallax">
-        <img class="strip-img" src="https://images.unsplash.com/photo-1508700929628-666bc8bd84ea?w=900&q=75&auto=format&fit=crop" alt="Bharatanatyam dancer" loading="lazy"/>
-        <div class="strip-text">
-          <span class="strip-kicker">South India — 2000+ Years</span>
-          <h2 class="strip-headline">Bharatanatyam: <em>Body as Scripture</em></h2>
-          <p class="strip-body">64 mudras, 108 karanas. The entire cosmos communicated through a trained body.</p>
-        </div>
-        <div class="strip-tag">Classical Dance</div>
-      </div>
-      <div class="strip strip-half js-strip js-parallax">
-        <img class="strip-img" src="https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=900&q=75&auto=format&fit=crop" alt="Flamenco dancer" loading="lazy"/>
-        <div class="strip-text">
-          <span class="strip-kicker">Andalucia, Spain</span>
-          <h2 class="strip-headline">Flamenco: <em>Grief Made Beautiful</em></h2>
-          <p class="strip-body">Forged at the intersection of Romani, Moorish, and Sephardic Jewish cultures. Duende separates technique from truth.</p>
-        </div>
-        <div class="strip-tag">Folk / Performance</div>
-      </div>
-    </div>
-    <div class="strip strip-full js-strip js-parallax">
-      <img class="strip-img" src="https://images.unsplash.com/photo-1534258936925-c58bed479fcb?w=1600&q=80&auto=format&fit=crop" alt="Haka performance" loading="lazy"/>
-      <div class="strip-text">
-        <span class="strip-kicker">Aotearoa New Zealand — Maori</span>
-        <h2 class="strip-headline">Haka: When <em>Dance Declares War</em></h2>
-        <p class="strip-body">A war dance that became a welcome. A challenge that became diplomacy. Every stamp, every widened eye — a word in an ancient sentence.</p>
-      </div>
-      <div class="strip-tag">Ceremonial / Martial</div>
-    </div>
-    <div class="strip-trio">
-      <div class="strip strip-third js-strip js-parallax">
-        <img class="strip-img" src="https://images.unsplash.com/photo-1547153760-18fc86324498?w=700&q=70&auto=format&fit=crop" alt="Breaking" loading="lazy"/>
-        <div class="strip-text"><span class="strip-kicker">South Bronx, 1970s</span><h2 class="strip-headline"><em>Breaking</em></h2><p class="strip-body">Born in rubble. Became Olympic. Never stopped being a cipher.</p></div>
-        <div class="strip-tag">Street / Olympic</div>
-      </div>
-      <div class="strip strip-third js-strip js-parallax">
-        <img class="strip-img" src="https://images.unsplash.com/photo-1518611012118-696072aa579a?w=700&q=70&auto=format&fit=crop" alt="Tari Saman" loading="lazy"/>
-        <div class="strip-text"><span class="strip-kicker">Aceh, Indonesia</span><h2 class="strip-headline"><em>Tari Saman</em></h2><p class="strip-body">60 bodies moving as one. The self disappears into the collective rhythm.</p></div>
-        <div class="strip-tag">UNESCO Heritage</div>
-      </div>
-      <div class="strip strip-third js-strip js-parallax">
-        <img class="strip-img" src="https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=700&q=70&auto=format&fit=crop" alt="Lindy Hop" loading="lazy"/>
-        <div class="strip-text"><span class="strip-kicker">Harlem, 1920s</span><h2 class="strip-headline"><em>Lindy Hop</em></h2><p class="strip-body">A dance of joy, improvisation, and radical integration in a segregated America.</p></div>
-        <div class="strip-tag">Social Dance</div>
-      </div>
-    </div>
-  </div>
-
   <!-- MANIFESTO -->
   <div class="manifesto">
     <div class="manifesto-left">
@@ -486,13 +432,13 @@ footer{background:#fafafa;color:#161616;padding:3vw 3vw 0;margin-top:6vw}
       </div>
     </div>
     <div class="manifesto-right">
-      <p class="manifesto-p">Martial Body: Inherited Motion is a long-form documentary journalism project examining how human movement — sport, dance, martial art — functions as cultural memory, political resistance, spiritual practice, and communal identity.</p>
+      <p class="manifesto-p">Virtus corporis: Inherited Motion is a long-form documentary journalism project examining how human movement — sport, dance, martial art — functions as cultural memory, political resistance, spiritual practice, and communal identity.</p>
       <p class="manifesto-p">From the wrestling pits of ancient Sumer to the breaking circles of contemporary Seoul — this project follows movement as it crosses borders, survives oppression, adapts to modernity, and endures.</p>
       <p class="manifesto-p">No culture is too small. No discipline too obscure. No body too old, too young, too poor, or too different to have a story worth telling here.</p>
     </div>
   </div>
 
-  <!-- PULL QUOTE 2 -->
+  <!-- PULL QUOTE -->
   <div class="pull-quote-section" style="padding-top:0">
     <blockquote class="pull-quote js-reveal" style="max-width:28ch">
       "Every sport was once a ritual. Every dance was once a weapon. Every weapon was once a prayer."
@@ -502,42 +448,25 @@ footer{background:#fafafa;color:#161616;padding:3vw 3vw 0;margin-top:6vw}
 
   <!-- CH 03: SPORTING -->
   <div class="section-header">
-    <div><div class="section-eyebrow">Chapter 03</div><div class="section-title">The <em>Sporting</em> Body</div></div>
+    <div><div class="section-eyebrow">Chapter 01</div><div class="section-title">The <em>Sporting</em> Body</div></div>
     <div class="section-count">Through history</div>
   </div>
+
   <div class="scroll-strips">
+
     <div class="strip strip-full js-strip js-parallax">
-      <img class="strip-img" src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=1600&q=80&auto=format&fit=crop" alt="Olympic stadium" loading="lazy"/>
+      <img class="strip-img" src="images/greekmarathon.png" alt="Runner" loading="lazy"/>
       <div class="strip-text">
-        <span class="strip-kicker">776 BCE — Ancient Olympia</span>
-        <h2 class="strip-headline">When Sport <em>Stopped Wars</em></h2>
-        <p class="strip-body">The Olympic Truce — Ekecheiria — required warring city-states to lay down arms so athletes could travel safely to compete.</p>
+        <span class="strip-kicker">490 BCE — Pheidippides</span>
+        <h2 class="strip-headline">~Coming Soon~</h2>
+        <h2 class="strip-headline">Running: The <em>First Sport</em></h2>
+        <p class="strip-body">Before any equipment, rule, or stadium — there was the body moving through space. The marathon is myth become race.</p>
       </div>
-      <div class="strip-tag">Ancient Sport</div>
-    </div>
-    <div class="strip-row">
-      <div class="strip strip-half js-strip js-parallax">
-        <img class="strip-img" src="https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?w=900&q=75&auto=format&fit=crop" alt="Boxing" loading="lazy"/>
-        <div class="strip-text">
-          <span class="strip-kicker">Global — Ancient to Now</span>
-          <h2 class="strip-headline">Boxing: The <em>Universal Language</em></h2>
-          <p class="strip-body">Clay tablets in Mesopotamia. Homer's Iliad. Muhammad Ali and a billion watching. The same contest evolved across 5,000 years.</p>
-        </div>
-        <div class="strip-tag">Combat Sport</div>
-      </div>
-      <div class="strip strip-half js-strip js-parallax">
-        <img class="strip-img" src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=900&q=75&auto=format&fit=crop" alt="Runner" loading="lazy"/>
-        <div class="strip-text">
-          <span class="strip-kicker">490 BCE — Pheidippides</span>
-          <h2 class="strip-headline">Running: The <em>First Sport</em></h2>
-          <p class="strip-body">Before any equipment, rule, or stadium — there was the body moving through space. The marathon is myth become race.</p>
-        </div>
-        <div class="strip-tag">Endurance</div>
-      </div>
+      <div class="strip-tag">Endurance</div>
     </div>
   </div>
 
-  <!-- WORLD MAP -->
+   <!-- WORLD MAP -->
   <div class="section-header" id="map-anchor">
     <div><div class="section-eyebrow">The Atlas</div><div class="section-title">Movement <em>Mapped</em></div></div>
     <div class="section-count">Click any region</div>
@@ -1140,10 +1069,10 @@ footer{background:#fafafa;color:#161616;padding:3vw 3vw 0;margin-top:6vw}
     <div class="about-left">
       <h2 class="about-title">About the <em>Series</em></h2>
       <div class="about-body">
-        <p>Martial Body: Inherited Motion began as a question: why do humans, across all recorded history, without exception, across every geography and social structure, organize movement into form?</p>
-        <p>The answer is not single. It involves survival, spirituality, community, resistance, joy, grief, and the simple fact that the body is the one instrument we are all born holding.</p>
-        <p>This series does not rank disciplines. It does not declare winners. It documents, contextualizes, and listens to practitioners — the elderly Silat master teaching in a kampung, the twelve-year-old girl who found her voice through dance in Nairobi, the 65-year-old woman competing in Olympic Judo.</p>
-        <p>Movement is the first democracy. This is its record.</p>
+        <p>Virtus corporis: Inherited Motion began as a admiration for the way humans, across all recorded history, without exception, across every geography and social structure, organize movement into form</p>
+        <p>It involves survival, spirituality, community, resistance, joy, grief, and the simple fact that the body is the one instrument we are all born holding and sometimes the only thing we are allowed to keep until for our limited corporeal existence. What endures is rhythm, techniques, rituals and strange physical philosophies that remain through repitition, sweat, memory and devotion</p>
+        <p>This series does not rank disciplines or declare winners. It documents, contextualizes, and listens to practitioners — the elderly Silat master teaching in a humble kampung, the twelve-year-old girl who found her voice through dance in Nairobi, The veteran Judoka still stepping onto competition mats because the body, stubbornly, refuses retirement from meaning</p>
+        <p>Movement is the first language, legacy and democracy. This is its record.</p>
       </div>
     </div>
     <div class="about-right">
@@ -1168,47 +1097,29 @@ footer{background:#fafafa;color:#161616;padding:3vw 3vw 0;margin-top:6vw}
   <div class="footer-items">
     <div class="footer-flex">
       <div class="footer-item-holder">
-        <a href="https://www.instagram.com/bellatorpax_studio/" target="_blank" rel="noopener noreferrer" class="footer-link">Instagram</a>
-        <a href="https://www.linkedin.com/company/bellatorpax/" target="_blank" rel="noopener noreferrer" class="footer-link">LinkedIn</a>
+        <a href="https://www.instagram.com/elysion_doctrine/" target="_blank" rel="noopener noreferrer" class="footer-link">Instagram</a>
       </div>
     </div>
   </div>
   <div class="footer-grid">
     <div class="footer-links-list">
-      <a href="index.html" class="footer-main-link">Work</a>
-      <a href="#" class="footer-main-link">Martial Body</a>
-      <a href="#" class="footer-main-link">Gallery</a>
-      <a href="#" class="footer-main-link">Contact</a>
+      <a href="gallery/gallery.html" class="footer-main-link">Gallery</a>
+      <a href="contact.html" class="footer-main-link">Contact</a>
       <div class="footer-rights">All Rights<br/>Reserved<br/>&#169; 2026</div>
     </div>
     <div class="footer-contacts">
       <div class="footer-contact-group">
-        <div class="footer-contact-label">Business Inquiries</div>
-        <a href="mailto:newbiz@bellatorpax.studio" class="footer-contact-link">newbiz@bellatorpax.studio</a>
+        <div class="footer-contact-label">General & Business Inquiries</div>
+        <a href="mailto:elysiondoctrine@gmail.com" class="footer-contact-link">elysiondoctrine@gmail.com</a>
       </div>
       <div class="footer-contact-group">
-        <div class="footer-contact-label">General</div>
-        <a href="mailto:hello@bellatorpax.studio" class="footer-contact-link">hello@bellatorpax.studio</a>
-      </div>
-      <div class="footer-contact-group">
-        <div class="footer-contact-label">Call Us</div>
+        <div class="footer-contact-label">Fancy a Chat?</div>
         <a href="tel:+14049408834" class="footer-contact-link">(+1) 404-940-8834</a>
       </div>
     </div>
   </div>
-  <div class="footer-logo-strip">
-    <svg viewBox="0 0 3480.2 449" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M298.14 264.91 Q298.14 281.07 292.75 296.34 Q287.36 311.61 275.46 326.42 Q263.56 341.24 239.77 350.22 Q215.97 359.20 183.19 359.20 L35.92 359.20 L35.92 31.88 L181.84 31.88 Q212.38 31.88 234.60 40.86 Q256.83 49.84 267.83 63.98 Q278.83 78.13 283.77 91.60 Q288.71 105.07 288.71 118.09 Q288.71 139.19 278.38 154.68 Q268.05 170.17 243.81 185.44 Q298.14 217.32 298.14 264.91 Z M103.27 88.00 L103.27 162.09 L176.46 162.09 Q224.05 162.09 224.05 125.27 Q224.05 88.00 176.46 88.00 Z M103.27 218.21 L103.27 303.07 L183.64 303.07 Q233.48 303.07 233.48 260.87 Q233.48 218.21 183.64 218.21 Z"/>
-      <path d="M430.59 218.21 L430.59 303.07 L607.95 303.07 L607.95 359.20 L363.24 359.20 L363.24 31.88 L599.86 31.88 L599.86 88.00 L430.59 88.00 L430.59 162.09 L587.29 162.09 L587.29 218.21 Z"/>
-      <path d="M740.40 31.88 L740.40 303.07 L897.10 303.07 L897.10 359.20 L673.05 359.20 L673.05 31.88 Z"/>
-      <path d="M1029.56 31.88 L1029.56 303.07 L1186.26 303.07 L1186.26 359.20 L962.21 359.20 L962.21 31.88 Z"/>
-      <path d="M1433.21 293.20 L1310.63 293.20 L1288.63 359.20 L1219.93 359.20 L1336.22 31.88 L1410.76 31.88 L1523.91 359.20 L1454.76 359.20 Z M1414.80 237.07 L1372.14 109.11 L1329.49 237.07 Z"/>
-      <path d="M1719.67 88.00 L1719.67 359.20 L1652.32 359.20 L1652.32 88.00 L1553.09 88.00 L1553.09 31.88 L1815.31 31.88 L1815.31 88.00 Z"/>
-      <path d="M2015.11 26.49 Q2086.05 26.49 2129.61 74.31 Q2173.16 122.13 2173.16 200.25 Q2173.16 272.99 2130.28 321.26 Q2087.40 369.53 2015.56 369.53 Q1944.17 369.53 1901.07 321.48 Q1857.96 273.44 1857.96 198.01 Q1857.96 122.58 1901.29 74.53 Q1944.62 26.49 2015.11 26.49 Z M2015.56 83.96 Q1974.70 83.96 1950.01 115.17 Q1925.31 146.37 1925.31 198.01 Q1925.31 249.64 1950.01 280.85 Q1974.70 312.06 2015.56 312.06 Q2055.97 312.06 2080.89 281.07 Q2105.81 250.09 2105.81 199.80 Q2105.81 146.82 2081.34 115.39 Q2056.87 83.96 2015.56 83.96 Z"/>
-      <path d="M2641.02 242.46 L2641.02 359.20 L2573.67 359.20 L2573.67 31.88 L2718.25 31.88 Q2769.43 31.88 2796.60 57.92 Q2823.76 83.96 2823.76 133.35 Q2823.76 183.19 2796.82 212.83 Q2769.88 242.46 2724.98 242.46 Z M2641.02 186.33 L2703.88 186.33 Q2756.41 186.33 2756.41 137.39 Q2756.41 112.25 2743.61 100.13 Q2730.82 88.00 2703.88 88.00 L2641.02 88.00 Z"/>
-      <path d="M3070.71 293.20 L2948.13 293.20 L2926.13 359.20 L2857.44 359.20 L2973.73 31.88 L3048.26 31.88 L3161.41 359.20 L3092.26 359.20 Z M3052.30 237.07 L3009.65 109.11 L2966.99 237.07 Z"/>
-      <path d="M3365.26 192.17 L3470.32 359.20 L3390.40 359.20 L3327.54 245.60 L3265.13 359.20 L3187.00 359.20 L3290.27 194.42 L3190.59 31.88 L3270.52 31.88 L3327.99 139.64 L3388.15 31.88 L3466.28 31.88 Z"/>
-    </svg>
+   <div class="footer-logo-holder">
+    <span class="footer-wordmark" id="footerWordmark">ĒLÝSION DOCTRINE</span>
   </div>
 </footer>
 
@@ -1230,6 +1141,7 @@ footer{background:#fafafa;color:#161616;padding:3vw 3vw 0;margin-top:6vw}
     <div id="panelCards" aria-live="polite"></div>
   </div>
 </div>
+
 
 <script>
 (function () {
@@ -1405,9 +1317,7 @@ footer{background:#fafafa;color:#161616;padding:3vw 3vw 0;margin-top:6vw}
     }
   };
 
-  /* ════════════════════════════════════════════
-     PRELOADER
-     ════════════════════════════════════════════ */
+  /* ── PRELOADER ── */
   var pBar = document.getElementById('preloader-bar');
   var pPct = document.getElementById('preloader-percent');
   var prog = 0;
@@ -1432,9 +1342,7 @@ footer{background:#fafafa;color:#161616;padding:3vw 3vw 0;margin-top:6vw}
     setTimeout(function () { document.getElementById('heroScroll').classList.add('show'); }, 900);
   }
 
-  /* ════════════════════════════════════════════
-     CLOCK
-     ════════════════════════════════════════════ */
+  /* ── CLOCK ── */
   function updateClock() {
     var d = new Date();
     var h = String(d.getHours()).padStart(2, '0');
@@ -1444,9 +1352,7 @@ footer{background:#fafafa;color:#161616;padding:3vw 3vw 0;margin-top:6vw}
   updateClock();
   setInterval(updateClock, 1000);
 
-  /* ════════════════════════════════════════════
-     CURSOR
-     ════════════════════════════════════════════ */
+  /* ── CURSOR ── */
   var cursor = document.getElementById('cursor');
   var cx = 0, cy = 0;
   document.addEventListener('mousemove', function (e) {
@@ -1464,9 +1370,7 @@ footer{background:#fafafa;color:#161616;padding:3vw 3vw 0;margin-top:6vw}
     el.addEventListener('mouseleave', function () { cursor.classList.remove('big'); });
   }
 
-  /* ════════════════════════════════════════════
-     SCROLL REVEAL
-     ════════════════════════════════════════════ */
+  /* ── SCROLL REVEAL ── */
   var ioStrip = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
       if (e.isIntersecting) { e.target.classList.add('revealed'); ioStrip.unobserve(e.target); }
@@ -1485,24 +1389,38 @@ footer{background:#fafafa;color:#161616;padding:3vw 3vw 0;margin-top:6vw}
   });
   document.querySelectorAll('.js-reveal').forEach(function (el) { ioReveal.observe(el); });
 
-  /* ════════════════════════════════════════════
-     PARALLAX
-     ════════════════════════════════════════════ */
+  /* ── PARALLAX ──
+     The image is 140% tall with top:-20%, so it starts centred.
+     We shift it ±12% of its own height based on scroll position.
+     That stays well within the 40% of extra image height available. */
   var parallaxEls = document.querySelectorAll('.js-parallax');
+
+  /* ── HERO PARALLAX ── */
+  var heroImg = document.querySelector('.js-hero-parallax');
   function onScroll() {
+    /* Hero: moves at half scroll speed for depth effect */
+    if (heroImg) {
+      var scrollY = window.scrollY || window.pageYOffset;
+      heroImg.style.transform = 'translateY(' + (scrollY * 0.35) + 'px)';
+    }
+    /* Strip parallax */
+    var vh = window.innerHeight;
     parallaxEls.forEach(function (strip) {
       var rect = strip.getBoundingClientRect();
-      if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+      if (rect.bottom < 0 || rect.top > vh) return;
       var img = strip.querySelector('.strip-img');
       if (!img) return;
-      var offset = (rect.top + rect.height / 2 - window.innerHeight / 2) / window.innerHeight;
-      img.style.transform = 'translateY(' + (offset * 30) + '%)';
+      // Normalised: 0 when strip centre is at viewport centre
+      var progress = ((rect.top + rect.height / 2) - vh / 2) / vh;
+      img.style.transform = 'translateY(' + (progress * 12) + '%)';
     });
   }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
 
-  /* ════════════════════════════════════════════
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll(); // position correctly on first paint
+
+
+   /* ════════════════════════════════════════════
      MAP DOTS — rendered via DOM API (no innerHTML)
      viewBox: 0 0 2000 857
      ════════════════════════════════════════════ */
@@ -1734,6 +1652,9 @@ footer{background:#fafafa;color:#161616;padding:3vw 3vw 0;margin-top:6vw}
   });
 
 }());
+
+
+
 </script>
 </body>
 </html>
