@@ -3,8 +3,74 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Inside the Fighter's Mind | ELYSION DOCTRINE</title>
-  <meta name="description" content="Fight journalism, cultural deep dives, and the philosophy of beautiful violence."/>
+
+  <!-- ═══ PRIMARY SEO ═══ -->
+  <title>Inside The Fighter's Mind: Bongo the Fight Pirate | ELYSION DOCTRINE</title>
+  <meta name="description" content="Marine veteran and 32-belt champion Sabastian 'Bongo' Aguilar is one of the most decorated fighters in Muay Thai, kickboxing, and boxing. A profile by C.I Solis for ELYSION DOCTRINE."/>
+  <meta name="keywords" content="Bongo, Sabastian Aguilar, fight pirate, Muay Thai, kickboxing, boxing, Taekwondo, Karate, Marine veteran, ELYSION DOCTRINE, fight journalism, fighter profile, Striker Fight Center, Thailand Muay Thai"/>
+  <meta name="author" content="C.I Solis"/>
+  <meta name="robots" content="index, follow"/>
+  <link rel="canonical" href="https://elysion-doctrine.com/articles/bongo"/>
+
+  <!-- ═══ OPEN GRAPH (Facebook, WhatsApp, LinkedIn) ═══ -->
+  <meta property="og:type" content="article"/>
+  <meta property="og:site_name" content="ELYSION DOCTRINE"/>
+  <meta property="og:title" content="Inside The Fighter's Mind: Bongo the Fight Pirate"/>
+  <meta property="og:description" content="Marine veteran and 32-belt champion Sabastian 'Bongo' Aguilar — decorated across Muay Thai, kickboxing, and boxing — is heading to Thailand. A profile by C.I Solis."/>
+  <meta property="og:url" content="https://elysion-doctrine.com/articles/bongo"/>
+  <meta property="og:image" content="https://elysion-doctrine.com/images/bongo.jpg"/>
+  <meta property="og:image:alt" content="Sabastian 'Bongo' Aguilar in the ring"/>
+  <meta property="og:image:width" content="1200"/>
+  <meta property="og:image:height" content="630"/>
+  <meta property="og:locale" content="en_US"/>
+  <meta property="article:published_time" content="2026-05-28T00:00:00Z"/>
+  <meta property="article:author" content="C.I Solis"/>
+  <meta property="article:section" content="Fighter Profiles"/>
+  <meta property="article:tag" content="Muay Thai"/>
+  <meta property="article:tag" content="Fighter Profile"/>
+  <meta property="article:tag" content="Kickboxing"/>
+
+  <!-- ═══ TWITTER / X CARD ═══ -->
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:site" content="@elysion_doctrine"/>
+  <meta name="twitter:creator" content="@elysion_doctrine"/>
+  <meta name="twitter:title" content="Inside The Fighter's Mind: Bongo the Fight Pirate"/>
+  <meta name="twitter:description" content="Marine veteran. 32 title belts. One of the most unique human beings alive. A profile by C.I Solis for ELYSION DOCTRINE."/>
+  <meta name="twitter:image" content="https://elysion-doctrine.com/images/bongo.jpg"/>
+  <meta name="twitter:image:alt" content="Sabastian 'Bongo' Aguilar in the ring"/>
+
+  <!-- ═══ STRUCTURED DATA — Article (JSON-LD) ═══ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Inside The Fighter's Mind: Bongo the Fight Pirate",
+    "description": "Marine veteran and 32-belt champion Sabastian 'Bongo' Aguilar is one of the most decorated fighters in Muay Thai, kickboxing, and boxing. A profile by C.I Solis.",
+    "image": "https://elysion-doctrine.com/images/bongo.jpg",
+    "author": {
+      "@type": "Person",
+      "name": "C.I Solis"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "ELYSION DOCTRINE",
+      "url": "https://elysion-doctrine.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://elysion-doctrine.com/images/logo.png"
+      }
+    },
+    "datePublished": "2026-05-28",
+    "dateModified": "2026-05-28",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://elysion-doctrine.com/articles/bongo"
+    },
+    "articleSection": "Fighter Profiles",
+    "keywords": "Muay Thai, kickboxing, boxing, fighter profile, Marine veteran, Bongo"
+  }
+  </script>
+
   <style>
     *, *::before, *::after {
       box-sizing: border-box;
@@ -14,7 +80,6 @@
 
     /* ------------------- THEME ------------------- */
     :root {
-      /* Dark mode (default) */
       --bg: #161616;
       --fg: #fafafa;
       --muted: rgba(250,250,250,0.45);
@@ -50,7 +115,7 @@
     ::-webkit-scrollbar { display: none; }
 
 
-    /* ------------------- PRELOADER (same) ------------------- */
+    /* ------------------- PRELOADER ------------------- */
     #preloader {
       position: fixed; inset: 0; background: var(--bg); z-index: 9999;
       display: flex; align-items: center; justify-content: center;
@@ -65,6 +130,7 @@
     }
     #preloader-text {
       font-size: 11px; letter-spacing: 0.2em; opacity: 0.6;
+      text-align: center; padding: 0 1rem;
     }
     #preloader-bar-wrap {
       width: 180px; height: 1px; background: rgba(255,255,255,0.15);
@@ -83,31 +149,40 @@
     }
 
 
-    /* ------------------- CURSOR (same) ------------------- */
+    /* ------------------- CURSOR — desktop only ------------------- */
     #cursor {
       position: fixed; width: 40px; height: 40px; border-radius: 50%; background: #fff;
       pointer-events: none; z-index: 9998; transform: translate(-50%, -50%);
       mix-blend-mode: difference; clip-path: circle(0% at 50% 50%);
       transition: clip-path 0.6s var(--ease), width 0.4s var(--ease), height 0.4s var(--ease);
       top: 0; left: 0;
+      /* Hidden on touch devices via JS + media query below */
     }
     #cursor.visible { clip-path: circle(50% at 50% 50%); }
     #cursor.case-hover { width: 100px; height: 100px; }
 
+    /* Hide cursor element entirely on touch/mobile */
+    @media (hover: none) and (pointer: coarse) {
+      #cursor { display: none !important; }
+    }
 
-    /* ------------------- NAV (same) ------------------- */
+
+    /* ------------------- NAV ------------------- */
     .menu {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
       padding: 2.2vw 3vw; mix-blend-mode: difference; pointer-events: none;
+      gap: 1rem;
     }
     .menu-link-holder {
       display: flex; align-items: center; gap: 3vw; pointer-events: auto;
+      flex-shrink: 0;
     }
     .menu-logo { display: flex; align-items: center; text-decoration: none; }
     .menu-logo svg { width: 180px; height: auto; }
     .menu-links-holder {
       display: flex; align-items: center; gap: 2.5vw; pointer-events: auto;
+      flex-wrap: wrap;
     }
     .menu-link {
       color: var(--fg); text-decoration: none;
@@ -120,16 +195,31 @@
       display: flex; align-items: center; gap: 0.5rem;
       font-size: clamp(0.75rem, 0.875vw, 1rem);
       color: var(--fg); pointer-events: auto; opacity: 0.7; letter-spacing: 0.04em;
+      flex-shrink: 0;
     }
     #menuClock span { animation: blink 1s steps(1) infinite; }
     @keyframes blink { 50% { visibility: hidden; } }
 
+    /* Mobile nav — hide links, shrink logo, show only clock */
+    @media (max-width: 768px) {
+      .menu {
+        padding: 4vw 5vw;
+        justify-content: space-between;
+      }
+      .menu-logo svg { width: 110px; }
+      .menu-links-holder { display: none; }
+      .menu-right {
+        font-size: 0.7rem;
+        opacity: 0.6;
+      }
+    }
 
-    /* ------------------- THEMING TOGGLE BUTTON ------------------- */
+
+    /* ------------------- THEME TOGGLE ------------------- */
     .theme-toggle {
       position: fixed;
       top: 1.5vw;
-      left: auto; right: 2.5vw; /* same as nav spacing */
+      right: 2.5vw;
       z-index: 101;
       padding: 0.5rem 0.75rem;
       font-size: 0.75rem;
@@ -147,11 +237,22 @@
       width: 0.8rem; height: 0.8rem; margin-right: 0.3rem; display: inline-block;
     }
 
+    @media (max-width: 768px) {
+      /* Hide toggle on mobile — accessible via menu if needed */
+      .theme-toggle {
+        top: auto;
+        bottom: 1rem;
+        right: 1rem;
+        padding: 0.45rem 0.6rem;
+        font-size: 0.7rem;
+      }
+    }
+
 
     /* ------------------- ARTICLE LAYOUT ------------------- */
     .article-con {
       position: relative;
-      padding-top: 11vw; /* same as index hero header */
+      padding-top: 11vw;
       flex: 1;
     }
     .article-content {
@@ -160,12 +261,34 @@
       margin: 0 auto;
     }
 
+    @media (max-width: 768px) {
+      .article-con {
+        padding-top: 22vw; /* more room for fixed nav */
+      }
+      .article-content {
+        padding: 0 5vw;
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .article-con {
+        padding-top: 28vw;
+      }
+      .article-content {
+        padding: 0 6vw;
+      }
+    }
+
 
     /* ------------------- ARTICLE HEADER ------------------- */
     .article-header {
       margin-bottom: 4vw;
       border-bottom: 1px solid rgba(255,255,255,0.08);
       padding-bottom: 3vw;
+    }
+    [data-theme="light"] .article-header {
+      border-bottom-color: rgba(0,0,0,0.08);
     }
     .article-title {
       font-size: clamp(1.4rem, 2.2vw, 2.8rem);
@@ -193,6 +316,27 @@
       transition: opacity 0.3s;
     }
     .article-meta a:hover { opacity: 1; }
+
+    @media (max-width: 768px) {
+      .article-header {
+        margin-bottom: 6vw;
+        padding-bottom: 5vw;
+      }
+      .article-title {
+        font-size: clamp(1.5rem, 5.5vw, 2.2rem);
+        line-height: 1.28;
+      }
+      .article-meta {
+        font-size: 0.78rem;
+        letter-spacing: 0.04em;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .article-title {
+        font-size: clamp(1.3rem, 6.5vw, 1.9rem);
+      }
+    }
 
 
     /* ------------------- ARTICLE BODY ------------------- */
@@ -223,9 +367,31 @@
       color: var(--muted);
       font-style: italic;
     }
+    [data-theme="light"] .article-body blockquote {
+      border-left-color: rgba(0,0,0,0.15);
+    }
+    .article-body a {
+      color: inherit;
+    }
+
+    @media (max-width: 768px) {
+      .article-body {
+        font-size: clamp(0.95rem, 3.5vw, 1.05rem);
+        line-height: 1.65;
+      }
+      .article-body h2,
+      .article-body h3 {
+        font-size: clamp(1.05rem, 4.5vw, 1.4rem);
+        margin: 2rem 0 0.8rem;
+      }
+      .article-body blockquote {
+        margin: 1.4rem 0;
+        padding-left: 1rem;
+      }
+    }
 
 
-    /* ------------------- STEADY IMAGE BLOCK ------------------- */
+    /* ------------------- IMAGE BLOCKS ------------------- */
     .article-img-block {
       position: relative;
       margin: 3.5vw 0 1.5rem;
@@ -252,6 +418,17 @@
     }
     .article-img-caption em {
       font-style: italic;
+    }
+
+    @media (max-width: 768px) {
+      .article-img-block {
+        margin: 6vw 0 1.2rem;
+        border-radius: 0.35rem;
+      }
+      .article-img-caption {
+        font-size: 0.7rem;
+        padding: 0.5rem 0.9rem;
+      }
     }
 
 
@@ -335,40 +512,67 @@
       padding: 3vw 0 4vw;
       border-top: 1px solid rgba(0,0,0,0.08);
       margin-top: 2vw;
+      overflow: hidden;
     }
-    .footer-logo-svg { width: 100%; height: auto; }
-
     .footer-wordmark {
-    font-family:'Unbounded', sans-serif;
-    font-weight: 900;
-    letter-spacing: -0.03em;
-    color: #161616;
-    line-height: 0.92;
-    white-space: nowrap;
-    display: block;
-    width: 100%;
-    font-size: clamp(3rem, 10vw, 14rem)
-  }
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      color: #161616;
+      line-height: 0.92;
+      white-space: nowrap;
+      display: block;
+      width: 100%;
+      font-size: clamp(2.5rem, 10vw, 14rem);
+    }
 
-    /* ------------------- RESPONSIVE ------------------- */
     @media (max-width: 768px) {
-      .article-content {
-        padding: 0 5vw;
-        max-width: 95%;
+      .footer {
+        padding: 6vw 5vw 0;
       }
-      .article-title {
-        font-size: clamp(1.2rem, 3.5vw, 2rem);
+      .footer-items {
+        padding-bottom: 4vw;
+        margin-bottom: 5vw;
       }
-      .article-meta {
-        font-size: 0.8rem;
-        letter-spacing: 0.05em;
+      .footer-over-logo-holder {
+        grid-template-columns: 1fr;
+        gap: 6vw;
       }
-      .article-body {
-        font-size: 0.95rem;
+      .footer-flex.smaller {
+        justify-content: flex-start;
+        flex-direction: column;
+        gap: 5vw;
       }
-      .theme-toggle {
-        top: 1rem;
-        right: 1rem;
+      .footer-item-holder {
+        flex-direction: column;
+        gap: 0.3rem;
+      }
+      .footer-main-link {
+        font-size: clamp(1.4rem, 7vw, 2.2rem);
+      }
+      .footer-rights {
+        margin-top: 1rem;
+        font-size: 0.7rem;
+      }
+      .footer-h3 {
+        font-size: 0.62rem;
+      }
+      .footer-info-link {
+        font-size: 0.85rem;
+        word-break: break-all;
+      }
+      .footer-logo-holder {
+        padding: 5vw 0 7vw;
+        margin-top: 4vw;
+      }
+      .footer-wordmark {
+        font-size: clamp(1.8rem, 9.5vw, 5rem);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .footer-wordmark {
+        font-size: clamp(1.5rem, 8.5vw, 3.5rem);
       }
     }
   </style>
@@ -388,6 +592,7 @@
 
 
 <div class="load-overlay" id="loadOverlay"></div>
+<!-- Cursor only rendered on non-touch devices via JS -->
 <div id="cursor"></div>
 
 
@@ -395,9 +600,9 @@
 <nav class="menu">
   <div class="menu-link-holder">
     <a href="/" class="menu-logo">
-     <svg viewBox="0 0 820 80" fill="white" xmlns="http://www.w3.org/2000/svg">
+      <svg viewBox="0 0 820 80" fill="white" xmlns="http://www.w3.org/2000/svg">
         <text x="0" y="68"
-          font-family="'Unbounded', sans-serif"
+          font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
           font-size="72" font-weight="900" letter-spacing="-1"
         >ĒLÝSION DOCTRINE</text>
       </svg>
@@ -418,10 +623,9 @@
 </nav>
 
 
-<!-- THEME TOGGLE BUTTON -->
+<!-- THEME TOGGLE -->
 <button class="theme-toggle" id="themeToggle" aria-label="Toggle light / dark mode">
   <svg viewBox="0 0 24 24" fill="currentColor">
-    <!-- Light icon -->
     <circle cx="12" cy="12" r="5" />
     <path d="M12 2V4M12 20V22M4 12H2M22 12H20M18.4 18.4L16.9 16.9M5.7 5.7L4.2 4.2M18.4 5.7L16.9 4.2M5.7 18.4L4.2 16.9" />
   </svg>
@@ -433,10 +637,9 @@
 <main class="article-con">
   <div class="article-content">
 
-
     <header class="article-header">
       <h1 class="article-title" id="articleTitle">
-        <span>Inside The Fighter’s Mind:</span> Bongo the Fight Pirate
+        <span>Inside The Fighter's Mind:</span> Bongo the Fight Pirate
       </h1>
       <div class="article-meta">
         <span>By </span>
@@ -446,21 +649,18 @@
       </div>
     </header>
 
-
     <section class="article-body">
       <p>
         At the age when most fighters are still figuring out how to breathe between rounds, Bongo has already carved his way through kickboxing, Muay Thai, boxing, Karate, and Taekwondo.
         He looks at the belts on the table like old friends — not as symbols of dominance, but as memories weighted with gravitas. He can tell you where he was, who his opponent was, what was at stake, what hurt, what almost broke. There is no bragging in his stories. Only fond remembrance.
         But what makes him most sentimental is his flag.
         The black pirate flag bearing a skull fused with the Orthodox symbols that give him purpose.
-        
       </p>
 
       <p>
         It is his sacred tradition: for every title won, he leaves the flag behind at the gym where it happened. A marker. A thank-you. A quiet detonation made beautiful through sweat, blood and purpose.
         And now, Striker Fight Center is home to his latest.
       </p>
-
 
       <!-- IMAGE BLOCK 1 -->
       <figure class="article-img-block">
@@ -475,52 +675,40 @@
         </figcaption>
       </figure>
 
-
       <p>
         If you ever have the pleasure — or cosmic misfortune — of encountering Bongo, you will understand three things immediately.
       </p>
-
 
       <h2>Number 1: Bongo is not built like you or me.</h2>
       <p>
         He is unpredictably fast and unnervingly accurate. His teeps and side kicks will send you flying regardless of height or weight. He knows exactly where to hit you and exactly how hard.
       </p>
-
       <p>
         His limbs seem engineered from steel tension cables, the kind used to hold up suspension bridges. His sweeps will fold your body into itself like a poorly assembled IKEA shelf.
       </p>
-
       <p>
         He possesses an endless reserve of energy capable of oscillating between chaos and calm, explosive and deliberate. The basic human instinct of fear appears to have been burned out of him completely by his faith.
       </p>
-
       <p>
         As a devout Eastern Orthodox Christian, he operates like a man who has signed over the deed to both body and soul.
       </p>
-
       <p>
-        That kind of conviction elevates discipline into something else entirely
+        That kind of conviction elevates discipline into something else entirely.
       </p>
 
-
-      <h2>Number 2: Everything Bongo does hurts. </h2>
-
+      <h2>Number 2: Everything Bongo does hurts.</h2>
       <p>
         He is unpredictably fast and unnervingly accurate. His teeps and side kicks will send you flying regardless of height or weight. He knows exactly where to hit you and exactly how hard.
       </p>
-
       <p>
         His limbs seem engineered from steel tension cables, the kind used to hold up suspension bridges. His sweeps will fold your body into itself like a poorly assembled IKEA shelf.
       </p>
-
       <p>
         He possesses an endless reserve of energy capable of oscillating between chaos and calm, explosive and deliberate. The basic human instinct of fear appears to have been burned out of him completely by his faith.
       </p>
-
       <p>
         As a devout Eastern Orthodox Christian, he operates like a man who has signed over the deed to both body and soul.
       </p>
-
       <p>
         That kind of conviction elevates discipline into something else entirely.
       </p>
@@ -534,57 +722,43 @@
           loading="lazy"
         />
         <figcaption class="article-img-caption">
-          <em>Bongo and his belts</em> Only 25/32 shown. Photograph © ELYSION DOCTRINE. May be shared with credit
+          <em>Bongo and his belts</em> — Only 25/32 shown. Photograph © ELYSION DOCTRINE. May be shared with credit.
         </figcaption>
       </figure>
 
-
-      <h2>Number 3: You will never meet another Bongo</h2>
-
-    <p>
-       There is only one of him, and the universe still appears to be trying to understand how it allowed that to happen. 
-    </p>
-
-    <p>
-        Marine veteran. Thirty-two title belts across kickboxing, boxing, and Muay Thai, with more accolades in Taekwondo and Karate — and it won’t stop there.
-        But beyond being an extraordinarily accomplished and decorated fighter, he is, without question, one of the most unique human beings I have ever met.
-    </p>
-
+      <h2>Number 3: You will never meet another Bongo.</h2>
       <p>
+        There is only one of him, and the universe still appears to be trying to understand how it allowed that to happen.
+      </p>
+      <p>
+        Marine veteran. Thirty-two title belts across kickboxing, boxing, and Muay Thai, with more accolades in Taekwondo and Karate — and it won't stop there.
         But beyond being an extraordinarily accomplished and decorated fighter, he is, without question, one of the most unique human beings I have ever met.
       </p>
-
       <p>
         Outside the ring, he becomes a kind of chimera.
       </p>
-
       <p>
         He will make you laugh with strange noises, bizarre impressions, and sudden yet weirdly graceful dances that defy explanation. You will not understand why you are laughing.
-        And frankly, it doesn’t matter.
+        And frankly, it doesn't matter.
       </p>
-
       <p>
-        In the next breath, he will sit down and explain the history of Orthodoxy with the depth of a theologian. He unpacks it all — Councils, schisms, liturgy, icons, with the same passion he brings to fighting, but with a calm intelligence that feels wildly disproportionate to his age. 
+        In the next breath, he will sit down and explain the history of Orthodoxy with the depth of a theologian. He unpacks it all — Councils, schisms, liturgy, icons — with the same passion he brings to fighting, but with a calm intelligence that feels wildly disproportionate to his age.
       </p>
-
       <p>
         He is absurdly competent at nearly everything involving rhythm, dance, combat, or violence, often mastering new disciplines with an unsettling lack of resistance, occasionally winning competitions after only a few weeks of learning.
       </p>
-
       <p>
         And when you think there is nothing left for Bongo to prove, he is already somewhere else — collecting another belt, another story, another room to infect with his beautifully insane contagion of motion and meaning.
       </p>
-
       <p>
         It is no surprise that Bongo has been given the opportunity to move east to Thailand. Of course the deep, ancient fight culture of the East called him over. Places like that do not simply invite people. They pull in anomalies and summon phenomena.
       </p>
-
       <p>
         And Bongo is, without question, a phenomenon.
       </p>
 
       <blockquote>
-        Bongo's Mantra: “Seek the kingdom of God for all is fallen and will turn to ash!” - Of the Holy Fathers
+        Bongo's Mantra: "Seek the kingdom of God for all is fallen and will turn to ash!" — Of the Holy Fathers
       </blockquote>
 
       <!-- IMAGE BLOCK 3 -->
@@ -596,18 +770,15 @@
           loading="lazy"
         />
         <figcaption class="article-img-caption">
-          Safe travels brother! Photograph © ELYSION DOCTRINE. May be shared with credit
+          Safe travels brother! Photograph © ELYSION DOCTRINE. May be shared with credit.
         </figcaption>
       </figure>
 
       <a href="https://ninjacreativellp.com/bongo/?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAdGRleASHE4tleHRuA2FlbQIxMQBzcnRjBmFwcF9pZA8xMjQwMjQ1NzQyODc0MTQAAafBX1ThL5SiOPsD9Vw7XGimTA8KqEiD_gWgow8eZPIYJmmTy4PzfC2_TLxCKA_aem_2PR7RwutQQaKbJKOtXzJXA">
-      <h2>
-        Donate to Bongo's journey HERE.
-      </h2>
+        <h2>Donate to Bongo's journey HERE.</h2>
       </a>
 
     </section>
-
   </div>
 </main>
 
@@ -638,7 +809,7 @@
       </div>
       <div class="footer-item-holder" style="flex-direction:column;gap:0.3rem;">
         <div class="footer-h3-holder"><h3 class="footer-h3">Call Us</h3></div>
-        <a href="tel:+14049408834" class="footer-info-link">(+1)404 940 8834</a>
+        <a href="tel:+14049408834" class="footer-info-link">(+1) 404 940 8834</a>
       </div>
     </div>
   </div>
@@ -651,15 +822,16 @@
 <!-- SCRIPTS -->
 <script>
   (function () {
-    const preloader      = document.getElementById('preloader');
-    const preloaderBar   = document.getElementById('preloader-bar');
-    const preloaderPct   = document.getElementById('preloader-percent');
-    const articleTitle   = document.getElementById('articleTitle');
-    const cursor         = document.getElementById('cursor');
-    const themeToggle    = document.getElementById('themeToggle');
-    const clockEl        = document.getElementById('menuClock');
-    const htmlRoot       = document.getElementById('htmlRoot');
+    const preloader    = document.getElementById('preloader');
+    const preloaderBar = document.getElementById('preloader-bar');
+    const preloaderPct = document.getElementById('preloader-percent');
+    const articleTitle = document.getElementById('articleTitle');
+    const cursor       = document.getElementById('cursor');
+    const themeToggle  = document.getElementById('themeToggle');
+    const clockEl      = document.getElementById('menuClock');
+    const htmlRoot     = document.getElementById('htmlRoot');
 
+    /* ------------------- PRELOADER ------------------- */
     let progress = 0;
     const interval = setInterval(() => {
       progress += Math.random() * 18;
@@ -677,47 +849,50 @@
       setTimeout(() => articleTitle.classList.add('show'), 1000);
     }
 
+    /* ------------------- CURSOR — desktop/mouse only ------------------- */
+    // Only activate cursor on devices that support hover (non-touch)
+    const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
 
-    /* ------------------- CURSOR ------------------- */
-    let cx = 0, cy = 0;
-    document.addEventListener('mousemove', e => {
-      cx = e.clientX; cy = e.clientY;
-      cursor.classList.add('visible');
-    });
-    (function loop() {
-      cursor.style.left = cx + 'px';
-      cursor.style.top  = cy + 'px';
-      requestAnimationFrame(loop);
-    })();
-
+    if (!isTouchDevice) {
+      let cx = 0, cy = 0;
+      document.addEventListener('mousemove', e => {
+        cx = e.clientX; cy = e.clientY;
+        cursor.classList.add('visible');
+      });
+      (function loop() {
+        cursor.style.left = cx + 'px';
+        cursor.style.top  = cy + 'px';
+        requestAnimationFrame(loop);
+      })();
+    } else {
+      // Fully remove cursor element on touch devices
+      cursor.remove();
+    }
 
     /* ------------------- CLOCK ------------------- */
     function tick() {
       const d = new Date();
       let h = d.getHours(), m = d.getMinutes();
-      if (h < 10) h = '0'+h;
-      if (m < 10) m = '0'+m;
+      if (h < 10) h = '0' + h;
+      if (m < 10) m = '0' + m;
       clockEl.innerHTML = h + '<span>:</span>' + m;
     }
     tick(); setInterval(tick, 1000);
-
 
     /* ------------------- THEME TOGGLE ------------------- */
     const applyTheme = (theme) => {
       if (theme === 'light') {
         htmlRoot.setAttribute('data-theme', 'light');
-        themeToggle.querySelector('.toggle-text').textContent = 'Dark';
         themeToggle.innerHTML = `
-          <svg viewBox="0 0 24 24" fill="currentColor">
+          <svg viewBox="0 0 24 24" fill="currentColor" style="width:.8rem;height:.8rem;margin-right:.3rem;display:inline-block">
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
           </svg>
           <span class="toggle-text">Dark</span>
         `;
       } else {
         htmlRoot.removeAttribute('data-theme');
-        themeToggle.querySelector('.toggle-text').textContent = 'Light';
         themeToggle.innerHTML = `
-          <svg viewBox="0 0 24 24" fill="currentColor">
+          <svg viewBox="0 0 24 24" fill="currentColor" style="width:.8rem;height:.8rem;margin-right:.3rem;display:inline-block">
             <circle cx="12" cy="12" r="5"/>
             <path d="M12 2v2M12 20v2M4 12H2M22 12h-2M18.4 5.7 16.9 4.2M5.7 18.4 4.2 16.9M18.4 18.4 16.9 16.9M5.7 5.7 4.2 4.2"/>
           </svg>
@@ -726,7 +901,6 @@
       }
     };
 
-    // Check stored preference
     const stored = localStorage.getItem('theme');
     applyTheme(stored || 'dark');
 
