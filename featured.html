@@ -877,6 +877,25 @@ img, video { display: block; }
 </footer>
 
 <script>
+
+  /* -- Footer wordmak auto-fit -- */
+  function fitFooter () {
+    var fw = document.getElementById('footerWordmark');
+    if (!fw) return;
+    var fW = fw.parentElement.offsetWidth;
+    var lo = 10, hi = 800, mid;
+    fw.style.fontSize = hi + 'px';
+    for (var i = 0; i < 20; i++) {
+      mid = (lo + hi) / 2;
+      fw.style.fontSize = mid + 'px';
+      if (fw.scrollWidth <= fW) lo = mid; else hi = mid;
+    }
+    fw.style.fontSize = lo + 'px'
+  }
+  document.fonts.ready.then(fitFooter);
+  window.addEventListener('resize', fitFooter);
+
+  
 (function () {
   /* ── Cursor (desktop pointer only) ── */
   var cursor = document.getElementById('cursor');
