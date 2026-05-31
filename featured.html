@@ -3,8 +3,83 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>— ĒLÝSION DOCTRINE Featured</title>
-<meta name="description" content="Fight journalism, cultural deep dives, and the philosophy of beautiful violence."/>
+<title>Featured — ĒLÝSION DOCTRINE | Fight Journalism & Martial Arts Culture</title>
+
+<!-- SEO Meta -->
+<meta name="description" content="Featured fight journalism, cultural deep dives, and long-form storytelling from Ēlýsion Doctrine. Covering BJJ, Muay Thai, Boxing, Taekwondo, Wing Chun, MMA and more."/>
+<meta name="keywords" content="fight journalism, martial arts articles, muay thai features, boxing articles, BJJ stories, taekwondo, MMA culture, combat sports writing, fight culture magazine"/>
+<meta name="author" content="Ēlýsion Doctrine"/>
+<meta name="robots" content="index, follow"/>
+<link rel="canonical" href="https://elysiondoctrine.com/featured.html"/>
+
+<!-- Open Graph -->
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://elysiondoctrine.com/featured.html"/>
+<meta property="og:title" content="Featured — ĒLÝSION DOCTRINE | Fight Journalism & Martial Arts Culture"/>
+<meta property="og:description" content="The body as battlefield, instrument, and art form. Long-form fight journalism, cultural deep dives, and the philosophy of beautiful violence."/>
+<meta property="og:image" content="https://elysiondoctrine.com/images/og-image.jpg"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="Ēlýsion Doctrine"/>
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Featured — ĒLÝSION DOCTRINE | Fight Journalism & Martial Arts Culture"/>
+<meta name="twitter:description" content="The body as battlefield, instrument, and art form. Long-form fight journalism, cultural deep dives, and the philosophy of beautiful violence."/>
+<meta name="twitter:image" content="https://elysiondoctrine.com/images/og-image.jpg"/>
+
+<!-- Structured Data: CollectionPage -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Featured — Ēlýsion Doctrine",
+  "url": "https://elysiondoctrine.com/featured.html",
+  "description": "Long-form fight journalism, cultural deep dives, and the philosophy of beautiful violence.",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Ēlýsion Doctrine",
+    "url": "https://elysiondoctrine.com"
+  },
+  "about": [
+    { "@type": "Thing", "name": "Muay Thai" },
+    { "@type": "Thing", "name": "Brazilian Jiu-Jitsu" },
+    { "@type": "Thing", "name": "Boxing" },
+    { "@type": "Thing", "name": "Taekwondo" },
+    { "@type": "Thing", "name": "Mixed Martial Arts" },
+    { "@type": "Thing", "name": "Wing Chun" }
+  ]
+}
+</script>
+
+<!-- Structured Data: Featured Article (Bongo) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Bongo the Fight Pirate",
+  "description": "Twenty-four years old. Thirty-two championship belts. A life calibrated somewhere between monastery discipline and competitive violence. And now, his path leads him to Thailand.",
+  "datePublished": "2026-05-18",
+  "author": {
+    "@type": "Organization",
+    "name": "Ēlýsion Doctrine"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Ēlýsion Doctrine",
+    "url": "https://elysiondoctrine.com"
+  },
+  "url": "https://elysiondoctrine.com/articles/bongo.html",
+  "image": "https://elysiondoctrine.com/images/bongo.jpg",
+  "articleSection": "MMA",
+  "timeRequired": "PT7M"
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Khmer:wght@900&display=swap" rel="stylesheet"/>
+
 <style>
 /* ============================================================
    TOKENS & RESET
@@ -31,8 +106,32 @@ body {
   overflow-x: hidden;
   cursor: none;
 }
+/* Remove custom cursor on touch devices */
+@media (hover: none), (pointer: coarse) {
+  body { cursor: auto; }
+  #cursor { display: none !important; }
+}
 ::-webkit-scrollbar { display: none; }
 img, video { display: block; }
+
+/* ============================================================
+   SKIP LINK
+   ============================================================ */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 99999;
+  background: var(--fg);
+  color: var(--bg);
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  transition: top 0.2s;
+  border-radius: 2px;
+}
+.skip-link:focus { top: 1rem; }
 
 /* ============================================================
    CURSOR
@@ -48,6 +147,9 @@ img, video { display: block; }
 #cursor.visible { clip-path: circle(50% at 50% 50%); }
 #cursor.hover   { width: 70px; height: 70px; }
 
+/* ============================================================
+   NAV
+   ============================================================ */
 .menu {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
@@ -63,6 +165,7 @@ img, video { display: block; }
   letter-spacing: .02em; opacity: .85; transition: opacity .3s;
 }
 .menu-link:hover, .menu-link.active { opacity: 1; }
+.menu-link:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; border-radius: 2px; }
 .menu-link sup { font-size: .6em; opacity: .6; }
 .menu-right {
   display: flex; align-items: center; gap: .5rem;
@@ -71,6 +174,78 @@ img, video { display: block; }
 }
 #clock span { animation: blink 1s steps(1) infinite; }
 @keyframes blink { 50% { visibility: hidden; } }
+
+/* ============================================================
+   HAMBURGER
+   ============================================================ */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  pointer-events: auto;
+  padding: 4px;
+  position: relative;
+  z-index: 101;
+}
+.hamburger-line {
+  display: block;
+  width: 100%;
+  height: 1.5px;
+  background: var(--fg);
+  transition: transform 0.4s var(--ease), opacity 0.3s var(--ease);
+  transform-origin: center;
+}
+.hamburger[aria-expanded="true"] .hamburger-line:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.hamburger[aria-expanded="true"] .hamburger-line:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburger[aria-expanded="true"] .hamburger-line:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+.hamburger:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; border-radius: 2px; }
+
+/* ============================================================
+   MOBILE MENU OVERLAY
+   ============================================================ */
+.mobile-menu-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 99;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 6rem 6vw 4rem;
+  gap: 1.6rem;
+  opacity: 0;
+  transform: translateY(-12px);
+  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+  pointer-events: none;
+}
+.mobile-menu-overlay.open {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.mobile-menu-overlay .menu-link {
+  font-size: clamp(1.4rem, 6vw, 2.8rem);
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  opacity: 0.85;
+  pointer-events: auto;
+}
+.mobile-menu-right {
+  margin-top: auto;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  display: flex;
+  gap: 0.5rem;
+}
 
 /* ============================================================
    LOAD OVERLAY
@@ -186,8 +361,10 @@ img, video { display: block; }
   cursor: none;
   transition: border-color .25s, color .25s, background .25s;
 }
+@media (hover: none), (pointer: coarse) { .filter-btn { cursor: auto; } }
 .filter-btn:hover { border-color: rgba(250,250,250,.4); color: var(--fg); }
 .filter-btn.active { border-color: var(--fg); color: var(--fg); background: rgba(250,250,250,.06); }
+.filter-btn:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
 .filter-clear {
   margin-left: auto;
   background: none;
@@ -200,16 +377,16 @@ img, video { display: block; }
   cursor: none;
   transition: color .25s;
 }
+@media (hover: none), (pointer: coarse) { .filter-clear { cursor: auto; } }
 .filter-clear:hover { color: var(--fg); }
+.filter-clear:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; border-radius: 2px; }
 
 /* ============================================================
    FEATURED FEED
    ============================================================ */
-.feed {
-  padding: 0 3vw 6vw;
-}
+.feed { padding: 0 3vw 6vw; }
 
-/* ---- HERO FEATURE (latest post) ---- */
+/* HERO */
 .feed-hero {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -242,11 +419,7 @@ img, video { display: block; }
   justify-content: space-between;
 }
 .feed-hero-top { display: flex; flex-direction: column; gap: 1.5vw; }
-.feed-hero-date {
-  font-size: clamp(.6rem, .7vw, .8rem);
-  letter-spacing: .1em;
-  color: var(--muted);
-}
+.feed-hero-date { font-size: clamp(.6rem, .7vw, .8rem); letter-spacing: .1em; color: var(--muted); }
 .feed-hero-title {
   font-size: clamp(1.4rem, 2.8vw, 4rem);
   font-weight: 300;
@@ -275,13 +448,10 @@ img, video { display: block; }
 }
 .feed-hero-read::after { content: '→'; }
 .feed-hero-read:hover { opacity: .6; }
+.feed-hero-read:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; border-radius: 2px; }
 
-/* ---- TAGS (shared) ---- */
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .35rem;
-}
+/* TAGS */
+.tags { display: flex; flex-wrap: wrap; gap: .35rem; }
 .tag {
   font-size: clamp(.5rem, .6vw, .7rem);
   letter-spacing: .1em;
@@ -291,15 +461,8 @@ img, video { display: block; }
   font-weight: 400;
   line-height: 1;
 }
-.tag-format {
-  border: 1px solid rgba(250,250,250,.5);
-  color: var(--fg);
-}
-.tag-discipline {
-  border: 1px solid var(--dim);
-  color: var(--muted);
-}
-/* Discipline colour accents (subtle) */
+.tag-format  { border: 1px solid rgba(250,250,250,.5); color: var(--fg); }
+.tag-discipline { border: 1px solid var(--dim); color: var(--muted); }
 .tag-bjj     { border-color: rgba(80,160,255,.4);  color: rgba(80,160,255,.8); }
 .tag-muaythai{ border-color: rgba(255,120,80,.4);  color: rgba(255,120,80,.8); }
 .tag-boxing  { border-color: rgba(255,210,60,.4);  color: rgba(255,210,60,.8); }
@@ -309,7 +472,7 @@ img, video { display: block; }
 .tag-wrestling{ border-color: rgba(255,170,60,.4); color: rgba(255,170,60,.8); }
 .tag-judo    { border-color: rgba(60,220,230,.4);  color: rgba(60,220,230,.8); }
 
-/* ---- SECTION DIVIDER ---- */
+/* SECTION DIVIDER */
 .section-row {
   display: flex;
   align-items: center;
@@ -318,24 +481,11 @@ img, video { display: block; }
   border-bottom: 1px solid var(--dim);
   margin-bottom: 1px;
 }
-.section-row-label {
-  font-size: clamp(.6rem, .7vw, .85rem);
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-.section-row-count {
-  font-size: clamp(.6rem, .7vw, .85rem);
-  letter-spacing: .08em;
-  color: var(--dim);
-}
+.section-row-label { font-size: clamp(.6rem, .7vw, .85rem); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.section-row-count { font-size: clamp(.6rem, .7vw, .85rem); letter-spacing: .08em; color: var(--dim); }
 
-/* ---- GRID — 3-up ---- */
-.feed-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0;
-}
+/* GRID 3-up */
+.feed-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
 .feed-grid-item {
   border-right: 1px solid var(--dim);
   border-bottom: 1px solid var(--dim);
@@ -351,53 +501,23 @@ img, video { display: block; }
 }
 .feed-grid-item:nth-child(3n) { border-right: none; }
 .feed-grid-item:hover { background: rgba(255,255,255,.025); }
+.feed-grid-item:focus-visible { outline: 2px solid var(--fg); outline-offset: -2px; }
 .feed-grid-item.show { opacity: 1; transform: translateY(0); transition: opacity .9s var(--ease), transform .9s var(--ease), background .3s; }
-.feed-grid-item-media {
-  position: relative;
-  aspect-ratio: 16/10;
-  overflow: hidden;
-  background: #1e1e1e;
-}
-.feed-grid-item-media img {
-  width: 100%; height: 100%; object-fit: cover;
-  transition: transform .8s var(--ease);
-}
+.feed-grid-item-media { position: relative; aspect-ratio: 16/10; overflow: hidden; background: #1e1e1e; }
+.feed-grid-item-media img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); }
 .feed-grid-item:hover .feed-grid-item-media img { transform: scale(1.05); }
 .feed-grid-item-media-placeholder {
   width: 100%; height: 100%;
   display: flex; align-items: center; justify-content: center;
-  background: #1a1a1a;
-  color: var(--dim);
-  font-size: clamp(.55rem, .65vw, .75rem);
-  letter-spacing: .1em;
-  text-transform: uppercase;
+  background: #1a1a1a; color: var(--dim);
+  font-size: clamp(.55rem, .65vw, .75rem); letter-spacing: .1em; text-transform: uppercase;
 }
-.feed-grid-item-title {
-  font-size: clamp(.9rem, 1.3vw, 1.8rem);
-  font-weight: 300;
-  letter-spacing: -.02em;
-  line-height: 1.2;
-  color: var(--fg);
-}
-.feed-grid-item-excerpt {
-  font-size: clamp(.65rem, .8vw, .95rem);
-  color: var(--muted);
-  line-height: 1.6;
-  font-weight: 300;
-}
-.feed-grid-item-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-top: auto;
-}
-.feed-grid-item-date {
-  font-size: clamp(.55rem, .65vw, .75rem);
-  letter-spacing: .08em;
-  color: var(--dim);
-}
+.feed-grid-item-title { font-size: clamp(.9rem, 1.3vw, 1.8rem); font-weight: 300; letter-spacing: -.02em; line-height: 1.2; color: var(--fg); }
+.feed-grid-item-excerpt { font-size: clamp(.65rem, .8vw, .95rem); color: var(--muted); line-height: 1.6; font-weight: 300; }
+.feed-grid-item-meta { display: flex; justify-content: space-between; align-items: flex-end; margin-top: auto; }
+.feed-grid-item-date { font-size: clamp(.55rem, .65vw, .75rem); letter-spacing: .08em; color: var(--dim); }
 
-/* ---- LIST — tall rows ---- */
+/* LIST */
 .feed-list { border-top: 1px solid var(--dim); }
 .feed-list-item {
   display: grid;
@@ -413,47 +533,20 @@ img, video { display: block; }
   transform: translateX(-12px);
   transition: opacity .8s var(--ease), transform .8s var(--ease), background .25s;
 }
+@media (hover: none), (pointer: coarse) { .feed-list-item { cursor: auto; } }
 .feed-list-item:hover { background: rgba(255,255,255,.02); padding-left: .5rem; margin-left: -.5rem; margin-right: -.5rem; padding-right: .5rem; }
+.feed-list-item:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
 .feed-list-item.show { opacity: 1; transform: translateX(0); }
-.feed-list-num {
-  font-size: clamp(.55rem, .65vw, .75rem);
-  color: var(--dim);
-  letter-spacing: .06em;
-  text-align: right;
-}
+.feed-list-num { font-size: clamp(.55rem, .65vw, .75rem); color: var(--dim); letter-spacing: .06em; text-align: right; }
 .feed-list-info { display: flex; flex-direction: column; gap: .5rem; }
-.feed-list-title {
-  font-size: clamp(.85rem, 1.15vw, 1.5rem);
-  font-weight: 300;
-  letter-spacing: -.015em;
-  line-height: 1.25;
-  color: var(--fg);
-  transition: opacity .25s;
-}
+.feed-list-title { font-size: clamp(.85rem, 1.15vw, 1.5rem); font-weight: 300; letter-spacing: -.015em; line-height: 1.25; color: var(--fg); transition: opacity .25s; }
 .feed-list-item:hover .feed-list-title { opacity: .65; }
-.feed-list-thumb {
-  width: clamp(60px, 7vw, 100px);
-  aspect-ratio: 4/3;
-  overflow: hidden;
-  background: #1e1e1e;
-  flex-shrink: 0;
-}
+.feed-list-thumb { width: clamp(60px, 7vw, 100px); aspect-ratio: 4/3; overflow: hidden; background: #1e1e1e; flex-shrink: 0; }
 .feed-list-thumb img { width: 100%; height: 100%; object-fit: cover; }
-.feed-list-thumb-placeholder {
-  width: 100%; height: 100%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 8px; letter-spacing: .06em; text-transform: uppercase; color: var(--dim);
-}
+.feed-list-thumb-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 8px; letter-spacing: .06em; text-transform: uppercase; color: var(--dim); }
 
-/* ---- EMPTY STATE ---- */
-.feed-empty {
-  padding: 6vw 0;
-  text-align: center;
-  color: var(--muted);
-  font-size: clamp(.75rem, .9vw, 1.1rem);
-  letter-spacing: .06em;
-  display: none;
-}
+/* EMPTY STATE */
+.feed-empty { padding: 6vw 0; text-align: center; color: var(--muted); font-size: clamp(.75rem, .9vw, 1.1rem); letter-spacing: .06em; display: none; }
 .feed-empty.show { display: block; }
 
 /* ============================================================
@@ -465,65 +558,121 @@ img, video { display: block; }
 .footer-item-holder { display: flex; gap: 2rem; }
 .footer-link-holder { text-decoration: none; color: #161616; font-size: clamp(.65rem,.8vw,1rem); opacity: .6; transition: opacity .3s; letter-spacing: .03em; }
 .footer-link-holder:hover { opacity: 1; }
+.footer-link-holder:focus-visible { outline: 2px solid #161616; outline-offset: 3px; border-radius: 2px; }
 .footer-over-logo-holder { display: grid; grid-template-columns: 1fr 1fr; gap: 3vw; margin-bottom: 3vw; }
 .footer-links-holder { display: flex; flex-direction: column; gap: 1rem; }
 .footer-main-link { text-decoration: none; color: #161616; font-size: clamp(1.2rem,2vw,3rem); font-weight: 300; letter-spacing: -.02em; line-height: 1.1; transition: opacity .3s; }
 .footer-main-link:hover { opacity: .5; }
+.footer-main-link:focus-visible { outline: 2px solid #161616; outline-offset: 3px; border-radius: 2px; }
 .footer-rights { font-size: clamp(.65rem,.8vw,1rem); color: rgba(22,22,22,.4); line-height: 1.6; margin-top: 2rem; }
 .footer-flex.smaller { justify-content: flex-end; align-items: flex-start; gap: 3vw; }
 .footer-h3-holder { margin-bottom: .6rem; }
 .footer-h3 { font-size: clamp(.6rem,.7vw,.9rem); letter-spacing: .14em; text-transform: uppercase; color: rgba(22,22,22,.45); font-weight: 400; }
 .footer-info-link { text-decoration: none; color: #161616; font-size: clamp(.75rem,.9vw,1.1rem); font-weight: 300; transition: opacity .3s; }
 .footer-info-link:hover { opacity: .5; }
+.footer-info-link:focus-visible { outline: 2px solid #161616; outline-offset: 3px; border-radius: 2px; }
 .footer-logo-holder { padding: 3vw 0 4vw; border-top: 1px solid rgba(0,0,0,.08); margin-top: 2vw; overflow: hidden; width: 100%; }
-.footer-logo-svg { width: 100%; height: auto; display: block;}
-
 .footer-wordmark {
-    font-family:'Unbounded', sans-serif;
-    font-weight: 900;
-    letter-spacing: -0.03em;
-    color: #161616;
-    line-height: 0.92;
-    white-space: nowrap;
-    display: block;
-    width: 100%;
-    font-size: clamp(3rem, 10vw, 14rem)
-  }
+  font-family:'Unbounded', sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  color: #161616;
+  line-height: 0.92;
+  white-space: nowrap;
+  display: block;
+  width: 100%;
+  font-size: clamp(3rem, 10vw, 14rem);
+}
 
 /* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width: 900px) {
-  .feed-hero { grid-template-columns: 1fr; }
-  .feed-grid  { grid-template-columns: 1fr 1fr; }
-  .feed-grid-item:nth-child(3n)  { border-right: 1px solid var(--dim); }
-  .feed-grid-item:nth-child(2n)  { border-right: none; }
+  /* Show hamburger, hide desktop links + clock */
+  .menu-links-holder { display: none; }
+  .menu-right { display: none; }
+  .hamburger { display: flex; }
+
+  .menu-logo svg { width: clamp(120px, 38vw, 180px); }
+  .menu { padding: 4vw 4vw; }
+
+  .page-header { padding: 4vw 4vw 0; padding-top: 22vw; }
   .page-header-inner { grid-template-columns: 1fr; }
   .header-meta { text-align: left; }
-  .footer-over-logo-holder { grid-template-columns: 1fr; }
-  .footer-flex.smaller { flex-direction: column; gap: 2rem; }
+  .page-title-svg { width: min(80vw, 520px); }
+  .page-kicker { font-size: clamp(.65rem, 2.5vw, .9rem); }
+
+  .filter-bar { padding: 3vw 4vw 2vw; gap: .4rem .8rem; }
+  .filter-group-label { font-size: clamp(.6rem, 2.2vw, .75rem); }
+  .filter-btn { font-size: clamp(.6rem, 2vw, .8rem); padding: .3rem .6rem; }
+
+  .feed { padding: 0 4vw 8vw; }
+  .feed-hero { grid-template-columns: 1fr; }
+  .feed-hero-info { padding: 4vw 0 3vw; }
+  .feed-hero-top { gap: 3vw; }
+  .feed-hero-excerpt { max-width: 100%; margin-top: 2vw; }
+  .feed-grid { grid-template-columns: 1fr 1fr; }
+  .feed-grid-item:nth-child(3n) { border-right: 1px solid var(--dim); }
+  .feed-grid-item:nth-child(2n) { border-right: none; }
+  .feed-grid-item { padding: 3vw 3vw 4vw; gap: 2.5vw; }
+  .feed-grid-item-title { font-size: clamp(.9rem, 3.5vw, 1.6rem); }
+  .feed-list-item { gap: 3vw; padding: 3vw 0; }
+
+  .footer { padding: 6vw 4vw 0; }
+  .footer-items { padding-bottom: 4vw; margin-bottom: 5vw; }
+  .footer-over-logo-holder { grid-template-columns: 1fr; gap: 6vw; }
+  .footer-flex.smaller { flex-direction: column; gap: 4vw; justify-content: flex-start; }
+  .footer-item-holder { flex-direction: column; gap: 0.3rem; }
+  .footer-main-link { font-size: clamp(1.4rem, 6vw, 2.5rem); }
 }
+
 @media (max-width: 600px) {
-  .feed-grid  { grid-template-columns: 1fr; }
+  .menu { padding: 5vw 5vw; }
+  .menu-logo svg { width: clamp(100px, 45vw, 150px); }
+  .page-header { padding-top: 28vw; padding-left: 5vw; padding-right: 5vw; }
+  .filter-bar { padding: 4vw 5vw 3vw; }
+  .feed { padding: 0 5vw 8vw; }
+  .feed-grid { grid-template-columns: 1fr; }
   .feed-grid-item { border-right: none; }
   .feed-list-item { grid-template-columns: 1.8rem 1fr; }
   .feed-list-thumb { display: none; }
-  .filter-bar { gap: .4rem .8rem; }
+  .footer { padding: 8vw 5vw 0; }
 }
 </style>
 </head>
 <body>
 
-<div class="load-overlay"></div>
-<div id="cursor"></div>
+<a class="skip-link" href="#main-content">Skip to main content</a>
 
-<!-- ============================================================
-     NAV
-     ============================================================ -->
-<nav class="menu">
+<div class="load-overlay" aria-hidden="true"></div>
+<div id="cursor" aria-hidden="true"></div>
+
+<!-- Mobile menu overlay -->
+<div
+  class="mobile-menu-overlay"
+  id="mobileMenu"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Navigation menu"
+  hidden
+>
+  <a href="/index.html" class="menu-link">Fight Styles <sup>(6)</sup></a>
+  <a href="/featured.html" class="menu-link active">Featured</a>
+  <a href="/gallery/gallery.html" class="menu-link">Gallery</a>
+  <a href="/virtuscorporis.html" class="menu-link">Virtus Corporis: Inherited Motion</a>
+  <a href="/inprogress.html" class="menu-link">Technical Library</a>
+  <a href="/inprogress.html" class="menu-link">Community</a>
+  <div class="mobile-menu-right" aria-label="Current time">
+    <span>CPH</span>
+    <p id="clockMobile">12<span aria-hidden="true">:</span>00</p>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="menu" aria-label="Main navigation">
   <div class="menu-link-holder">
-    <a href="/index.html" class="menu-logo">
-      <svg viewBox="0 0 820 80" fill="white" xmlns="http://www.w3.org/2000/svg">
+    <a href="/index.html" class="menu-logo" aria-label="Ēlýsion Doctrine — Home">
+      <svg viewBox="0 0 820 80" fill="white" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
         <text x="0" y="68"
           font-family="'Unbounded', sans-serif"
           font-size="72" font-weight="900" letter-spacing="-1"
@@ -532,92 +681,95 @@ img, video { display: block; }
     </a>
   </div>
   <div class="menu-links-holder">
-    <a href="/index.html"      class="menu-link">Fight Styles <sup>(6)</sup></a>
-    <a href="/featured.html"   class="menu-link active">Featured</a>
-    <a href="/gallery/gallery.html"  class="menu-link">Gallery</a>
-    <a href="/virtuscorporis.html"     class="menu-link">Virtus Corporis: Inherited Motion</a>
-    <a href="/inprogress.html"  class="menu-link">Technical Library</a>
-    <a href="/inprogress.html"class="menu-link">Community</a>
+    <a href="/index.html"             class="menu-link">Fight Styles <sup>(6)</sup></a>
+    <a href="/featured.html"          class="menu-link active" aria-current="page">Featured</a>
+    <a href="/gallery/gallery.html"   class="menu-link">Gallery</a>
+    <a href="/virtuscorporis.html"    class="menu-link">Virtus Corporis: Inherited Motion</a>
+    <a href="/inprogress.html"        class="menu-link">Technical Library</a>
+    <a href="/inprogress.html"        class="menu-link">Community</a>
   </div>
-  <div class="menu-right">
+  <div class="menu-right" aria-label="Current time in Copenhagen">
     <span>CPH</span>
-    <p id="clock">12<span>:</span>00</p>
+    <p id="clock">12<span aria-hidden="true">:</span>00</p>
   </div>
+  <button
+    class="hamburger"
+    id="hamburgerBtn"
+    aria-controls="mobileMenu"
+    aria-expanded="false"
+    aria-label="Open navigation menu"
+  >
+    <span class="hamburger-line" aria-hidden="true"></span>
+    <span class="hamburger-line" aria-hidden="true"></span>
+    <span class="hamburger-line" aria-hidden="true"></span>
+  </button>
 </nav>
 
-<!-- ============================================================
-     PAGE HEADER
-     ============================================================ -->
+<!-- PAGE HEADER -->
 <header class="page-header">
   <div class="page-header-inner">
     <div>
       <p class="page-kicker">The Body as Battlefield, Instrument, and Art Form</p>
       <p>We examine the strange and beautiful territories, people and philosophies where movement, meaning, and combat intersect.</p>
-    </br>
-
-      <!-- Replace text logo with SVG path set if I decide I want animated reveal like the homepage -->
-      <svg id="pageTitle" class="page-title-svg" viewBox="0 0 820 100" fill="white" xmlns="http://www.w3.org/2000/svg">
+      <br/>
+      <svg id="pageTitle" class="page-title-svg" viewBox="0 0 820 100" fill="white" xmlns="http://www.w3.org/2000/svg" aria-label="Featured" role="img">
         <text y="82" font-family="'Helvetica Neue',Helvetica,Arial,sans-serif" font-size="100" font-weight="200" letter-spacing="-4">Featured</text>
       </svg>
     </div>
-    <div class="header-meta">
+    <div class="header-meta" aria-live="polite">
       <div class="header-meta-count" id="visibleCount">1</div>
       <div class="header-meta-label">Features</div>
     </div>
   </div>
 </header>
 
-<!-- ============================================================
-     FILTER BAR
-     ============================================================ -->
-<div class="filter-bar" id="filterBar">
-  <span class="filter-group-label">Format</span>
-  <div class="filter-group" id="formatFilters">
-    <button class="filter-btn active" data-filter-group="format" data-filter="all">All</button>
-    <button class="filter-btn" data-filter-group="format" data-filter="article">Article</button>
-    <button class="filter-btn" data-filter-group="format" data-filter="blog">Blog Post</button>
-    <button class="filter-btn" data-filter-group="format" data-filter="opinion">Opinion</button>
-    <button class="filter-btn" data-filter-group="format" data-filter="podcast">Podcast</button>
-    <button class="filter-btn" data-filter-group="format" data-filter="documentary">Documentary</button>
-    <button class="filter-btn" data-filter-group="format" data-filter="shortvideo">Short Video</button>
+<!-- FILTER BAR -->
+<div class="filter-bar" id="filterBar" role="search" aria-label="Filter features by format and discipline">
+  <span class="filter-group-label" id="format-label">Format</span>
+  <div class="filter-group" id="formatFilters" role="group" aria-labelledby="format-label">
+    <button class="filter-btn active" data-filter-group="format" data-filter="all" aria-pressed="true">All</button>
+    <button class="filter-btn" data-filter-group="format" data-filter="article" aria-pressed="false">Article</button>
+    <button class="filter-btn" data-filter-group="format" data-filter="blog" aria-pressed="false">Blog Post</button>
+    <button class="filter-btn" data-filter-group="format" data-filter="opinion" aria-pressed="false">Opinion</button>
+    <button class="filter-btn" data-filter-group="format" data-filter="podcast" aria-pressed="false">Podcast</button>
+    <button class="filter-btn" data-filter-group="format" data-filter="documentary" aria-pressed="false">Documentary</button>
+    <button class="filter-btn" data-filter-group="format" data-filter="shortvideo" aria-pressed="false">Short Video</button>
   </div>
 
-  <div class="filter-divider"></div>
+  <div class="filter-divider" aria-hidden="true"></div>
 
-  <span class="filter-group-label">Discipline</span>
-  <div class="filter-group" id="disciplineFilters">
-    <button class="filter-btn active" data-filter-group="discipline" data-filter="all">All</button>
-    <button class="filter-btn" data-filter-group="discipline" data-filter="bjj">BJJ</button>
-    <button class="filter-btn" data-filter-group="discipline" data-filter="muaythai">Muay Thai</button>
-    <button class="filter-btn" data-filter-group="discipline" data-filter="boxing">Boxing</button>
-    <button class="filter-btn" data-filter-group="discipline" data-filter="tkd">Taekwondo</button>
-    <button class="filter-btn" data-filter-group="discipline" data-filter="wingchun">Wing Chun</button>
-    <button class="filter-btn" data-filter-group="discipline" data-filter="mma">MMA</button>
-    <button class="filter-btn" data-filter-group="discipline" data-filter="wrestling">Wrestling</button>
-    <button class="filter-btn" data-filter-group="discipline" data-filter="judo">Judo</button>
+  <span class="filter-group-label" id="discipline-label">Discipline</span>
+  <div class="filter-group" id="disciplineFilters" role="group" aria-labelledby="discipline-label">
+    <button class="filter-btn active" data-filter-group="discipline" data-filter="all" aria-pressed="true">All</button>
+    <button class="filter-btn" data-filter-group="discipline" data-filter="bjj" aria-pressed="false">BJJ</button>
+    <button class="filter-btn" data-filter-group="discipline" data-filter="muaythai" aria-pressed="false">Muay Thai</button>
+    <button class="filter-btn" data-filter-group="discipline" data-filter="boxing" aria-pressed="false">Boxing</button>
+    <button class="filter-btn" data-filter-group="discipline" data-filter="tkd" aria-pressed="false">Taekwondo</button>
+    <button class="filter-btn" data-filter-group="discipline" data-filter="wingchun" aria-pressed="false">Wing Chun</button>
+    <button class="filter-btn" data-filter-group="discipline" data-filter="mma" aria-pressed="false">MMA</button>
+    <button class="filter-btn" data-filter-group="discipline" data-filter="wrestling" aria-pressed="false">Wrestling</button>
+    <button class="filter-btn" data-filter-group="discipline" data-filter="judo" aria-pressed="false">Judo</button>
   </div>
 
-  <button class="filter-clear" id="filterClear">Clear filters</button>
+  <button class="filter-clear" id="filterClear" aria-label="Clear all filters">Clear filters</button>
 </div>
 
-<!-- ============================================================
-     FEATURED FEED
-     ============================================================ -->
-<main class="feed" id="feed">
+<!-- FEATURED FEED -->
+<main class="feed" id="main-content">
 
-  <!-- ── HERO: most recent post ─────────────────────────────── -->
+  <!-- HERO -->
   <article class="feed-hero" id="heroArticle"
-    data-format="article" data-discipline="mma">
+    data-format="article" data-discipline="mma"
+    aria-label="Featured: Bongo the Fight Pirate">
     <div class="feed-hero-media">
-      <!-- REPLACE: hero image or video -->
       <img src="images/bongo.jpg"
-           alt="Bongo the Fight Pirate"
+           alt="Bongo, a 24-year-old fighter with 32 championship belts, preparing for his journey to Thailand"
            onerror="this.style.background='#1e1e1e';this.style.display='flex';this.outerHTML='<div class=\'feed-hero-media\' style=\'background:#1a1a1a;display:flex;align-items:center;justify-content:center;color:rgba(250,250,250,0.15);font-size:11px;letter-spacing:.12em;text-transform:uppercase;\'>Image Placeholder</div>'"/>
     </div>
     <div class="feed-hero-info">
       <div class="feed-hero-top">
-        <div class="feed-hero-date">May 18, 2026</div>
-        <div class="tags">
+        <time class="feed-hero-date" datetime="2026-05-18">May 18, 2026</time>
+        <div class="tags" aria-label="Tags">
           <span class="tag tag-format">Article</span>
           <span class="tag tag-muaythai">MMA</span>
         </div>
@@ -627,77 +779,74 @@ img, video { display: block; }
         </p>
       </div>
       <div class="feed-hero-bottom">
-        <a href="articles/bongo.html" class="feed-hero-read">Read Feature</a>
-        <span style="font-size:clamp(.55rem,.65vw,.75rem);letter-spacing:.08em;color:var(--dim);">7 min read</span>
+        <a href="articles/bongo.html" class="feed-hero-read" aria-label="Read full feature: Bongo the Fight Pirate">Read Feature</a>
+        <span style="font-size:clamp(.55rem,.65vw,.75rem);letter-spacing:.08em;color:var(--dim);" aria-label="7 minute read">7 min read</span>
       </div>
     </div>
   </article>
 
-  <!-- ── GRID: recent features ──────────────────────────────── -->
+  <!-- GRID -->
   <div class="section-row">
-    <span class="section-row-label">Field Notes</span>
-    <span class="section-row-count" id="gridCount"> 1 feature</span>
+    <h2 class="section-row-label">Field Notes</h2>
+    <span class="section-row-count" id="gridCount" aria-live="polite">1 feature</span>
   </div>
 
-  <div class="feed-grid" id="feedGrid">
+  <div class="feed-grid" id="feedGrid" role="list">
 
-    <!-- Grid item 1 -->
-    <a href="#" class="feed-grid-item"
-       data-format="shortvideo" data-discipline="tkd">
+    <a href="#" class="feed-grid-item" role="listitem"
+       data-format="shortvideo" data-discipline="tkd"
+       aria-label="Coming soon: Return to Sender — My Return to My First Martial Arts">
       <div class="feed-grid-item-media">
-        <img src="images/MokDong.jpg">
+        <img src="images/MokDong.jpg" alt="Mok Dong district in Seoul, home of the International Kumgang Taekwondo Center"/>
       </div>
-      <div class="tags">
+      <div class="tags" aria-label="Tags">
         <span class="tag tag-format">Article</span>
         <span class="tag tag-tkd">Taekwondo</span>
       </div>
-      <div class="feed-grid-item-title"> COMING SOON ~ Return to Sender: My Return to My First Martial Arts</div>
-      <div class="feed-grid-item-excerpt"> Traveling to Seoul to relearn Taekwondo at the International Kumgang Taekwondo Center</div>
+      <p class="feed-grid-item-title">COMING SOON — Return to Sender: My Return to My First Martial Arts</p>
+      <p class="feed-grid-item-excerpt">Traveling to Seoul to relearn Taekwondo at the International Kumgang Taekwondo Center</p>
       <div class="feed-grid-item-meta">
-        <span class="feed-grid-item-date">March 28, 2025</span>
-        <span style="font-size:clamp(.5rem,.58vw,.7rem);letter-spacing:.06em;color:var(--dim);">7 min read</span>
+        <time class="feed-grid-item-date" datetime="2025-03-28">March 28, 2025</time>
+        <span style="font-size:clamp(.5rem,.58vw,.7rem);letter-spacing:.06em;color:var(--dim);" aria-label="7 minute read">7 min read</span>
       </div>
     </a>
 
-  </div><!-- /feed-grid -->
-
-  <!-- ── LIST: archive ──────────────────────────────────────── -->
-  <div class="section-row" style="margin-top:3vw;">
-    <span class="section-row-label">Archive</span>
-    <span class="section-row-count" id="listCount">1 feature</span>
   </div>
 
-  <div class="feed-list" id="feedList">
-    <!-- List item 1 -->
-    <a href="#" class="feed-list-item"
-       data-format="blog" data-discipline="boxing">
-      <span class="feed-list-num">04</span>
+  <!-- LIST -->
+  <div class="section-row" style="margin-top:3vw;">
+    <h2 class="section-row-label">Archive</h2>
+    <span class="section-row-count" id="listCount" aria-live="polite">1 feature</span>
+  </div>
+
+  <div class="feed-list" id="feedList" role="list">
+    <a href="#" class="feed-list-item" role="listitem"
+       data-format="blog" data-discipline="boxing"
+       aria-label="Blog Post: Burn After Reading — What Are We and Where We Are Going?">
+      <span class="feed-list-num" aria-hidden="true">04</span>
       <div class="feed-list-info">
-        <div class="tags">
+        <div class="tags" aria-label="Tags">
           <span class="tag tag-format">Blog Post</span>
         </div>
-        <div class="feed-list-title">Burn After Reading: What Are We and Where We Are Going? </div>
-        <span style="font-size:clamp(.55rem,.65vw,.75rem);color:var(--dim);letter-spacing:.06em;">March 14, 2026 · 5 min read</span>
+        <p class="feed-list-title">Burn After Reading: What Are We and Where We Are Going?</p>
+        <time style="font-size:clamp(.55rem,.65vw,.75rem);color:var(--dim);letter-spacing:.06em;" datetime="2026-03-14">March 14, 2026 · 5 min read</time>
       </div>
-      <div class="feed-list-thumb">
-        <img src="images/what.png">
+      <div class="feed-list-thumb" aria-hidden="true">
+        <img src="images/what.png" alt=""/>
       </div>
     </a>
   </div>
-  <!-- /feed-list -->
 
-  <div class="feed-empty" id="feedEmpty">No features match the selected filters.</div>
+  <div class="feed-empty" id="feedEmpty" role="status" aria-live="polite">No features match the selected filters.</div>
 
 </main>
 
-<!-- ============================================================
-     FOOTER
-     ============================================================ -->
+<!-- FOOTER -->
 <footer class="footer">
   <div class="footer-items">
     <div class="footer-flex">
       <div class="footer-item-holder">
-        <a href="https://www.instagram.com/elysion_doctrine/" target="_blank" rel="noopener" class="footer-link-holder">Instagram</a>
+        <a href="https://www.instagram.com/elysion_doctrine/" target="_blank" rel="noopener noreferrer" class="footer-link-holder" aria-label="Follow Ēlýsion Doctrine on Instagram (opens in new tab)">Instagram</a>
       </div>
     </div>
   </div>
@@ -705,7 +854,7 @@ img, video { display: block; }
     <div class="footer-links-holder">
       <a href="/gallery/gallery.html" class="footer-main-link">Studio/Gallery</a>
       <a href="/contact.html" class="footer-main-link">Contact</a>
-      <div class="footer-rights">All Rights<br/>Reserved<br/>&#169; 2026</div>
+      <p class="footer-rights">All Rights<br/>Reserved<br/>&copy; 2026</p>
     </div>
     <div class="footer-flex smaller">
       <div class="footer-item-holder" style="flex-direction:column;gap:0.3rem;">
@@ -718,103 +867,118 @@ img, video { display: block; }
       </div>
       <div class="footer-item-holder" style="flex-direction:column;gap:0.3rem;">
         <div class="footer-h3-holder"><h3 class="footer-h3">Fancy a Chat?</h3></div>
-        <a href="tel:+14049408834" class="footer-info-link">(+1)4049408834</a>
+        <a href="tel:+14049408834" class="footer-info-link">(+1) 404-940-8834</a>
       </div>
     </div>
   </div>
-  <div class="footer-logo-holder">
+  <div class="footer-logo-holder" aria-hidden="true">
     <span class="footer-wordmark" id="footerWordmark">ĒLÝSION DOCTRINE</span>
   </div>
 </footer>
 
-<!-- ============================================================
-     SCRIPT
-     ============================================================ -->
 <script>
 (function () {
-  /* ---------- cursor ---------- */
-  const cursor = document.getElementById('cursor');
-  let cx = 0, cy = 0;
-  document.addEventListener('mousemove', e => { cx = e.clientX; cy = e.clientY; cursor.classList.add('visible'); });
-  document.querySelectorAll('a,button').forEach(el => {
-    el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-    el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-  });
-  (function loop() { cursor.style.left = cx + 'px'; cursor.style.top = cy + 'px'; requestAnimationFrame(loop); })();
+  /* ── Cursor (desktop pointer only) ── */
+  var cursor = document.getElementById('cursor');
+  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    var cx = 0, cy = 0;
+    document.addEventListener('mousemove', function(e) { cx = e.clientX; cy = e.clientY; cursor.classList.add('visible'); });
+    document.querySelectorAll('a,button').forEach(function(el) {
+      el.addEventListener('mouseenter', function() { cursor.classList.add('hover'); });
+      el.addEventListener('mouseleave', function() { cursor.classList.remove('hover'); });
+    });
+    (function loop() { cursor.style.left = cx + 'px'; cursor.style.top = cy + 'px'; requestAnimationFrame(loop); })();
+  }
 
-  /* ---------- clock ---------- */
-  const clockEl = document.getElementById('clock');
+  /* ── Clock ── */
   function tick() {
-    const d = new Date();
-    let h = String(d.getHours()).padStart(2,'0');
-    let m = String(d.getMinutes()).padStart(2,'0');
-    clockEl.innerHTML = h + '<span>:</span>' + m;
+    var d = new Date();
+    var h = String(d.getHours()).padStart(2,'0');
+    var m = String(d.getMinutes()).padStart(2,'0');
+    var html = h + '<span aria-hidden="true">:</span>' + m;
+    document.getElementById('clock').innerHTML = html;
+    var mob = document.getElementById('clockMobile');
+    if (mob) mob.innerHTML = html;
   }
   tick(); setInterval(tick, 1000);
 
-  /* ---------- reveal on load ---------- */
-  const pageTitle = document.getElementById('pageTitle');
-  const hero = document.getElementById('heroArticle');
-  setTimeout(() => pageTitle.classList.add('show'), 400);
-  setTimeout(() => hero.classList.add('show'), 600);
+  /* ── Reveal on load ── */
+  setTimeout(function() { document.getElementById('pageTitle').classList.add('show'); }, 400);
+  setTimeout(function() { document.getElementById('heroArticle').classList.add('show'); }, 600);
 
-  /* ---------- scroll reveal (IntersectionObserver) ---------- */
-  const ioConfig = { threshold: 0.08 };
-  const io = new IntersectionObserver(entries => {
-    entries.forEach((e, i) => {
+  /* ── Scroll reveal ── */
+  var io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
       if (e.isIntersecting) {
-        // stagger siblings
-        const siblings = [...e.target.parentElement.children];
-        const idx = siblings.indexOf(e.target);
+        var siblings = Array.from(e.target.parentElement.children);
+        var idx = siblings.indexOf(e.target);
         e.target.style.transitionDelay = (idx * 0.08) + 's';
         e.target.classList.add('show');
         io.unobserve(e.target);
       }
     });
-  }, ioConfig);
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.feed-grid-item, .feed-list-item').forEach(function(el) { io.observe(el); });
 
-  document.querySelectorAll('.feed-grid-item, .feed-list-item').forEach(el => io.observe(el));
+  /* ── Hamburger / mobile menu ── */
+  var hamburgerBtn = document.getElementById('hamburgerBtn');
+  var mobileMenu   = document.getElementById('mobileMenu');
+  var menuOpen = false;
 
-  /* ---------- filtering ---------- */
-  let activeFormat = 'all';
-  let activeDiscipline = 'all';
+  function openMenu() {
+    menuOpen = true;
+    mobileMenu.removeAttribute('hidden');
+    requestAnimationFrame(function() { mobileMenu.classList.add('open'); });
+    hamburgerBtn.setAttribute('aria-expanded', 'true');
+    hamburgerBtn.setAttribute('aria-label', 'Close navigation menu');
+    document.body.style.overflow = 'hidden';
+    var first = mobileMenu.querySelector('a');
+    if (first) first.focus();
+  }
+  function closeMenu() {
+    menuOpen = false;
+    mobileMenu.classList.remove('open');
+    hamburgerBtn.setAttribute('aria-expanded', 'false');
+    hamburgerBtn.setAttribute('aria-label', 'Open navigation menu');
+    document.body.style.overflow = '';
+    mobileMenu.addEventListener('transitionend', function handler() {
+      if (!menuOpen) mobileMenu.setAttribute('hidden', '');
+      mobileMenu.removeEventListener('transitionend', handler);
+    });
+  }
+  hamburgerBtn.addEventListener('click', function() { menuOpen ? closeMenu() : openMenu(); });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && menuOpen) { closeMenu(); hamburgerBtn.focus(); } });
+  mobileMenu.querySelectorAll('a').forEach(function(link) { link.addEventListener('click', closeMenu); });
 
-  const allFilterableItems = () => [
-    document.getElementById('heroArticle'),
-    ...document.querySelectorAll('.feed-grid-item'),
-    ...document.querySelectorAll('.feed-list-item')
-  ];
+  /* ── Filtering ── */
+  var activeFormat = 'all';
+  var activeDiscipline = 'all';
 
   function matchesFilters(el) {
-    const fmt  = el.dataset.format;
-    const disc = el.dataset.discipline;
-    const fmtOk  = activeFormat === 'all'      || fmt  === activeFormat;
-    const discOk = activeDiscipline === 'all'  || disc === activeDiscipline;
+    var fmtOk  = activeFormat === 'all'      || el.dataset.format      === activeFormat;
+    var discOk = activeDiscipline === 'all'  || el.dataset.discipline  === activeDiscipline;
     return fmtOk && discOk;
   }
 
   function applyFilters() {
-    let total = 0, gridVis = 0, listVis = 0;
-    const hero = document.getElementById('heroArticle');
-    const gridItems = document.querySelectorAll('.feed-grid-item');
-    const listItems = document.querySelectorAll('.feed-list-item');
+    var total = 0, gridVis = 0, listVis = 0;
+    var hero      = document.getElementById('heroArticle');
+    var gridItems = document.querySelectorAll('.feed-grid-item');
+    var listItems = document.querySelectorAll('.feed-list-item');
 
-    // hero
-    const heroMatch = matchesFilters(hero);
+    var heroMatch = matchesFilters(hero);
     hero.style.display = heroMatch ? '' : 'none';
     if (heroMatch) total++;
 
-    // grid
-    gridItems.forEach(el => {
-      const v = matchesFilters(el);
+    gridItems.forEach(function(el) {
+      var v = matchesFilters(el);
       el.style.display = v ? '' : 'none';
       if (v) { total++; gridVis++; }
     });
 
-    // list — re-number visible
-    let listNum = 1;
-    listItems.forEach(el => {
-      const v = matchesFilters(el);
+    var listNum = 1;
+    listItems.forEach(function(el) {
+      var v = matchesFilters(el);
       el.style.display = v ? '' : 'none';
       if (v) {
         el.querySelector('.feed-list-num').textContent = String(listNum).padStart(2,'0');
@@ -829,12 +993,14 @@ img, video { display: block; }
   }
 
   function setFilter(group, value) {
-    const container = group === 'format'
+    var container = group === 'format'
       ? document.getElementById('formatFilters')
       : document.getElementById('disciplineFilters');
 
-    container.querySelectorAll('.filter-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.filter === value);
+    container.querySelectorAll('.filter-btn').forEach(function(btn) {
+      var isActive = btn.dataset.filter === value;
+      btn.classList.toggle('active', isActive);
+      btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
     });
 
     if (group === 'format') activeFormat = value;
@@ -843,15 +1009,13 @@ img, video { display: block; }
     applyFilters();
   }
 
-  document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => setFilter(btn.dataset.filterGroup, btn.dataset.filter));
+  document.querySelectorAll('.filter-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() { setFilter(btn.dataset.filterGroup, btn.dataset.filter); });
   });
-
-  document.getElementById('filterClear').addEventListener('click', () => {
+  document.getElementById('filterClear').addEventListener('click', function() {
     setFilter('format', 'all');
     setFilter('discipline', 'all');
   });
-
 })();
 </script>
 </body>
