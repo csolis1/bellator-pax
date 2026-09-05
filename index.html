@@ -3,38 +3,34 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>ĒLÝSION DOCTRINE — Fight Journalism & the Philosophy of Beautiful Violence</title>
+<title>ĒLÝSION DOCTRINE — Fight Journalism & the Philosophy of Movement</title>
 
-<!-- SEO Meta -->
-<meta name="description" content="Ēlýsion Doctrine: fight journalism, cultural deep dives, and the philosophy of beautiful violence. Covering Boxing, Muay Thai, BJJ, Taekwondo, Wing Chun and more."/>
+<meta name="description" content="Ēlýsion Doctrine: fight journalism, cultural deep dives, and the philosophy of movement and violence. Covering Boxing, Muay Thai, BJJ, Taekwondo, Wing Chun and more."/>
 <meta name="keywords" content="fight journalism, muay thai, boxing, BJJ, taekwondo, wing chun, martial arts, combat sports, fight culture"/>
 <meta name="author" content="Ēlýsion Doctrine"/>
 <meta name="robots" content="index, follow"/>
 <link rel="canonical" href="https://elysiondoctrine.com/"/>
 
-<!-- Open Graph -->
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://elysiondoctrine.com/"/>
-<meta property="og:title" content="ĒLÝSION DOCTRINE — Fight Journalism & the Philosophy of Beautiful Violence"/>
+<meta property="og:title" content="ĒLÝSION DOCTRINE — Fight Journalism & the Philosophy of Movement"/>
 <meta property="og:description" content="Inside the fight game through raw storytelling. Fight journalism, cultural deep dives, and the philosophy of beautiful violence."/>
 <meta property="og:image" content="https://elysiondoctrine.com/images/og-image.jpg"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:site_name" content="Ēlýsion Doctrine"/>
 
-<!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:title" content="ĒLÝSION DOCTRINE — Fight Journalism & the Philosophy of Beautiful Violence"/>
+<meta name="twitter:title" content="ĒLÝSION DOCTRINE — Fight Journalism & the Philosophy of Movement"/>
 <meta name="twitter:description" content="Inside the fight game through raw storytelling. Fight journalism, cultural deep dives, and the philosophy of beautiful violence."/>
 <meta name="twitter:image" content="https://elysiondoctrine.com/images/og-image.jpg"/>
 
-<!-- Structured Data -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebSite",
   "name": "Ēlýsion Doctrine",
   "url": "https://elysiondoctrine.com",
-  "description": "Fight journalism, cultural deep dives, and the philosophy of beautiful violence.",
+  "description": "Fight journalism, cultural deep dives, and the philosophy of movement.",
   "potentialAction": {
     "@type": "SearchAction",
     "target": "https://elysiondoctrine.com/search?q={search_term_string}",
@@ -68,7 +64,6 @@
     cursor: none;
   }
 
-  /* Remove custom cursor on touch/mobile */
   @media (hover: none), (pointer: coarse) {
     body { cursor: auto; }
     #cursor { display: none !important; }
@@ -76,7 +71,6 @@
 
   ::-webkit-scrollbar { display: none; }
 
-  /* Skip link */
   .skip-link {
     position: absolute;
     top: -100%;
@@ -93,7 +87,6 @@
   }
   .skip-link:focus { top: 1rem; }
 
-  /* Preloader */
   #preloader {
     position: fixed; inset: 0; background: var(--bg); z-index: 9999;
     display: flex; align-items: center; justify-content: center;
@@ -109,7 +102,6 @@
   #preloader-percent { font-size: 11px; letter-spacing: 0.1em; color: var(--fg); opacity: 0.5; margin-top: 4px; }
   @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-  /* Cursor */
   #cursor {
     position: fixed; width: 40px; height: 40px; border-radius: 50%; background: white;
     pointer-events: none; z-index: 9998; transform: translate(-50%, -50%);
@@ -120,7 +112,6 @@
   #cursor.visible { clip-path: circle(50% at 50% 50%); }
   #cursor.case-hover { width: 100px; height: 100px; }
 
-  /* Nav */
   .menu {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     display: flex; align-items: center; justify-content: space-between;
@@ -146,7 +137,6 @@
   #clock span { animation: blink 1s steps(1) infinite; }
   @keyframes blink { 50% { visibility: hidden; } }
 
-  /* Hamburger button */
   .hamburger {
     display: none;
     flex-direction: column;
@@ -182,7 +172,6 @@
   }
   .hamburger:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; border-radius: 2px; }
 
-  /* Mobile menu overlay */
   .mobile-menu-overlay {
     display: none;
     position: fixed;
@@ -221,7 +210,6 @@
     gap: 0.5rem;
   }
 
-  /* Main */
   .con { position: relative; }
   .content { padding-top: 0; }
   .f-header-holder {
@@ -231,7 +219,6 @@
   .f-logo-holder { margin-bottom: 0; }
   .logotype-holder { position: relative; }
 
-  /* Hero wordmark */
   .hero-wordmark-wrap { width: 100%; overflow: hidden; }
   .hero-wordmark {
     display: flex;
@@ -291,7 +278,6 @@
   .h1.show { opacity: 1; transform: translateY(0); }
   .h1 span { font-style: italic; }
 
-  /* Cases */
   .f-cases-holder { padding: 2vw 3vw 0; }
   .f-cases-cl { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5vw; list-style: none; }
   .f-case-holder { position: relative; }
@@ -312,7 +298,6 @@
   .f-case-title-text { font-size: clamp(1rem, 1.6vw, 2.5rem); font-weight: 300; letter-spacing: -0.02em; color: var(--fg); overflow: hidden; margin-bottom: 0.3vw; }
   .f-category-holder { font-size: clamp(0.65rem, 0.8vw, 1rem); color: var(--muted); letter-spacing: 0.04em; }
 
-  /* Coming soon */
   .coming-soon-overlay {
     position: absolute;
     inset: 0;
@@ -340,7 +325,6 @@
     transform: none !important;
   }
 
-  /* After cases */
   .f-after-cases-holder-2 {
     padding: 8vw 3vw 6vw; display: grid; grid-template-columns: 1fr 1fr; gap: 4vw;
     border-top: 1px solid rgba(255,255,255,0.08); margin-top: 6vw;
@@ -354,7 +338,6 @@
   .contact-info-right { display: flex; align-items: flex-end; }
   .small-contact-text { font-size: clamp(0.8rem, 1.05vw, 1.3rem); line-height: 1.55; color: var(--muted); font-weight: 300; max-width: 36ch; }
 
-  /* Footer */
   .footer { background: #fafafa; color: #161616; padding: 3vw 3vw 0; }
   .footer-items { border-bottom: 1px solid rgba(0,0,0,0.08); padding-bottom: 2vw; margin-bottom: 3vw; }
   .footer-flex { display: flex; justify-content: flex-end; }
@@ -386,7 +369,6 @@
     width: 100%;
   }
 
-  /* Load overlay */
   .load-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 9000; clip-path: inset(100% 0% 0% 0%); pointer-events: none; }
   .load-overlay.loading { animation: loadoverlay 1.2s cubic-bezier(.645,.045,.355,1) forwards; }
   @keyframes loadoverlay {
@@ -396,7 +378,6 @@
     100% { clip-path: inset(0%   0% 100% 0%); }
   }
 
-  /* ── Responsive ── */
   @media (max-width: 900px) {
     .menu-links-holder { display: none; }
     .menu-right { display: none; }
@@ -405,7 +386,6 @@
     .menu-logo svg { width: clamp(120px, 38vw, 180px); }
     .menu { padding: 4vw 4vw; }
 
-    /* Hero wordmark full width on mobile */
     .hero-wordmark { width: 100%; }
     .f-header-holder { padding-top: 22vw; padding-left: 4vw; padding-right: 4vw; }
     .small-header { font-size: clamp(0.7rem, 2.8vw, 1rem); margin-top: 3vw; }
@@ -455,12 +435,12 @@
 
 <a class="skip-link" href="#main-content">Skip to main content</a>
 
-<!-- PRELOADER -->
+
 <div id="preloader" role="status" aria-label="Loading Ēlýsion Doctrine">
   <svg id="preloader-logo" viewBox="0 0 449 449" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <path d="M125.8448,124.9432 C42.9118,207.8772 244.7638,409.7282 327.6968,326.7952 C410.4218,244.0692 208.5718,42.2172 125.8448,124.9432 M70.6248,71.3792 C101.8548,40.1502 135.7728,19.0542 171.3448,8.2992 C207.5368,-2.6608 243.1098,-2.6608 278.6808,7.6792 C314.4598,18.6412 347.7578,39.1152 378.5738,69.9302 C409.1818,100.5402 429.8628,134.0442 440.6168,169.6162 C451.3718,205.6012 451.7848,241.5872 441.2378,278.1932 C430.8978,314.1792 409.8018,348.0972 378.5738,379.3262 C347.5508,410.3482 313.8398,431.2362 278.0608,441.3712 C241.8678,451.5052 206.0888,450.8832 170.1038,440.1302 C134.5318,429.3762 101.2338,408.4872 70.6248,377.8792 C39.8098,347.0632 19.1278,313.9722 8.1668,278.1942 C-2.5872,243.0352 -2.5872,207.4632 7.9608,171.6832 C18.5078,136.3192 39.3968,102.6082 70.6248,71.3792" fill="white"/>
   </svg>
-  <div id="preloader-text">Documenting the art of controlled chaos</div>
+  <div id="preloader-text">Warming Up...</div>
   <div id="preloader-bar-wrap" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
     <div id="preloader-bar"></div>
   </div>
@@ -470,7 +450,6 @@
 <div class="load-overlay" id="loadOverlay" aria-hidden="true"></div>
 <div id="cursor" aria-hidden="true"></div>
 
-<!-- Mobile menu overlay -->
 <div
   class="mobile-menu-overlay"
   id="mobileMenu"
@@ -491,7 +470,6 @@
   </div>
 </div>
 
-<!-- NAV -->
 <nav class="menu" aria-label="Main navigation">
   <div class="menu-link-holder">
     <a href="/" class="menu-logo" aria-label="Ēlýsion Doctrine — Home">
@@ -528,7 +506,6 @@
   </button>
 </nav>
 
-<!-- MAIN -->
 <main class="con" id="main-content">
   <div class="content">
     <div class="f-header-holder">
@@ -547,12 +524,12 @@
         </div>
         <p class="small-header">
           <span>/ˌɛˈliːʒən ˈdɒktrɪn/<em> noun</em></span><br/>
-          the philosophy of the blessed; a doctrine of sacred discipline through honor and flow state
+          the resting place of the blessed; a doctrine of discipline, honor and virtue.
         </p>
       </div>
       <div class="f-intro-text-holder">
         <h1 class="h1" id="heroH1">
-          <span>Inside the fight game through raw storytelling</span> — Fight journalism, cultural deep dives, and the philosophy of beautiful violence.
+          <span>Inside the fight game through raw storytelling</span> — Fight journalism, cultural deep dives, and the philosophy of movement.
         </h1>
       </div>
     </div>
@@ -570,7 +547,7 @@
           </a>
           <div class="f-grid-info-holder">
             <p class="f-case-title-text">Boxing</p>
-            <p class="f-category-holder">Where rhythm meets consequence</p>
+            <p class="f-category-holder">" The Sweet Science" where rhythm and consequence meet hand to hand.</p>
           </div>
         </li>
 
@@ -584,7 +561,7 @@
           </a>
           <div class="f-grid-info-holder">
             <p class="f-case-title-text">Muay Thai</p>
-            <p class="f-category-holder">Clinched up and out of mercy</p>
+            <p class="f-category-holder"> The Art of Eight Limbs: Clinced up and out of Mercy</p>
           </div>
         </li>
 
@@ -598,7 +575,7 @@
           </a>
           <div class="f-grid-info-holder">
             <p class="f-case-title-text">Brazilian Jiu-Jitsu</p>
-            <p class="f-category-holder">Efficiency at ground level</p>
+            <p class="f-category-holder">"The Gentle Art": Efficiency at ground level</p>
           </div>
         </li>
 
@@ -612,7 +589,7 @@
           </a>
           <div class="f-grid-info-holder">
             <p class="f-case-title-text">Taekwondo</p>
-            <p class="f-category-holder">Polite distance. Impolite speed</p>
+            <p class="f-category-holder"> "The Way of the foot and first": Polite distance. Impolite speed</p>
           </div>
         </li>
 
@@ -626,7 +603,7 @@
           </a>
           <div class="f-grid-info-holder">
             <p class="f-case-title-text">Wing Chun</p>
-            <p class="f-category-holder">Close range. Clear mind. No wasted motion</p>
+            <p class="f-category-holder">"Art of Simultaneous Attack and Defense": Close range. Clear mind. No wasted motion</p>
           </div>
         </li>
 
@@ -780,7 +757,7 @@
     });
   }
 
-  /* ── Clock ── */
+  /* ── Global Clock Functionality ── */
   function tick() {
     var d = new Date(), h = d.getHours(), m = d.getMinutes();
     if (h < 10) h = '0' + h;
@@ -792,7 +769,6 @@
   }
   tick(); setInterval(tick, 1000);
 
-  /* ── Hamburger / mobile menu ── */
   var hamburgerBtn = document.getElementById('hamburgerBtn');
   var mobileMenu   = document.getElementById('mobileMenu');
   var menuOpen = false;
@@ -832,7 +808,6 @@
     link.addEventListener('click', closeMenu);
   });
 
-  /* ── Scroll reveal for case titles ── */
   var titles = document.querySelectorAll('.f-case-title-text');
   var obs = new IntersectionObserver(function(entries) {
     entries.forEach(function(e) {
