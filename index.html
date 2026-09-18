@@ -3,38 +3,34 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>ĒLÝSION DOCTRINE — Fight Journalism & the Philosophy of Beautiful Violence</title>
+<title>ĒLÝSION DOCTRINE — Fight Journalism & the Philosophy of Movement</title>
 
-<!-- SEO Meta -->
-<meta name="description" content="Ēlýsion Doctrine: fight journalism, cultural deep dives, and the philosophy of beautiful violence. Covering Boxing, Muay Thai, BJJ, Taekwondo, Wing Chun and more."/>
+<meta name="description" content="Ēlýsion Doctrine: fight journalism, cultural deep dives, and the philosophy of movement and violence. Covering Boxing, Muay Thai, BJJ, Taekwondo, Wing Chun and more."/>
 <meta name="keywords" content="fight journalism, muay thai, boxing, BJJ, taekwondo, wing chun, martial arts, combat sports, fight culture"/>
 <meta name="author" content="Ēlýsion Doctrine"/>
 <meta name="robots" content="index, follow"/>
 <link rel="canonical" href="https://elysiondoctrine.com/"/>
 
-<!-- Open Graph -->
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://elysiondoctrine.com/"/>
-<meta property="og:title" content="ĒLÝSION DOCTRINE — Fight Journalism & the Philosophy of Beautiful Violence"/>
+<meta property="og:title" content="ĒLÝSION DOCTRINE — Fight Journalism & the Philosophy of Movement"/>
 <meta property="og:description" content="Inside the fight game through raw storytelling. Fight journalism, cultural deep dives, and the philosophy of beautiful violence."/>
 <meta property="og:image" content="https://elysiondoctrine.com/images/og-image.jpg"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:site_name" content="Ēlýsion Doctrine"/>
 
-<!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:title" content="ĒLÝSION DOCTRINE — Fight Journalism & the Philosophy of Beautiful Violence"/>
+<meta name="twitter:title" content="ĒLÝSION DOCTRINE — Fight Journalism & the Philosophy of Movement"/>
 <meta name="twitter:description" content="Inside the fight game through raw storytelling. Fight journalism, cultural deep dives, and the philosophy of beautiful violence."/>
 <meta name="twitter:image" content="https://elysiondoctrine.com/images/og-image.jpg"/>
 
-<!-- Structured Data -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebSite",
   "name": "Ēlýsion Doctrine",
   "url": "https://elysiondoctrine.com",
-  "description": "Fight journalism, cultural deep dives, and the philosophy of beautiful violence.",
+  "description": "Fight journalism, cultural deep dives, and the philosophy of movement.",
   "potentialAction": {
     "@type": "SearchAction",
     "target": "https://elysiondoctrine.com/search?q={search_term_string}",
@@ -47,420 +43,19 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Khmer:wght@900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css">
 
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --bg: #161616;
-    --fg: #fafafa;
-    --muted: rgba(250,250,250,0.45);
-    --ease: cubic-bezier(.23,1,.32,1);
-  }
-  html { scroll-behavior: initial; background: var(--bg); }
-  html, body { width: 100%; min-height: 100%; }
-  body {
-    background: var(--bg);
-    color: var(--fg);
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: 14px;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-    cursor: none;
-  }
-
-  /* Remove custom cursor on touch/mobile */
-  @media (hover: none), (pointer: coarse) {
-    body { cursor: auto; }
-    #cursor { display: none !important; }
-  }
-
-  ::-webkit-scrollbar { display: none; }
-
-  /* Skip link */
-  .skip-link {
-    position: absolute;
-    top: -100%;
-    left: 1rem;
-    z-index: 99999;
-    background: var(--fg);
-    color: var(--bg);
-    padding: 0.5rem 1rem;
-    font-size: 0.85rem;
-    letter-spacing: 0.05em;
-    text-decoration: none;
-    transition: top 0.2s;
-    border-radius: 2px;
-  }
-  .skip-link:focus { top: 1rem; }
-
-  /* Preloader */
-  #preloader {
-    position: fixed; inset: 0; background: var(--bg); z-index: 9999;
-    display: flex; align-items: center; justify-content: center;
-    flex-direction: column; gap: 1.5rem;
-    clip-path: inset(0% 0% 0% 0%);
-    transition: clip-path 1.8s var(--ease);
-  }
-  #preloader.remove { clip-path: inset(0% 0% 100% 0%); }
-  #preloader-logo { width: 60px; height: 60px; animation: spin 3s linear infinite; }
-  #preloader-text { font-size: 11px; letter-spacing: 0.2em; color: var(--fg); opacity: 0.6; text-align: center; padding: 0 1rem; }
-  #preloader-bar-wrap { width: 180px; height: 1px; background: rgba(255,255,255,0.15); position: relative; overflow: hidden; }
-  #preloader-bar { height: 100%; background: white; width: 0%; transition: width 0.4s ease; }
-  #preloader-percent { font-size: 11px; letter-spacing: 0.1em; color: var(--fg); opacity: 0.5; margin-top: 4px; }
-  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-  /* Cursor */
-  #cursor {
-    position: fixed; width: 40px; height: 40px; border-radius: 50%; background: white;
-    pointer-events: none; z-index: 9998; transform: translate(-50%, -50%);
-    mix-blend-mode: difference; clip-path: circle(0% at 50% 50%);
-    transition: clip-path 0.6s var(--ease), width 0.4s var(--ease), height 0.4s var(--ease);
-    top: 0; left: 0;
-  }
-  #cursor.visible { clip-path: circle(50% at 50% 50%); }
-  #cursor.case-hover { width: 100px; height: 100px; }
-
-  /* Nav */
-  .menu {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 2.2vw 3vw; mix-blend-mode: difference; pointer-events: none;
-  }
-  .menu-link-holder { display: flex; align-items: center; gap: 3vw; pointer-events: auto; }
-  .menu-logo { display: flex; align-items: center; text-decoration: none; }
-  .menu-logo svg { width: 180px; height: auto; }
-  .menu-links-holder { display: flex; align-items: center; gap: 2.5vw; pointer-events: auto; }
-  .menu-link {
-    color: var(--fg); text-decoration: none;
-    font-size: clamp(0.75rem, 0.875vw, 1rem);
-    letter-spacing: 0.02em; opacity: 0.85; transition: opacity 0.3s;
-  }
-  .menu-link:hover { opacity: 1; }
-  .menu-link:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; border-radius: 2px; }
-  .menu-link sup { font-size: 0.6em; opacity: 0.6; }
-  .menu-right {
-    display: flex; align-items: center; gap: 0.5rem;
-    font-size: clamp(0.75rem, 0.875vw, 1rem);
-    color: var(--fg); pointer-events: auto; opacity: 0.7; letter-spacing: 0.04em;
-  }
-  #clock span { animation: blink 1s steps(1) infinite; }
-  @keyframes blink { 50% { visibility: hidden; } }
-
-  /* Hamburger button */
-  .hamburger {
-    display: none;
-    flex-direction: column;
-    justify-content: center;
-    gap: 5px;
-    width: 36px;
-    height: 36px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    pointer-events: auto;
-    padding: 4px;
-    position: relative;
-    z-index: 101;
-  }
-  .hamburger-line {
-    display: block;
-    width: 100%;
-    height: 1.5px;
-    background: var(--fg);
-    transition: transform 0.4s var(--ease), opacity 0.3s var(--ease);
-    transform-origin: center;
-  }
-  .hamburger[aria-expanded="true"] .hamburger-line:nth-child(1) {
-    transform: translateY(6.5px) rotate(45deg);
-  }
-  .hamburger[aria-expanded="true"] .hamburger-line:nth-child(2) {
-    opacity: 0;
-    transform: scaleX(0);
-  }
-  .hamburger[aria-expanded="true"] .hamburger-line:nth-child(3) {
-    transform: translateY(-6.5px) rotate(-45deg);
-  }
-  .hamburger:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; border-radius: 2px; }
-
-  /* Mobile menu overlay */
-  .mobile-menu-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: var(--bg);
-    z-index: 99;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 6rem 6vw 4rem;
-    gap: 1.6rem;
-    opacity: 0;
-    transform: translateY(-12px);
-    transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
-    pointer-events: none;
-  }
-  .mobile-menu-overlay.open {
-    display: flex;
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-  }
-  .mobile-menu-overlay .menu-link {
-    font-size: clamp(1.4rem, 6vw, 2.8rem);
-    font-weight: 300;
-    letter-spacing: -0.01em;
-    opacity: 0.85;
-    pointer-events: auto;
-  }
-  .mobile-menu-right {
-    margin-top: auto;
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-    display: flex;
-    gap: 0.5rem;
-  }
-
-  /* Main */
-  .con { position: relative; }
-  .content { padding-top: 0; }
-  .f-header-holder {
-    position: relative; padding: 2vw 3vw 0; min-height: 100vh;
-    display: flex; flex-direction: column; justify-content: flex-start; padding-top: 10vw;
-  }
-  .f-logo-holder { margin-bottom: 0; }
-  .logotype-holder { position: relative; }
-
-  /* Hero wordmark */
-  .hero-wordmark-wrap { width: 100%; overflow: hidden; }
-  .hero-wordmark {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    font-family: "Unbounded", sans-serif;
-    font-weight: 900;
-    letter-spacing: -0.03em;
-    color: var(--fg);
-    line-height: 0.92;
-    width: 60%;
-  }
-  .hero-wordmark .word-row {
-    display: flex;
-    align-items: baseline;
-    width: 100%;
-    overflow: hidden;
-  }
-  .hero-wordmark .letter {
-    display: inline-block;
-    clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%);
-    transform: translateY(18%);
-    transition: transform 1.6s var(--ease), clip-path 1.6s var(--ease);
-  }
-  .hero-wordmark.active .letter {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-    transform: translateY(0%);
-  }
-  .hero-wordmark.active .word-row:nth-child(1) .letter:nth-child(1) { transition-delay: 0.00s; }
-  .hero-wordmark.active .word-row:nth-child(1) .letter:nth-child(2) { transition-delay: 0.05s; }
-  .hero-wordmark.active .word-row:nth-child(1) .letter:nth-child(3) { transition-delay: 0.10s; }
-  .hero-wordmark.active .word-row:nth-child(1) .letter:nth-child(4) { transition-delay: 0.15s; }
-  .hero-wordmark.active .word-row:nth-child(1) .letter:nth-child(5) { transition-delay: 0.20s; }
-  .hero-wordmark.active .word-row:nth-child(1) .letter:nth-child(6) { transition-delay: 0.25s; }
-  .hero-wordmark.active .word-row:nth-child(1) .letter:nth-child(7) { transition-delay: 0.30s; }
-  .hero-wordmark.active .word-row:nth-child(2) .letter:nth-child(1) { transition-delay: 0.18s; }
-  .hero-wordmark.active .word-row:nth-child(2) .letter:nth-child(2) { transition-delay: 0.23s; }
-  .hero-wordmark.active .word-row:nth-child(2) .letter:nth-child(3) { transition-delay: 0.28s; }
-  .hero-wordmark.active .word-row:nth-child(2) .letter:nth-child(4) { transition-delay: 0.33s; }
-  .hero-wordmark.active .word-row:nth-child(2) .letter:nth-child(5) { transition-delay: 0.38s; }
-  .hero-wordmark.active .word-row:nth-child(2) .letter:nth-child(6) { transition-delay: 0.43s; }
-  .hero-wordmark.active .word-row:nth-child(2) .letter:nth-child(7) { transition-delay: 0.48s; }
-  .hero-wordmark.active .word-row:nth-child(2) .letter:nth-child(8) { transition-delay: 0.53s; }
-
-  .small-header {
-    font-size: clamp(0.65rem, 0.8vw, 1rem); color: var(--muted);
-    margin-top: 1.2vw; letter-spacing: 0.03em; line-height: 1.5;
-  }
-  .small-header em { font-style: italic; }
-  .f-intro-text-holder { padding: 4vw 0 2vw; max-width: 75vw; }
-  .h1 {
-    font-size: clamp(1.2rem, 2.2vw, 2.8rem); font-weight: 300;
-    line-height: 1.35; letter-spacing: -0.01em; color: var(--fg);
-    opacity: 0; transform: translateY(20px);
-    transition: opacity 1.2s var(--ease), transform 1.2s var(--ease);
-  }
-  .h1.show { opacity: 1; transform: translateY(0); }
-  .h1 span { font-style: italic; }
-
-  /* Cases */
-  .f-cases-holder { padding: 2vw 3vw 0; }
-  .f-cases-cl { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5vw; list-style: none; }
-  .f-case-holder { position: relative; }
-  .f-case-link {
-    display: block; text-decoration: none; position: relative; overflow: hidden;
-    clip-path: inset(100% 0% 0% 0%); transition: clip-path 1.8s var(--ease);
-    background: #1e1e1e; aspect-ratio: 16/10;
-  }
-  .f-case-link.show { clip-path: inset(0% 0% 0% 0%); }
-  .f-case-link:focus-visible { outline: 2px solid var(--fg); outline-offset: 4px; }
-  .f-case-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.8s var(--ease); }
-  .f-case-link:hover .f-case-img { transform: scale(1.04); }
-  .f-case-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .grid-hover { position: absolute; inset: 0; opacity: 0; transition: opacity 0.5s var(--ease); z-index: 1; }
-  .f-case-link:hover .grid-hover { opacity: 1; }
-  .grid-hover video { width: 100%; height: 100%; object-fit: cover; }
-  .f-grid-info-holder { padding: 1vw 0 1.5vw; }
-  .f-case-title-text { font-size: clamp(1rem, 1.6vw, 2.5rem); font-weight: 300; letter-spacing: -0.02em; color: var(--fg); overflow: hidden; margin-bottom: 0.3vw; }
-  .f-category-holder { font-size: clamp(0.65rem, 0.8vw, 1rem); color: var(--muted); letter-spacing: 0.04em; }
-
-  /* Coming soon */
-  .coming-soon-overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    display: flex;
-    align-items: flex-end;
-    padding: 1.2vw 1.4vw;
-    pointer-events: none;
-  }
-  .coming-soon-badge {
-    font-size: clamp(0.5rem, 0.65vw, 0.75rem);
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: rgba(250,250,250,0.5);
-    border: 1px solid rgba(250,250,250,0.2);
-    padding: 0.35rem 0.75rem;
-    backdrop-filter: blur(4px);
-    background: rgba(22,22,22,0.4);
-    border-radius: 2px;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-weight: 400;
-  }
-  .f-case-link.coming-soon .f-case-img {
-    filter: grayscale(30%) brightness(0.6);
-    transform: none !important;
-  }
-
-  /* After cases */
-  .f-after-cases-holder-2 {
-    padding: 8vw 3vw 6vw; display: grid; grid-template-columns: 1fr 1fr; gap: 4vw;
-    border-top: 1px solid rgba(255,255,255,0.08); margin-top: 6vw;
-  }
-  .contact-info-left { display: flex; flex-direction: column; gap: 3vw; }
-  .small-h3 { font-size: clamp(0.6rem, 0.75vw, 1rem); letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.8rem; font-weight: 400; }
-  .about-services-list-holder { text-decoration: none; display: inline-block; }
-  .about-services-list-text { font-size: clamp(0.85rem, 1.1vw, 1.4rem); color: var(--fg); font-weight: 300; letter-spacing: -0.01em; transition: opacity 0.3s; }
-  .about-services-list-holder:hover .about-services-list-text { opacity: 0.6; }
-  .about-services-list-holder:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; border-radius: 2px; }
-  .contact-info-right { display: flex; align-items: flex-end; }
-  .small-contact-text { font-size: clamp(0.8rem, 1.05vw, 1.3rem); line-height: 1.55; color: var(--muted); font-weight: 300; max-width: 36ch; }
-
-  /* Footer */
-  .footer { background: #fafafa; color: #161616; padding: 3vw 3vw 0; }
-  .footer-items { border-bottom: 1px solid rgba(0,0,0,0.08); padding-bottom: 2vw; margin-bottom: 3vw; }
-  .footer-flex { display: flex; justify-content: flex-end; }
-  .footer-item-holder { display: flex; gap: 2rem; }
-  .footer-link-holder { text-decoration: none; color: #161616; font-size: clamp(0.65rem, 0.8vw, 1rem); opacity: 0.6; transition: opacity 0.3s; letter-spacing: 0.03em; }
-  .footer-link-holder:hover { opacity: 1; }
-  .footer-link-holder:focus-visible { outline: 2px solid #161616; outline-offset: 3px; border-radius: 2px; }
-  .footer-over-logo-holder { display: grid; grid-template-columns: 1fr 1fr; gap: 3vw; margin-bottom: 3vw; }
-  .footer-links-holder { display: flex; flex-direction: column; gap: 1rem; }
-  .footer-main-link { text-decoration: none; color: #161616; font-size: clamp(1.2rem, 2vw, 3rem); font-weight: 300; letter-spacing: -0.02em; line-height: 1.1; transition: opacity 0.3s; }
-  .footer-main-link:hover { opacity: 0.5; }
-  .footer-main-link:focus-visible { outline: 2px solid #161616; outline-offset: 3px; border-radius: 2px; }
-  .footer-rights { font-size: clamp(0.65rem, 0.8vw, 1rem); color: rgba(22,22,22,0.4); line-height: 1.6; margin-top: 2rem; }
-  .footer-flex.smaller { justify-content: flex-end; align-items: flex-start; gap: 3vw; }
-  .footer-h3-holder { margin-bottom: 0.6rem; }
-  .footer-h3 { font-size: clamp(0.6rem, 0.7vw, 0.9rem); letter-spacing: 0.14em; text-transform: uppercase; color: rgba(22,22,22,0.45); font-weight: 400; }
-  .footer-info-link { text-decoration: none; color: #161616; font-size: clamp(0.75rem, 0.9vw, 1.1rem); font-weight: 300; transition: opacity 0.3s; }
-  .footer-info-link:hover { opacity: 0.5; }
-  .footer-info-link:focus-visible { outline: 2px solid #161616; outline-offset: 3px; border-radius: 2px; }
-  .footer-logo-holder { padding: 3vw 0 4vw; border-top: 1px solid rgba(0,0,0,0.08); margin-top: 2vw; overflow: hidden; width: 100%; }
-  .footer-wordmark {
-    font-family:'Unbounded', sans-serif;
-    font-weight: 900;
-    letter-spacing: -0.03em;
-    color: #161616;
-    line-height: 0.92;
-    white-space: nowrap;
-    display: block;
-    width: 100%;
-  }
-
-  /* Load overlay */
-  .load-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 9000; clip-path: inset(100% 0% 0% 0%); pointer-events: none; }
-  .load-overlay.loading { animation: loadoverlay 1.2s cubic-bezier(.645,.045,.355,1) forwards; }
-  @keyframes loadoverlay {
-    0%   { clip-path: inset(100% 0% 0% 0%); }
-    45%  { clip-path: inset(0%   0% 0% 0%); }
-    55%  { clip-path: inset(0%   0% 0% 0%); }
-    100% { clip-path: inset(0%   0% 100% 0%); }
-  }
-
-  /* ── Responsive ── */
-  @media (max-width: 900px) {
-    .menu-links-holder { display: none; }
-    .menu-right { display: none; }
-    .hamburger { display: flex; }
-
-    .menu-logo svg { width: clamp(120px, 38vw, 180px); }
-    .menu { padding: 4vw 4vw; }
-
-    /* Hero wordmark full width on mobile */
-    .hero-wordmark { width: 100%; }
-    .f-header-holder { padding-top: 22vw; padding-left: 4vw; padding-right: 4vw; }
-    .small-header { font-size: clamp(0.7rem, 2.8vw, 1rem); margin-top: 3vw; }
-    .f-intro-text-holder { max-width: 100%; padding: 6vw 0 3vw; }
-    .h1 { font-size: clamp(1rem, 4vw, 2rem); }
-
-    .f-cases-holder { padding: 4vw 4vw 0; }
-    .f-cases-cl { grid-template-columns: 1fr; gap: 4vw; }
-    .f-grid-info-holder { padding: 2vw 0 3vw; }
-    .f-case-title-text { font-size: clamp(1.1rem, 5vw, 2rem); }
-    .f-category-holder { font-size: clamp(0.7rem, 2.5vw, 1rem); }
-
-    .coming-soon-overlay { padding: 3vw; }
-    .coming-soon-badge { font-size: clamp(0.55rem, 2vw, 0.75rem); }
-
-    .f-after-cases-holder-2 {
-      grid-template-columns: 1fr;
-      padding: 10vw 4vw 8vw;
-      margin-top: 8vw;
-      gap: 6vw;
-    }
-    .contact-info-left { gap: 5vw; }
-    .small-h3 { font-size: clamp(0.65rem, 2.5vw, 1rem); }
-    .about-services-list-text { font-size: clamp(0.9rem, 3.5vw, 1.4rem); }
-    .small-contact-text { font-size: clamp(0.85rem, 3.2vw, 1.2rem); max-width: 100%; }
-
-    .footer { padding: 6vw 4vw 0; }
-    .footer-items { padding-bottom: 4vw; margin-bottom: 5vw; }
-    .footer-over-logo-holder { grid-template-columns: 1fr; gap: 6vw; }
-    .footer-flex.smaller { flex-direction: column; gap: 4vw; justify-content: flex-start; }
-    .footer-item-holder { flex-direction: column; gap: 0.3rem; }
-    .footer-main-link { font-size: clamp(1.4rem, 6vw, 2.5rem); }
-    .footer-h3 { font-size: clamp(0.6rem, 2.2vw, 0.9rem); }
-    .footer-info-link { font-size: clamp(0.8rem, 3vw, 1.1rem); }
-  }
-
-  @media (max-width: 480px) {
-    .menu { padding: 5vw 5vw; }
-    .menu-logo svg { width: clamp(100px, 45vw, 150px); }
-    .f-header-holder { padding-top: 28vw; padding-left: 5vw; padding-right: 5vw; }
-    .f-cases-holder { padding: 5vw 5vw 0; }
-    .footer { padding: 8vw 5vw 0; }
-  }
-</style>
 </head>
 <body>
 
 <a class="skip-link" href="#main-content">Skip to main content</a>
 
-<!-- PRELOADER -->
+
 <div id="preloader" role="status" aria-label="Loading Ēlýsion Doctrine">
   <svg id="preloader-logo" viewBox="0 0 449 449" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <path d="M125.8448,124.9432 C42.9118,207.8772 244.7638,409.7282 327.6968,326.7952 C410.4218,244.0692 208.5718,42.2172 125.8448,124.9432 M70.6248,71.3792 C101.8548,40.1502 135.7728,19.0542 171.3448,8.2992 C207.5368,-2.6608 243.1098,-2.6608 278.6808,7.6792 C314.4598,18.6412 347.7578,39.1152 378.5738,69.9302 C409.1818,100.5402 429.8628,134.0442 440.6168,169.6162 C451.3718,205.6012 451.7848,241.5872 441.2378,278.1932 C430.8978,314.1792 409.8018,348.0972 378.5738,379.3262 C347.5508,410.3482 313.8398,431.2362 278.0608,441.3712 C241.8678,451.5052 206.0888,450.8832 170.1038,440.1302 C134.5318,429.3762 101.2338,408.4872 70.6248,377.8792 C39.8098,347.0632 19.1278,313.9722 8.1668,278.1942 C-2.5872,243.0352 -2.5872,207.4632 7.9608,171.6832 C18.5078,136.3192 39.3968,102.6082 70.6248,71.3792" fill="white"/>
   </svg>
-  <div id="preloader-text">Documenting the art of controlled chaos</div>
+  <div id="preloader-text">Warming Up...</div>
   <div id="preloader-bar-wrap" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
     <div id="preloader-bar"></div>
   </div>
@@ -470,7 +65,6 @@
 <div class="load-overlay" id="loadOverlay" aria-hidden="true"></div>
 <div id="cursor" aria-hidden="true"></div>
 
-<!-- Mobile menu overlay -->
 <div
   class="mobile-menu-overlay"
   id="mobileMenu"
@@ -491,7 +85,6 @@
   </div>
 </div>
 
-<!-- NAV -->
 <nav class="menu" aria-label="Main navigation">
   <div class="menu-link-holder">
     <a href="/" class="menu-logo" aria-label="Ēlýsion Doctrine — Home">
@@ -528,7 +121,6 @@
   </button>
 </nav>
 
-<!-- MAIN -->
 <main class="con" id="main-content">
   <div class="content">
     <div class="f-header-holder">
@@ -547,12 +139,12 @@
         </div>
         <p class="small-header">
           <span>/ˌɛˈliːʒən ˈdɒktrɪn/<em> noun</em></span><br/>
-          the philosophy of the blessed; a doctrine of sacred discipline through honor and flow state
+          the resting place of the blessed; a doctrine of discipline, honor and virtue.
         </p>
       </div>
       <div class="f-intro-text-holder">
         <h1 class="h1" id="heroH1">
-          <span>Inside the fight game through raw storytelling</span> — Fight journalism, cultural deep dives, and the philosophy of beautiful violence.
+          <span>Inside the fight game through raw storytelling</span> — Fight journalism, cultural deep dives, and the philosophy of movement.
         </h1>
       </div>
     </div>
@@ -570,7 +162,7 @@
           </a>
           <div class="f-grid-info-holder">
             <p class="f-case-title-text">Boxing</p>
-            <p class="f-category-holder">Where rhythm meets consequence</p>
+            <p class="f-category-holder">" The Sweet Science" where rhythm and consequence meet hand to hand.</p>
           </div>
         </li>
 
@@ -584,7 +176,7 @@
           </a>
           <div class="f-grid-info-holder">
             <p class="f-case-title-text">Muay Thai</p>
-            <p class="f-category-holder">Clinched up and out of mercy</p>
+            <p class="f-category-holder"> The Art of Eight Limbs: Clinced up and out of Mercy</p>
           </div>
         </li>
 
@@ -598,7 +190,7 @@
           </a>
           <div class="f-grid-info-holder">
             <p class="f-case-title-text">Brazilian Jiu-Jitsu</p>
-            <p class="f-category-holder">Efficiency at ground level</p>
+            <p class="f-category-holder">"The Gentle Art": Efficiency at ground level</p>
           </div>
         </li>
 
@@ -612,7 +204,7 @@
           </a>
           <div class="f-grid-info-holder">
             <p class="f-case-title-text">Taekwondo</p>
-            <p class="f-category-holder">Polite distance. Impolite speed</p>
+            <p class="f-category-holder"> "The Way of the foot and first": Polite distance. Impolite speed</p>
           </div>
         </li>
 
@@ -626,7 +218,7 @@
           </a>
           <div class="f-grid-info-holder">
             <p class="f-case-title-text">Wing Chun</p>
-            <p class="f-category-holder">Close range. Clear mind. No wasted motion</p>
+            <p class="f-category-holder">"Art of Simultaneous Attack and Defense": Close range. Clear mind. No wasted motion</p>
           </div>
         </li>
 
@@ -657,7 +249,6 @@
   </div>
 </main>
 
-<!-- FOOTER -->
 <footer class="footer">
   <div class="footer-items">
     <div class="footer-flex">
@@ -694,7 +285,6 @@
 
 <script>
 (function () {
-  /* ── Wordmark auto-fit ── */
   function fitWordmark() {
     var heroWordmark = document.getElementById('heroWordmark');
     var rows = heroWordmark.querySelectorAll('.word-row');
@@ -725,7 +315,6 @@
   document.fonts.ready.then(fitWordmark);
   window.addEventListener('resize', fitWordmark);
 
-  /* ── Preloader ── */
   var preloader    = document.getElementById('preloader');
   var preloaderBar = document.getElementById('preloader-bar');
   var preloaderPct = document.getElementById('preloader-percent');
@@ -761,7 +350,6 @@
     }, 1400);
   }
 
-  /* ── Custom cursor — desktop pointer only ── */
   var cursor = document.getElementById('cursor');
   if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
     var cx = 0, cy = 0;
@@ -780,7 +368,7 @@
     });
   }
 
-  /* ── Clock ── */
+  /* ── Global Clock Functionality ── */
   function tick() {
     var d = new Date(), h = d.getHours(), m = d.getMinutes();
     if (h < 10) h = '0' + h;
@@ -792,7 +380,6 @@
   }
   tick(); setInterval(tick, 1000);
 
-  /* ── Hamburger / mobile menu ── */
   var hamburgerBtn = document.getElementById('hamburgerBtn');
   var mobileMenu   = document.getElementById('mobileMenu');
   var menuOpen = false;
@@ -832,7 +419,6 @@
     link.addEventListener('click', closeMenu);
   });
 
-  /* ── Scroll reveal for case titles ── */
   var titles = document.querySelectorAll('.f-case-title-text');
   var obs = new IntersectionObserver(function(entries) {
     entries.forEach(function(e) {

@@ -7,359 +7,11 @@
 <meta name="description" content="A documentary journalism project exploring how movement and the body are celebrated across culture, age, gender, and income."/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet"/>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#161616;--fg:#fafafa;--muted:rgba(250,250,250,0.45);
-  --ease:cubic-bezier(.23,1,.32,1);
-  --serif:'EB Garamond',Georgia,serif;
-  --sans:'Helvetica Neue',Helvetica,Arial,sans-serif;
-}
-html{scroll-behavior:smooth;background:var(--bg)}
-html,body{width:100%;min-height:100%}
-body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:14px;
-  -webkit-font-smoothing:antialiased;overflow-x:hidden;cursor:none}
-::-webkit-scrollbar{display:none}
-a{color:inherit;text-decoration:none}
+<link rel="stylesheet" href="style.css">
 
-/* PRELOADER */
-#preloader{position:fixed;inset:0;background:var(--bg);z-index:9999;
-  display:flex;align-items:center;justify-content:center;
-  flex-direction:column;gap:1.5rem;
-  clip-path:inset(0% 0% 0% 0%);transition:clip-path 1.8s var(--ease)}
-#preloader.remove{clip-path:inset(0% 0% 100% 0%)}
-#preloader-logo{width:52px;height:52px;animation:spin 3s linear infinite}
-#preloader-eyebrow{font-size:10px;letter-spacing:.22em;color:var(--muted);text-transform:uppercase}
-#preloader-title{font-family:var(--serif);font-size:clamp(1.1rem,2vw,1.5rem);font-style:italic;color:var(--fg)}
-#preloader-bar-wrap{width:200px;height:1px;background:rgba(255,255,255,.12);overflow:hidden}
-#preloader-bar{height:100%;background:#fff;width:0%;transition:width .3s ease}
-#preloader-percent{font-size:10px;letter-spacing:.1em;color:var(--muted);margin-top:2px}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* CURSOR */
-#cursor{position:fixed;width:38px;height:38px;border-radius:50%;background:#fff;
-  pointer-events:none;z-index:9998;transform:translate(-50%,-50%);
-  mix-blend-mode:difference;clip-path:circle(0% at 50% 50%);
-  transition:clip-path .5s var(--ease),width .4s var(--ease),height .4s var(--ease);top:0;left:0}
-#cursor.visible{clip-path:circle(50% at 50% 50%)}
-#cursor.big{width:90px;height:90px}
-
-/* NAV */
-.menu{position:fixed;top:0;left:0;right:0;z-index:200;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:2.2vw 3vw;mix-blend-mode:difference;pointer-events:none}
-.menu-logo{pointer-events:auto}
-.menu-logo svg{width:180px;height:auto;display:block}
-.menu-links-holder{display:flex;align-items:center;gap:2.5vw;pointer-events:auto}
-.menu-link{color:var(--fg);font-size:clamp(.7rem,.85vw,1rem);letter-spacing:.02em;opacity:.8;transition:opacity .3s}
-.menu-link:hover{opacity:1}
-.menu-link.active{opacity:1;border-bottom:1px solid rgba(250,250,250,.4);padding-bottom:2px}
-.menu-right{pointer-events:auto;display:flex;align-items:center;gap:.5rem;
-  font-size:clamp(.7rem,.85vw,1rem);color:var(--fg);opacity:.7;letter-spacing:.04em}
-#clock span{animation:blink 1s steps(1) infinite}
-@keyframes blink{50%{visibility:hidden}}
-
-/* LOAD OVERLAY */
-.load-overlay{position:fixed;inset:0;background:var(--bg);z-index:9000;clip-path:inset(100% 0% 0% 0%);pointer-events:none}
-
-/* HERO */
-.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;
-  justify-content:flex-end;padding:0 3vw 5vw;overflow:hidden}
-
-/* Parallax image — taller than viewport so it can travel */
-.hero-img{
-  position:absolute;
-  left:0;
-  top:-5%;
-  width:100%;
-  height:110%;
-  object-fit:cover;
-  object-position:center 30%;
-  display:block;
-  will-change:transform;
-  z-index:0;
-}
-/* Dark overlay for text contrast — gradient darkens bottom where text sits */
-.hero-overlay{
-  position:absolute;
-  inset:0;
-  z-index:1;
-  background:
-    linear-gradient(
-      to bottom,
-      rgba(10,10,10,0.45) 0%,
-      rgba(10,10,10,0.35) 40%,
-      rgba(10,10,10,0.72) 75%,
-      rgba(10,10,10,0.88) 100%
-    );
-}
-.hero-grain{position:absolute;inset:0;opacity:.04;z-index:1;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size:200px 200px}
-.hero-content{position:relative;z-index:2}
-.hero-scroll-indicator{z-index:2 !important}
-.hero-eyebrow{font-size:clamp(.65rem,.8vw,.9rem);letter-spacing:.18em;text-transform:uppercase;
-  color:var(--muted);margin-bottom:1.8vw;opacity:0;transform:translateY(10px);
-  transition:opacity 1s var(--ease) .2s,transform 1s var(--ease) .2s}
-.hero-eyebrow.show{opacity:1;transform:translateY(0)}
-.hero-title{font-family:var(--serif);font-size:clamp(3rem,8.5vw,10rem);
-  font-weight:400;line-height:.95;letter-spacing:-.02em;color:var(--fg);overflow:hidden}
-.hero-title-line{display:block;overflow:hidden;
-  clip-path:polygon(0 100%,100% 100%,100% 100%,0 100%);transform:translateY(15%);
-  transition:clip-path 1.6s var(--ease),transform 1.6s var(--ease)}
-.hero-title-line.show{clip-path:polygon(0 0,100% 0,100% 100%,0 100%);transform:translateY(0)}
-.hero-title-line:nth-child(2){transition-delay:.12s;font-style:italic}
-.hero-subtitle{margin-top:2.5vw;max-width:55ch;font-size:clamp(.9rem,1.3vw,1.5rem);
-  font-weight:300;line-height:1.55;color:var(--muted);
-  opacity:0;transform:translateY(16px);
-  transition:opacity 1.2s var(--ease) .5s,transform 1.2s var(--ease) .5s}
-.hero-subtitle.show{opacity:1;transform:translateY(0)}
-.hero-meta{margin-top:3vw;display:flex;gap:3vw;align-items:center;opacity:0;transition:opacity 1s var(--ease) .8s}
-.hero-meta.show{opacity:1}
-.hero-meta-item{font-size:clamp(.65rem,.78vw,.9rem);letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
-.hero-meta-item strong{color:var(--fg);font-weight:400;display:block;margin-bottom:.3rem;
-  font-style:italic;font-family:var(--serif);font-size:1.1em;letter-spacing:0;text-transform:none}
-.hero-scroll-indicator{position:absolute;bottom:3vw;right:3vw;z-index:2;
-  display:flex;align-items:center;gap:.8rem;
-  font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
-  opacity:0;transition:opacity 1s var(--ease) 1.2s}
-.hero-scroll-indicator.show{opacity:1}
-.scroll-line{width:40px;height:1px;background:var(--muted);position:relative;overflow:hidden}
-.scroll-line::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
-  background:#fff;animation:scrollline 2s var(--ease) infinite 1.5s}
-@keyframes scrollline{to{left:100%}}
-
-/* SECTION HEADERS */
-.section-header{padding:6vw 3vw 2vw;display:flex;align-items:baseline;
-  justify-content:space-between;border-top:1px solid rgba(255,255,255,.07)}
-.section-eyebrow{font-size:clamp(.6rem,.75vw,.85rem);letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
-.section-title{font-family:var(--serif);font-size:clamp(1.8rem,4vw,5rem);
-  font-weight:400;line-height:1.05;letter-spacing:-.02em;color:var(--fg)}
-.section-title em{font-style:italic}
-.section-count{font-size:clamp(.65rem,.8vw,.9rem);color:var(--muted);letter-spacing:.06em}
-
-/* SCROLL STRIPS
-   KEY FIX: reveal uses opacity+translateY instead of clip-path.
-   clip-path on the parent was clipping the absolutely-positioned child image. */
-.scroll-strips{padding:0 3vw}
-
-.strip{
-  position:relative;
-  overflow:hidden;
-  margin-bottom:1.2vw;
-  opacity:0;
-  transform:translateY(40px);
-  transition:opacity 1.4s var(--ease), transform 1.4s var(--ease);
-}
-.strip.revealed{
-  opacity:1;
-  transform:translateY(0);
-}
-
-.strip-full{height:70vh;position: relative;overflow: hidden;}
-.strip-row{display:grid;grid-template-columns:1fr 1fr;gap:1.2vw;margin-bottom:1.2vw}
-.strip-half{height:55vh}
-.strip-trio{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.2vw;margin-bottom:1.2vw}
-.strip-third{height:45vh}
-
-/* Image: 140% tall, offset -20% from top so it's centred.
-   Parallax JS then applies a small translateY on top of this. */
-.strip-img{
-  position:absolute;
-  left:0;
-  top:-20%;
-  width:100%;
-  height:140%;
-  object-fit:cover;
-  display:block;
-  will-change:transform;
-  filter:brightness(.6);
-  transition:filter .6s var(--ease);
-}
-.strip:hover .strip-img{filter:brightness(.75)}
-
-.strip-text{position:absolute;bottom: 2.5vw;left: 2.5vw;max-width: 480px;padding: 1.5rem 1.8rem;background: rgba(22, 22, 22, 0.72);
-backdrop-filter: blur(8px);-webkit-backdrop-filter: blur(8px);border: 1px solid rgba(250, 250, 250, 0.07);
-z-index:2;display:flex;flex-direction:column;
-  justify-content:flex-end;padding:3vw}
-.strip-kicker{font-size:clamp(.6rem,.72vw,.82rem);letter-spacing:.16em;text-transform:uppercase;
-  color:rgba(250,250,250,.5);margin-bottom:.7rem}
-.strip-headline{font-family:var(--serif);font-size:clamp(1.2rem,2.8vw,3.8rem);
-  font-weight:400;line-height:1.1;color:var(--fg);letter-spacing:-.01em}
-.strip-headline em{font-style:italic}
-.strip-body{margin-top:.8rem;font-size:clamp(.75rem,1vw,1.1rem);line-height:1.6;
-  color:var(--muted);max-width:50ch;font-weight:300}
-.strip-tag{position:absolute;top:2vw;right:2vw;font-size:10px;letter-spacing:.14em;
-  text-transform:uppercase;color:rgba(250,250,250,.4);
-  border:1px solid rgba(250,250,250,.15);padding:5px 10px}
-.strip{cursor:none}
-
-/* PULL QUOTE */
-.pull-quote-section{padding:7vw 3vw}
-.pull-quote{font-family:var(--serif);font-size:clamp(1.6rem,3.5vw,4.5rem);
-  font-weight:400;font-style:italic;line-height:1.2;letter-spacing:-.01em;
-  color:var(--fg);max-width:22ch;border-left:1px solid rgba(250,250,250,.2);
-  padding-left:3vw;opacity:0;transform:translateY(24px);
-  transition:opacity 1.2s var(--ease),transform 1.2s var(--ease)}
-.pull-quote.show{opacity:1;transform:translateY(0)}
-.pull-quote-attr{margin-top:1.5rem;font-size:clamp(.65rem,.8vw,.9rem);
-  letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
-  padding-left:3vw;font-family:var(--sans)}
-
-/* MANIFESTO */
-.manifesto{padding:6vw 3vw;display:grid;grid-template-columns:1fr 1fr;gap:6vw;align-items:start}
-.manifesto-label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:2rem}
-.manifesto-body{font-family:var(--serif);font-size:clamp(1.1rem,1.8vw,2.2rem);
-  font-weight:400;line-height:1.45;color:var(--fg)}
-.manifesto-body em{font-style:italic;opacity:.7}
-.manifesto-right{padding-top:3rem}
-.manifesto-p{font-size:clamp(.82rem,1.05vw,1.15rem);line-height:1.75;
-  color:var(--muted);font-weight:300;margin-bottom:1.5rem}
-
-/* WORLD MAP */
-.map-section{padding:0 3vw 6vw}
-.map-container{position:relative;width:100%;background:#0a0a0a;overflow:hidden;
-  border:1px solid rgba(255,255,255,.05)}
-.map-container svg{width:100%;height:auto;display:block}
-.world-country{fill:#1c1c1c;stroke:#2a2a2a;stroke-width:.3;stroke-linejoin:round;stroke-linecap:round}
-
-/* Map dots */
-.dot-group{cursor:pointer}
-.dot-pulse{fill:none;stroke:rgba(250,250,250,.5);stroke-width:1.2}
-.dot-core{fill:#fafafa;transition:fill .25s,r .25s}
-.dot-group:hover .dot-pulse{stroke:#fff}
-.dot-group:hover .dot-core{r:10}
-.dot-label{fill:rgba(250,250,250,.6);font-family:'Helvetica Neue',Helvetica,sans-serif;
-  font-size:14px;letter-spacing:1.5px;text-transform:uppercase;
-  pointer-events:none;user-select:none}
-
-/* Map tooltip */
-#map-tooltip{position:absolute;background:#0a0a0a;border:1px solid rgba(255,255,255,.12);
-  padding:7px 12px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--muted);pointer-events:none;opacity:0;
-  transition:opacity .15s;white-space:nowrap;z-index:10}
-#map-tooltip.show{opacity:1}
-
-/* Map legend */
-.map-legend{position:absolute;bottom:1.2rem;left:1.4rem;display:flex;gap:1.2rem;align-items:center}
-.map-legend-item{display:flex;align-items:center;gap:.4rem;
-  font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(250,250,250,.35)}
-.map-legend-dot{width:8px;height:8px;border-radius:50%;
-  border:1px solid rgba(250,250,250,.4);flex-shrink:0;background:rgba(250,250,250,.8)}
-
-/* REGION PANEL */
-#region-panel{position:fixed;top:0;right:0;bottom:0;width:min(520px,100vw);
-  background:#111;z-index:500;overflow-y:auto;
-  transform:translateX(100%);transition:transform .7s var(--ease);
-  border-left:1px solid rgba(255,255,255,.07)}
-#region-panel.open{transform:translateX(0)}
-#region-panel::-webkit-scrollbar{display:none}
-.panel-header{position:sticky;top:0;background:#111;z-index:2;
-  padding:2.5rem 2.5rem 1.5rem;border-bottom:1px solid rgba(255,255,255,.07)}
-.panel-close{position:absolute;top:1.8rem;right:2rem;width:32px;height:32px;
-  display:flex;align-items:center;justify-content:center;
-  background:rgba(255,255,255,.07);border:none;cursor:pointer;transition:background .3s}
-.panel-close:hover{background:rgba(255,255,255,.14)}
-.panel-close svg{width:14px;height:14px;stroke:var(--fg);stroke-width:1.5;fill:none}
-.panel-region-tag{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:.8rem}
-.panel-region-name{font-family:var(--serif);font-size:clamp(1.6rem,2.5vw,2.4rem);
-  font-weight:400;line-height:1.1;color:var(--fg)}
-.panel-region-desc{margin-top:.8rem;font-size:clamp(.78rem,1vw,1rem);
-  line-height:1.65;color:var(--muted);font-weight:300}
-.panel-body{padding:2rem 2.5rem}
-.panel-filter-row{display:flex;gap:.5rem;margin-bottom:2rem;flex-wrap:wrap}
-.filter-btn{font-size:10px;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--muted);border:1px solid rgba(255,255,255,.15);
-  padding:5px 12px;background:transparent;cursor:pointer;transition:all .3s;white-space:nowrap}
-.filter-btn:hover,.filter-btn.active{color:var(--fg);border-color:rgba(255,255,255,.5);
-  background:rgba(255,255,255,.05)}
-.discipline-card{margin-bottom:1.2rem;background:rgba(255,255,255,.03);
-  border:1px solid rgba(255,255,255,.07);overflow:hidden;transition:border-color .3s,background .3s}
-.discipline-card:hover{border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.06)}
-.discipline-card-inner{padding:1.4rem 1.6rem}
-.dc-type-badge{display:inline-block;font-size:9px;letter-spacing:.14em;text-transform:uppercase;
-  color:rgba(250,250,250,.4);border:1px solid rgba(250,250,250,.15);padding:3px 8px;margin-bottom:.9rem}
-.dc-type-badge.martial{border-color:rgba(200,150,80,.4);color:rgba(200,150,80,.8)}
-.dc-type-badge.dance  {border-color:rgba(100,180,200,.4);color:rgba(100,180,200,.8)}
-.dc-type-badge.sport  {border-color:rgba(120,180,120,.4);color:rgba(120,180,120,.8)}
-.dc-name{font-family:var(--serif);font-size:clamp(1.1rem,1.8vw,1.5rem);
-  font-weight:400;color:var(--fg);line-height:1.1;margin-bottom:.5rem}
-.dc-origin{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.8rem}
-.dc-desc{font-size:clamp(.78rem,1vw,.95rem);line-height:1.65;color:var(--muted);font-weight:300}
-.dc-tags{margin-top:.9rem;display:flex;gap:.5rem;flex-wrap:wrap}
-.dc-tag{font-size:9px;letter-spacing:.1em;text-transform:uppercase;
-  color:rgba(250,250,250,.3);padding:2px 7px;border:1px solid rgba(255,255,255,.08)}
-.panel-empty{font-size:.9rem;color:var(--muted);padding:2rem 0;font-style:italic;font-family:var(--serif)}
-
-/* BACKDROP */
-#panel-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:499;
-  opacity:0;pointer-events:none;transition:opacity .5s}
-#panel-backdrop.show{opacity:1;pointer-events:auto}
-
-
-/* ABOUT */
-.about-section{padding:6vw 3vw;display:grid;grid-template-columns:1fr 1fr;gap:6vw;
-  border-top:1px solid rgba(255,255,255,.07)}
-.about-title{font-family:var(--serif);font-size:clamp(1.8rem,3.5vw,4rem);
-  font-weight:400;line-height:1.1;color:var(--fg);margin-bottom:2rem}
-.about-title em{font-style:italic}
-.about-body{font-size:clamp(.82rem,1.05vw,1.1rem);line-height:1.8;color:var(--muted);font-weight:300}
-.about-body p{margin-bottom:1.4rem}
-.about-right{display:flex;flex-direction:column;gap:2.5rem;padding-top:1rem}
-.about-stat-num{font-family:var(--serif);font-size:clamp(2rem,4vw,5rem);
-  font-weight:400;font-style:italic;color:var(--fg);line-height:1}
-.about-stat-label{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:.4rem}
-
-/* FOOTER */
-footer{background:#fafafa;color:#161616;padding:3vw 3vw 0;margin-top:6vw}
-.footer-items{border-bottom:1px solid rgba(0,0,0,.08);padding-bottom:2vw;margin-bottom:3vw}
-.footer-flex{display:flex;justify-content:flex-end}
-.footer-item-holder{display:flex;gap:2rem}
-.footer-link{font-size:clamp(.65rem,.8vw,1rem);opacity:.6;transition:opacity .3s;letter-spacing:.03em;color:#161616}
-.footer-link:hover{opacity:1}
-.footer-grid{display:grid;grid-template-columns:1fr 1fr;gap:3vw;margin-bottom:3vw}
-.footer-links-list{display:flex;flex-direction:column;gap:.8rem}
-.footer-main-link{font-size:clamp(1.1rem,2vw,2.8rem);font-weight:300;
-  letter-spacing:-.02em;line-height:1.1;transition:opacity .3s;color:#161616}
-.footer-main-link:hover{opacity:.45}
-.footer-rights{font-size:clamp(.65rem,.8vw,.9rem);color:rgba(22,22,22,.4);margin-top:2rem;line-height:1.6}
-.footer-contacts{display:flex;gap:3vw;flex-wrap:wrap;align-items:flex-start}
-.footer-contact-group{display:flex;flex-direction:column;gap:.3rem}
-.footer-contact-label{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(22,22,22,.4)}
-.footer-contact-link{font-size:clamp(.75rem,.9vw,1rem);font-weight:300;transition:opacity .3s;color:#161616}
-.footer-contact-link:hover{opacity:.45}
-.footer-logo-strip{padding:3vw 0 3.5vw;border-top:1px solid rgba(0,0,0,.08);margin-top:2vw}
-.footer-logo-strip svg{width:100%;height:auto;fill:#161616;display:block}
-
-.footer-wordmark {
-    font-family:'Unbounded', sans-serif;
-    font-weight: 900;
-    letter-spacing: -0.03em;
-    color: #161616;
-    line-height: 0.92;
-    white-space: nowrap;
-    display: block;
-    width: 100%;
-    font-size: clamp(3rem, 10vw, 14rem)
-  }
-
-/* RESPONSIVE */
-@media(max-width:900px){
-  .strip-row,.strip-trio{grid-template-columns:1fr}
-  .manifesto,.about-section,.footer-grid{grid-template-columns:1fr}
-  .hero-title{font-size:clamp(2.5rem,10vw,6rem)}
-  .menu-links-holder{display:none}
-}
-@media(max-width:600px){
-  .strip-full{height:50vh}
-  .strip-half,.strip-third{height:40vh}
-  .about-right{flex-direction:row;flex-wrap:wrap;gap:2rem}
-}
-</style>
 </head>
 <body>
 
-<!-- PRELOADER -->
 <div id="preloader">
   <svg id="preloader-logo" viewBox="0 0 449 449" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M125.8448,124.9432 C42.9118,207.8772 244.7638,409.7282 327.6968,326.7952 C410.4218,244.0692 208.5718,42.2172 125.8448,124.9432 M70.6248,71.3792 C101.8548,40.1502 135.7728,19.0542 171.3448,8.2992 C207.5368,-2.6608 243.1098,-2.6608 278.6808,7.6792 C314.4598,18.6412 347.7578,39.1152 378.5738,69.9302 C409.1818,100.5402 429.8628,134.0442 440.6168,169.6162 C451.3718,205.6012 451.7848,241.5872 441.2378,278.1932 C430.8978,314.1792 409.8018,348.0972 378.5738,379.3262 C347.5508,410.3482 313.8398,431.2362 278.0608,441.3712 C241.8678,451.5052 206.0888,450.8832 170.1038,440.1302 C134.5318,429.3762 101.2338,408.4872 70.6248,377.8792 C39.8098,347.0632 19.1278,313.9722 8.1668,278.1942 C-2.5872,243.0352 -2.5872,207.4632 7.9608,171.6832 C18.5078,136.3192 39.3968,102.6082 70.6248,71.3792" fill="white"/>
@@ -373,7 +25,6 @@ footer{background:#fafafa;color:#161616;padding:3vw 3vw 0;margin-top:6vw}
 <div class="load-overlay" id="loadOverlay"></div>
 <div id="cursor"></div>
 
-<!-- NAV -->
 <nav class="menu" aria-label="Main navigation">
   <a href="index.html" class="menu-logo" aria-label="Elysion Doctrine home">
     <svg viewBox="0 0 820 80" fill="white" xmlns="http://www.w3.org/2000/svg">
@@ -397,7 +48,6 @@ footer{background:#fafafa;color:#161616;padding:3vw 3vw 0;margin-top:6vw}
 </nav>
 
 <main>
-  <!-- HERO -->
   <section class="hero" id="hero" aria-labelledby="heroLine1">
     <img class="hero-img js-hero-parallax" src="/images/rugby.jpg" alt="" aria-hidden="true"/>
     <div class="hero-overlay" aria-hidden="true"></div>
@@ -423,7 +73,6 @@ footer{background:#fafafa;color:#161616;padding:3vw 3vw 0;margin-top:6vw}
     </div>
   </section>
 
-  <!-- MANIFESTO -->
   <div class="manifesto">
     <div class="manifesto-left">
       <div class="manifesto-label">Project Statement</div>
@@ -438,7 +87,6 @@ footer{background:#fafafa;color:#161616;padding:3vw 3vw 0;margin-top:6vw}
     </div>
   </div>
 
-  <!-- PULL QUOTE -->
   <div class="pull-quote-section" style="padding-top:0">
     <blockquote class="pull-quote js-reveal" style="max-width:28ch">
       "The universe is silent. The body answers with fight, dance, and survival."
@@ -446,7 +94,6 @@ footer{background:#fafafa;color:#161616;padding:3vw 3vw 0;margin-top:6vw}
     <p class="pull-quote-attr">—The Enthusiast</p>
   </div>
 
-  <!-- CH 03: SPORTING -->
   <div class="section-header">
     <div><div class="section-eyebrow">Chapter 01</div><div class="section-title">The <em>Sporting</em> Body</div></div>
     <div class="section-count">Through history</div>
@@ -466,21 +113,27 @@ footer{background:#fafafa;color:#161616;padding:3vw 3vw 0;margin-top:6vw}
     </div>
   </div>
 
-   <!-- WORLD MAP -->
   <div class="section-header" id="map-anchor">
     <div><div class="section-eyebrow">The Atlas</div><div class="section-title">Movement <em>Mapped</em></div></div>
     <div class="section-count">Click any region</div>
   </div>
 
   <div class="map-section">
-    <div class="map-container" id="mapContainer">
-      <div id="map-tooltip" role="tooltip" aria-live="polite"></div>
-      <!-- SVG: viewBox 0 0 2000 857. Country paths use real geographic data. -->
-      <svg id="world-map-svg" viewBox="0 0 2000 857"
-           xmlns="http://www.w3.org/2000/svg"
-           aria-label="World map — click dots to explore disciplines by region">
-        <!-- Country fills — Natural Earth simplified paths -->
-           <path id="AF" data-name="Afghanistan" class="country" d="M1383 261.6l1.5 1.8-2.9 0.8-2.4 1.1-5.9 0.8-5.3 1.3-2.4 2.8 1.9 2.7 1.4 3.2-2 2.7 0.8 2.5-0.9 2.3-5.2-0.2 3.1 4.2-3.1 1.7-1.4 3.8 1.1 3.9-1.8 1.8-2.1-0.6-4 0.9-0.2 1.7-4.1 0-2.3 3.7 0.8 5.4-6.6 2.7-3.9-0.6-0.9 1.4-3.4-0.8-5.3 1-9.6-3.3 3.9-5.8-1.1-4.1-4.3-1.1-1.2-4.1-2.7-5.1 1.6-3.5-2.5-1 0.5-4.7 0.6-8 5.9 2.5 3.9-0.9 0.4-2.9 4-0.9 2.6-2-0.2-5.1 4.2-1.3 0.3-2.2 2.9 1.7 1.6 0.2 3 0 4.3 1.4 1.8 0.7 3.4-2 2.1 1.2 0.9-2.9 3.2 0.1 0.6-0.9-0.2-2.6 1.7-2.2 3.3 1.4-0.1 2 1.7 0.3 0.9 5.4 2.7 2.1 1.5-1.4 2.2-0.6 2.5-2.9 3.8 0.5 5.4 0z"/>
+    <div id="controls">
+      <div id="search-wrap">
+        <input type="text" id="search" placeholder="Search country or tradition&hellip;" autocomplete="off">
+        <div id="search-results"></div>
+      </div>
+      <button id="clear-btn">Clear</button>
+    </div>
+    <div id="map-wrap">
+      <div id="zoom-controls">
+        <button id="zoom-in" aria-label="Zoom in">+</button>
+        <button id="zoom-out" aria-label="Zoom out">&minus;</button>
+        <button id="zoom-reset" aria-label="Reset zoom">Reset</button>
+      </div>
+  <svg id="world-svg" viewBox="0 0 2000 857" xmlns="http://www.w3.org/2000/svg">
+  <path id="AF" data-name="Afghanistan" class="country" d="M1383 261.6l1.5 1.8-2.9 0.8-2.4 1.1-5.9 0.8-5.3 1.3-2.4 2.8 1.9 2.7 1.4 3.2-2 2.7 0.8 2.5-0.9 2.3-5.2-0.2 3.1 4.2-3.1 1.7-1.4 3.8 1.1 3.9-1.8 1.8-2.1-0.6-4 0.9-0.2 1.7-4.1 0-2.3 3.7 0.8 5.4-6.6 2.7-3.9-0.6-0.9 1.4-3.4-0.8-5.3 1-9.6-3.3 3.9-5.8-1.1-4.1-4.3-1.1-1.2-4.1-2.7-5.1 1.6-3.5-2.5-1 0.5-4.7 0.6-8 5.9 2.5 3.9-0.9 0.4-2.9 4-0.9 2.6-2-0.2-5.1 4.2-1.3 0.3-2.2 2.9 1.7 1.6 0.2 3 0 4.3 1.4 1.8 0.7 3.4-2 2.1 1.2 0.9-2.9 3.2 0.1 0.6-0.9-0.2-2.6 1.7-2.2 3.3 1.4-0.1 2 1.7 0.3 0.9 5.4 2.7 2.1 1.5-1.4 2.2-0.6 2.5-2.9 3.8 0.5 5.4 0z"/>
   <path id="AL" data-name="Albania" class="country" d="M1088 228l0.4 1.2 1.4-0.6 1.2 1.7 1.3 0.7 0.6 2.3-0.5 2.2 1 2.7 2.3 1.5 0.1 1.7-1.7 0.9-0.1 2.1-2.2 3.1-0.9-0.4-0.2-1.4-3.1-2.2-0.7-3 0.1-4.4 0.5-1.9-0.9-1-0.5-2.1 1.9-3.1z"/>
   <path id="AE" data-name="United Arab Emirates" class="country" d="M1296.2 336.7l1.3 5.1-2.8 0 0 4.2 1.1 0.9-2.4 1.3 0.2 2.6-1.3 2.6 0 2.6-1 1.4-16.9-3.2-2.7-6.6-0.3-1.4 0.9-0.4 0.4 1.8 4.2-1 4.6 0.2 3.4 0.2 3.3-4.4 3.7-4.1 3-4 1.3 2.2z"/>
   <path id="AM" data-name="Armenia" class="country" d="M1230.8 253l-1.8 0.2-2.8-3.7-0.2-1-2.3 0-1.9-1.7-1 0.1-2.4-1.8-4.2-1.6-0.1-3.1-1.3-2.2 7-1 1.4 1.6 2.2 1.1-0.7 1.6 3.2 2.2-1.1 2.1 2.6 1.7 2.5 1 0.9 4.5z"/>
@@ -526,7 +179,6 @@ footer{background:#fafafa;color:#161616;padding:3vw 3vw 0;margin-top:6vw}
   <path id="GM" data-name="The Gambia" class="country" d="M891.6 417.4l0.8-2.9 6.1-0.1 1.3-1.6 1.8-0.1 2.2 1.6 1.7 0 1.9-1 1.1 1.8-2.5 1.5-2.4-0.2-2.4-1.3-2.1 1.5-1 0-1.4 0.9-5.1-0.1z"/>
   <path id="GW" data-name="Guinea-Bissau" class="country" d="M909.2 421l-0.1 2.2-0.6 0.7 0.4 2.1-0.9 0.8-1.2 0.1-1.5 1-1.7-0.1-2.6 3.1-2.9-2.6-2.4-0.5-1.3-1.8 0.1-1-1.7-1.3-0.4-1.4 3-1 1.9 0.2 1.5-0.8 10.4 0.3z"/>
   <path id="GQ" data-name="Equatorial Guinea" class="country" d="M1050.3 487.3l0 7.7-8.2 0-1.9 0.3-1.1-0.9 1.9-7.2 9.3 0.1z"/>
-  <path id="GL" data-name="Greenland" class="country" d="M896.3 1.4l19.9 3-6.7 1.4-13 0.2-18.5 0.4 1.4 0.7 12.3-0.5 9.7 1.4 7-1.2 2.4 1.4-4.5 2.4 9.2-1.6 17.1-1.5 10 0.8 1.7 1.7-14.8 2.9-2.2 1-11.4 0.8 8.1 0.2-4.9 3.2-3.6 2.9-1.2 5.2 3.7 3.2-5.9 0.1-6.5 1.6 6.3 2.6-0.1 4.2-4.2 0.5 4.1 4.3-8.7 0.4 4 2-1.6 1.8-5.7 0.8-5.5 0.1 4.2 3.4-0.5 2.4-7.3-2.2-2.4 1.4 5 1.3 4.6 3.2 0.6 4.3-7.4 1-2.7-2.1-4.2-3 0.5 3.6-5.4 2.8 10.7 0.2 5.5 0.3-11.9 4.7-12.2 4.3-12.7 1.8-4.6 0.1-4.9 2.1-7.5 5.8-10.2 3.9-3 0.3-6.1 1.3-6.6 1.4-4.8 3.4-1.4 4-3.4 3.8-8.6 4.6 0.3 4.5-3.6 4.8-4.1 5.7-6.5 0.4-5-4.8-9-0.1-3.2-3.2-0.8-5.6-4.8-7.2-0.7-3.7 1.5-5.1-3.7-5.1 3.3-4.1-1.9-2 7-6.4 7.2-2.1 2.6-2.2 2.8-4.2-5.5 1.9-2.6 0.8-4.1 0.7-4.2-1.7 1.5-3.7 3-2.8 3.8-0.1 7.6 1.5-5.3-3.4-2.7-1.8-4.4 0.7-2.6-1.3 7-4.8-1.3-2-1.1-3.5-1.4-5.4-3.6-1.9 1.4-2.1-8.1-2.9-7.7-0.4-10.1 0.2-9.5 0.4-3.1-1.6-3.8-3.1 11-1.5 7.6-0.2-14.6-1.3-6.5-1.9 2.2-1.8 15.7-2.2 15-2.2 2.8-1.6-8.1-1.6 4.6-1.7 14.7-2.9 5.4-0.4 0.2-1.8 9-1.1 11-0.6 10.4 0 2.8 1.2 10.6-2.2 7.1 1.5 4.6 0.3 6.2 1.3-6.7-2.1 1.6-1.7 12.7-2.2 11.6 0.2 5.1-1.4 11.9-0.3 26.3 0.4z"/>
   <path id="GT" data-name="Guatemala" class="country" d="M488.1 387.5l-0.7 5.1-1.3 7.2 1.7 0 1.7 1.2 0.6-1 1.5 0.8-2.8 2.5-2.9 1.8-0.5 1.2 0.3 1.3-1.3 1.6-1.4 0.4 0.3 0.8-1.2 0.7-2 1.6-0.3 0.9-2.8-1.1-3.5-0.1-2.4-1.3-2.8-2.6 0.4-1.9 0.8-1.5-0.7-1.2 3.3-5.2 7.2 0 0.4-2.2-0.8-0.4-0.5-1.4-1.9-1.5-1.8-2.1 2.5-0.1 0.5-3.6 5.2 0 5.2 0.1z"/>
   <path id="GY" data-name="Guyana" class="country" d="M662.9 463.5l-1 5.8-3.5 1.6 0.3 1.5-1.1 3.4 2.4 4.6 1.8 0 0.7 3.6 3.3 5.6-1.3 0.3-3.2-0.6-1.8 1.7-2.6 1.1-1.8 0.3-0.6 1.3-2.8-0.3-3.5-3-0.3-3-1.4-3.3 1-5.4 1.6-2.3-1.2-3-2-0.9 0.8-2.9-1.2-1.4-3 0.2-3.7-4.8 1.6-1.8 0-3 3.5-1 1.4-1.2-1.8-2.4 0.5-2.3 4.7-3.8 3.6 2.4 3.3 4.1 0.1 3.4 2.1 0.1 3 3.1 2.1 2.3z"/>
   <path id="HN" data-name="Honduras" class="country" d="M519.6 405.5l-1.9-0.1-0.9 0.9-2 0.8-1.4 0-1.3 0.8-1.1-0.2-0.9-1-0.6 0.2-0.9 1.5-0.5-0.1-0.2 1.4-2.1 1.7-1.2 0.8-0.6 0.8-1.5-1.3-1.4 1.7-1.2 0-1.3 0.1-0.2 3.2-0.8 0-0.8 1.5-1.8 0.3-0.8-2-1.7-0.6 0.7-2.6-0.7-0.7-1.2-0.4-2.5 0.7-0.1-0.8-1.6-1.1-1.1-1.2-1.6-0.6 1.3-1.6-0.3-1.3 0.5-1.2 2.9-1.8 2.8-2.5 0.6 0.3 1.3-1.1 1.6-0.1 0.5 0.5 0.9-0.3 2.6 0.6 2.6-0.2 1.8-0.7 0.8-0.7 1.7 0.3 1.3 0.4 1.5-0.1 1.2-0.6 2.5 0.9 0.8 0.2 1.6 1.2 1.5 1.4 1.9 1 1.3 1.7z"/>
@@ -797,274 +449,15 @@ footer{background:#fafafa;color:#161616;padding:3vw 3vw 0;margin-top:6vw}
   </g>
   <g id="g-united-states" data-name="United States" class="country">
     <path class="country-part" d="M 118.8 379.3 117.7 380.4 116.5 379.5 117.1 377.7 116.7 375.3 117.2 374.6 118.4 373.6 118.3 372.3 118.7 371.7 119.1 371.8 121 372.9 121.9 373.5 122.6 374.3 123.5 376.6 123.3 376.9 120.8 378.3 118.8 379.3 Z"/>
-    <path class="country-part" d="M 118.1 369.3 116.1 369.7 115.5 368.4 115 367.9 115 367.5 115.7 366.9 117.5 367.5 118.7 368.5 118.1 369.3 Z"/>
-    <path class="country-part" d="M 115.1 365.9 114.8 366.6 111.8 366.4 112.4 365.6 115.1 365.9 Z"/>
-    <path class="country-part" d="M 110.4 364.9 110 365.3 109.6 365.2 107.7 365 107.4 363.5 107.2 363.3 108.9 362.4 109.3 362.8 110.4 364.9 Z"/>
-    <path class="country-part" d="M 102 360.7 101.2 361.3 99.6 360.2 100 359.7 101 359.1 102.3 359.2 102 360.7 Z"/>
     <path class="country-part" d="M 539.5 194.5 533.4 196.5 528.7 199 524.1 201.7 523.6 202.6 529.3 201.3 531.4 203.4 536 201.9 540.9 199.8 546.3 197.7 543.2 201 545.7 201.8 548.2 204.2 553.3 202.8 558.4 202.3 558.7 204.1 560.2 204.3 561.4 204.5 562.9 207 558.2 207.6 558.1 207.6 554.4 206.9 549.9 208.1 546.2 208.7 541.5 212.8 538.5 215.1 538.9 215.8 544.4 211.7 545.1 211.7 540.4 216.6 537.5 221 535 224.6 534.4 227.7 533.6 229.2 533 230.9 533.1 234.2 533.4 234.7 535.2 234.6 536.8 233.9 538.2 233.1 541.5 230 543.3 225.8 543.2 221.9 544.6 219.2 547.2 216.1 549.3 213.9 552 212.4 551.6 214.5 553.8 211.4 555.1 210.8 556.8 208.4 560.6 209.7 563.4 212.1 562.6 215 561 217.9 557.2 220.4 556.8 222 557.8 222 562.1 219.3 563.7 219.9 563.2 223.6 562.5 226.2 558.8 229.7 556.8 231.9 554.1 234.3 556.8 235.6 559.3 236 563.3 235.1 567 233.4 570 232.5 574.6 230.7 580.4 226.9 580.5 226.3 580.8 224.4 583.5 223.6 587.4 223.9 591.4 224.4 596 222.3 596.6 219.8 596.4 218.9 603.2 214.5 605.9 213.4 613.7 213.3 623 213.3 624.1 211.8 625.8 211.5 628.3 210.5 631.1 207.6 634.3 202.7 639.8 198 640.9 199.6 644.6 198.6 646.2 200.4 643.3 208.9 645.5 212.5 645.7 214.6 639.3 217.6 633.3 219.8 627.3 221.7 623.3 225.5 622 226.9 620.8 230.3 621.5 233.6 623.6 233.8 623.8 231.5 624.9 232.9 623.9 234.7 620.1 235.7 617.6 235.6 613.4 236.7 611.1 237 608 237.3 603 239.2 611.1 238 612.2 239.2 604.3 241.1 601 241.1 601.4 240.3 599.3 242.1 600.7 242.4 598.2 247 592.9 251.9 593 250.2 591.9 249.9 590.7 248.3 590.7 251.8 591.7 252.9 591.1 255.3 588.7 257.8 584.2 262.9 583.8 262.7 586.7 258.3 584.7 255.9 585.7 250.5 583.8 253.3 583.8 257.4 580.6 256.4 583.6 258.4 582.1 264.5 583.5 265 583.5 267.2 582.5 273.6 577.9 278.3 571.8 280.2 567.4 284 564.6 284.4 561.2 286.8 559.9 288.9 553 293.1 549.2 296.2 545.7 300 543.8 304.5 543.8 309 544.4 314.5 545.9 319 545.4 321.8 546.7 329.2 545.7 333.6 545.1 336.1 543.1 340 541.3 340.8 538.7 340 538.3 337.2 536.5 335.7 534.5 330.2 532.9 325.3 532.5 322.8 534.5 318.5 533.7 315 530.6 309.6 528.7 308.6 522.6 311.6 521.7 311.2 519.7 308.2 516.7 306.6 510.3 307.5 505.7 306.7 501.4 307.2 498.9 308.2 499.5 309.9 498.8 312.5 499.6 313.8 498.4 314.6 496.6 313.7 494.3 314.9 490.4 314.7 487.1 311.3 482.2 312.1 478.6 310.6 475.1 311.1 470.1 312.6 464 317.3 457.9 320.1 454.2 323.1 452.3 326 451.3 330.5 450.9 333.5 451.5 335.7 449.3 335.9 445.7 334.5 441.8 332.5 440.9 329.5 440.7 325 438.3 321.4 437.4 317.6 435.8 313.2 432.6 310.6 428.1 310.8 423.3 315.8 419.3 313.9 417 312 416.6 308.4 415.8 305.1 413.4 302.3 411.3 300.2 410 297.9 400.6 297.9 399.8 300.6 395.5 300.6 384.7 300.6 373.8 296.1 366.8 293 367.7 291.7 360.6 292.4 354.3 292.9 354.6 289.7 352.5 286 350.3 285.2 350.4 283.4 347.5 283 346.3 281.3 341.5 280.7 340.6 279.6 341.4 276.1 338.9 269.7 338.4 260.8 339.3 259.3 338 257.2 336.5 251.8 338.3 246.6 337.4 243.1 341.3 237.8 344.1 232.4 345.2 227.5 350.7 221.5 354.7 215.8 358.7 210.1 363 201.6 364.8 196.3 365.2 193.4 366.6 192.1 372.4 194.3 371.4 200.2 373.6 198.5 376.1 193.4 377.7 188.3 391.8 188.3 406.5 188.3 411.3 188.3 426.4 188.3 441.1 188.3 455.9 188.3 470.8 188.3 487.6 188.3 504.6 188.3 514.8 188.3 516.1 185.9 517.8 185.9 516.9 189.3 517.9 190.3 521.2 190.7 525.8 191.7 529.7 193.6 534.1 192.8 539.5 194.5 Z"/>
-    <path class="country-part" d="M 275 138.6 268 140.9 267.2 139.3 269.5 136.5 275.9 134.4 279.4 133.5 282 133.9 282 135.8 275 138.6 Z"/>
-    <path class="country-part" d="M 236 122 232.1 122.9 230.4 121.8 229.6 120.2 235.3 119.2 238.3 119.8 236 122 Z"/>
-    <path class="country-part" d="M 237.2 99.6 238.4 100.6 241.9 100.1 243.5 101.6 246.8 102.3 245.6 103 240.7 104.2 239 102.9 238.7 101.9 234.4 102.2 234.1 101.7 237.2 99.6 Z"/>
     <path class="country-part" d="M 410 66.6 385.4 87 349.8 119.7 354 119.9 356.8 121.5 357.3 124.1 357.6 127.9 365.2 124.6 371.7 122.7 371.1 125.8 371.9 128.2 373.5 130.9 372.4 135.1 371 142 375.6 145.8 372.4 149.6 367.3 152.5 366.7 150.3 364.2 148.3 367.5 143.1 365.9 138.2 368.6 132.6 364.5 132.2 357.4 132.1 353.6 130.3 350.3 124.2 347 123.1 341.3 121 334.5 121.5 328.5 118.8 325.8 116.3 319.5 117.5 316 121.6 313.1 122 306.5 123.2 300.3 125.2 293.9 126.5 297.1 123 305.5 117.2 312.3 115.4 312.7 114 303.3 117.2 295.9 121.1 284.7 125.3 284.9 128.2 275.9 132.4 268.2 134.9 261.6 136.8 257.6 139.4 247 142.5 242.5 145.3 234.3 147.9 231.6 147.5 225.4 149.1 218.4 151.2 212.3 153.2 202.3 155 202.7 153.9 210.9 151.1 217.5 149.2 226.1 145.9 232.6 145.3 237.6 142.8 248 139.2 250.3 138 256 135.9 261.8 131.4 268 127.9 260.7 129.7 260.4 128.6 255.5 130.8 255.9 127.8 252.3 129.9 253.9 127 246.6 129.3 243.8 129.3 247.5 125.8 250.8 123.6 250.4 121.5 243.2 122.7 242.6 119.9 241.3 118.5 245.3 115.2 244.9 112.7 250.8 109.4 258.5 106.1 263.8 103.2 267.9 102.8 269.7 103.7 276.8 100.9 279.3 101.4 284.9 99.6 287.4 97 286.3 96 292.3 93.8 289.5 93.9 283.3 95.1 280.4 96.4 278.6 95.1 271.7 95.8 267.1 94.4 268.3 92.1 267.3 88.9 276.5 86.5 289.7 83.8 293.2 83.8 288.9 86.6 298.1 86.4 299.3 82.9 297 80.8 297.8 78 297.1 75.7 293.8 74 300.3 71.1 307.8 70.9 316.6 68.5 321.4 65.9 329.3 63.3 334.1 62.7 345.3 60.3 348.4 60.7 358.8 57.9 363.2 59 362.7 61.4 366 60.4 372.3 60.7 370.4 61.9 375.3 62.8 380.2 62.3 386.4 63.9 393.6 64.5 395.8 65.1 402.4 64.3 406.5 65.9 410 66.6 Z"/>
   </g>
-  <g id="g-american-samoa" data-name="American Samoa" class="country">
-    <path class="country-part" d="M 27.7 593.3 27.4 593.7 27.2 594 27 594.1 26.6 593.8 26.8 593.6 27.1 593.6 27.2 593.4 27.7 593.3 Z"/>
-    <path class="country-part" d="M 34.3 593.3 33.8 593.4 33.7 593.2 34.1 593.1 34.3 593.3 Z"/>
-  </g>
-  <g id="g-antigua-and-barbuda" data-name="Antigua and Barbuda" class="country">
-    <path class="country-part" d="M 640.7 391.9 641.3 392.2 641.1 392.5 640.9 392.5 640.2 392.6 640 392.5 640 392 640.3 391.9 640.4 391.6 640.6 391.6 640.7 391.9 Z"/>
-    <path class="country-part" d="M 640.7 388.2 640.9 388.2 641.1 388.4 641.2 388.8 641.1 389.1 640.9 389.2 640.8 389 640.5 388.8 640.5 388.3 640.7 388.2 Z"/>
-  </g>
-  <g id="g-bahamas" data-name="Bahamas" class="country">
-    <path class="country-part" d="M 580.4 366 580 366.5 579.8 367 579.2 367.3 578.7 367.3 578.6 367.2 578.2 367.4 577.7 367.5 577.1 367.3 576.7 367.4 576.6 366.9 576.9 366.7 577.1 366.4 577.5 366.2 577.8 365.8 578.2 365.8 578.5 365.6 578.7 365.9 579.2 366.1 579.7 365.9 580.4 364.9 580.7 364.9 580.7 365.1 580.4 366 Z"/>
-    <path class="country-part" d="M 580.6 364.3 580.4 363.7 581 363.4 581.3 363.7 581.3 363.9 581 364 580.6 364.3 Z"/>
-    <path class="country-part" d="M 581 357.8 581.2 357.7 581.7 358 582.1 358 582.5 358.1 582.8 358.3 582.8 358.6 582.6 358.7 582.1 358.3 581.7 358.3 581.6 358.2 581.1 358.4 580.6 358.2 580.6 358.1 580.8 357.6 581 357.8 Z"/>
-    <path class="country-part" d="M 577.1 356 576.9 356.4 576.9 357.1 576.8 357.5 576.4 357.8 576.2 358.2 575.8 358.5 575.1 358.8 575 359 574.8 358.8 574.9 358.6 575.3 358.5 575.5 358.3 575.5 358.1 575.9 358 576.1 357.6 576.5 357.5 576.8 357.1 576.6 356.8 576.2 356.8 576 356.6 576.4 356.1 576.5 356 577.1 356 Z"/>
-    <path class="country-part" d="M 575.2 355.7 575.3 355.8 575.7 355.8 576.1 356 575.7 356.4 575.6 356.2 575.4 356.2 575 356.1 574.6 355.9 574.3 355.3 574.6 355.2 575 355.3 575.2 355.7 Z"/>
-    <path class="country-part" d="M 566 349.8 566.6 350.5 566.9 350.7 567.2 351.2 566.9 351.1 566.8 350.9 566.5 350.8 566.1 350.4 565.9 350.3 565.7 349.9 566 349.8 Z"/>
-    <path class="country-part" d="M 569.7 349.8 570 350.4 570.2 350.9 570.2 351.3 570.4 351.5 570.6 352.2 570.6 353.1 570.8 353.4 571.3 353.6 571.7 354.2 571.7 355 571.3 354.3 571.3 354.1 571 353.7 570.4 353.5 570.6 353.3 570.3 353 570.3 352.7 570.5 352.4 570.4 351.9 570.1 351.5 570.2 351.4 569.9 351 569.8 350.4 569.6 350.5 569.7 349.8 Z"/>
-    <path class="country-part" d="M 572.6 349.8 572.3 350 572 349.9 571.9 349.7 572.5 349.5 572.6 349.8 Z"/>
-    <path class="country-part" d="M 564.4 347.9 564.3 347.8 564 347.1 564.2 347.1 564.4 347.9 Z"/>
-    <path class="country-part" d="M 574.9 347.4 574.5 348 574.1 348 574.3 347.7 574.4 347.1 574.8 346.8 574.9 347.2 574.9 347.4 Z"/>
-    <path class="country-part" d="M 556.4 346.2 556.1 346.3 555.9 346.6 555.6 346.5 556.2 346.1 556.4 346.2 Z"/>
-    <path class="country-part" d="M 556.6 346.9 557 347.1 557.2 346.9 557.3 346.4 557.5 346.3 557.7 346.9 557.7 347.4 557.6 347.7 557.7 348.3 557.7 348.6 557.3 349.4 557.1 349.5 556.7 349.3 556.9 349 557.3 348.8 557.2 348.7 556.6 349.1 556.4 348.9 556.8 348.6 556.4 348.6 556.2 348.7 556 348.5 556 347.8 556.1 347.6 555.7 347.1 555.7 346.9 556.1 346.7 556.2 346.4 556.5 346.3 556.6 346.1 557.2 345.8 557.3 346.2 556.8 346.6 556.6 346.9 Z"/>
-    <path class="country-part" d="M 570.1 346.3 570.2 346.8 570 346.7 569.5 346.8 569.1 346.9 569 346.7 569.3 346.5 569.7 346.2 569.7 346 569.3 345.8 569.1 345.2 569 344.6 568.6 344.2 568.6 344 568.1 343.5 568.4 343.2 568.8 343.6 568.8 344.1 569 344.4 569.1 344.9 569.4 345.4 569.8 345.7 569.9 346 570.1 346.3 Z"/>
-    <path class="country-part" d="M 559.8 340.8 560.1 341 559.5 341.3 559.2 341.2 559 341.4 558.5 341.3 558.7 341 559.1 340.8 559.8 340.8 Z"/>
-    <path class="country-part" d="M 555.6 340.3 556 340.1 556.3 340.4 556.2 340.6 556.3 340.8 556.1 341.2 556.4 341.5 556.6 342.4 556.8 342.7 557.2 343.2 557 343.9 557.1 344.5 556.9 344.8 556.6 344.9 556.2 345.3 555.9 345.5 555.6 345.5 555.3 345.7 555 345.7 555 345.3 554.7 345.1 554.8 344.5 554.5 344.8 554.3 344.7 553.7 344.3 553.4 344 553.2 343.7 553.9 343.4 554.4 344.1 554.5 343.5 554.2 343.4 554.1 343.1 554.2 342.8 554.8 342.2 555 341.8 554.9 341.7 555.2 341.3 555.2 340.8 555 340.1 555.1 340 555.4 340 555.6 340.3 Z"/>
-    <path class="country-part" d="M 563.7 337.7 563.8 337.9 564.1 338.3 564.9 339 565.4 339.1 565.5 339.2 565.7 339.6 566 340 566.5 340.4 566.5 340.6 566.3 341.4 566.2 341.6 566.2 341.9 566.1 342.4 565.9 342.7 565.8 343.4 565.7 343.5 565.5 342.9 565.1 342.6 565.2 342.4 565.7 342.5 565.9 342.3 565.8 342.1 565.9 341.7 566.2 341.3 566.3 340.8 566.3 340.5 565.8 340.1 565.4 339.4 565.1 339.2 564.5 338.9 564.2 338.6 563.6 338.4 563.2 338.6 563.6 337.7 563.7 337.7 Z"/>
-    <path class="country-part" d="M 554.9 330.2 555.4 330.4 555.5 330.4 556.2 330.5 556.4 330.3 556.6 330.4 557.1 330.4 557.5 330.2 557.9 330.2 558.2 330 558.3 330.5 558.2 330.7 557.9 330.7 557.5 330.7 556.4 330.9 556.1 330.9 554.6 331.3 553.9 331.7 553.5 331.7 553.3 331.6 553 331.3 552.5 330.7 553.1 331 553.2 331.2 553.7 331.2 554.2 331 554.6 330.4 554.3 330.3 554.5 330 554.6 329.7 554.9 330.2 Z"/>
-    <path class="country-part" d="M 559.2 328.9 560 329.1 560.2 329 560.6 329.3 561.5 330.3 561.7 330.9 562.1 331 562.8 331.5 562.8 331.7 562.6 332.2 562.8 332.9 562.4 332.9 561.9 333.3 561.8 333.5 561.5 334.5 561.4 335.4 561.2 335.6 560.9 335.4 560.8 335 560.4 334.9 560.7 334.4 560.9 334.4 561.4 334 561.3 333.6 561.5 333.2 561.5 332.9 561.7 332.6 561.7 332 561.9 331.9 562.1 331.6 562.2 331.3 561.9 331.2 561.4 331.1 561.3 330.8 561.3 330.6 560.9 330.4 560.9 330.1 560.6 329.4 560.4 329.3 560.1 329.4 559.6 329.3 559.3 329.3 558.7 328.9 559.2 328.9 Z"/>
-  </g>
-  <g id="g-comoros" data-name="Comoros" class="country">
-    <path class="country-part" d="M 1233.2 581.3 1232.3 581.2 1232.1 580.8 1232.1 580.5 1232.6 580.6 1233.3 581.1 1233.2 581.3 Z"/>
-    <path class="country-part" d="M 1236.9 579.4 1237.1 580.4 1237.1 581.1 1237 581.3 1236.8 581 1236.4 580.7 1236.3 580.5 1236 580.4 1235.4 580 1235.5 579.9 1236 580.1 1236.3 580 1236.5 579.6 1236.5 579.4 1236.8 579.3 1236.9 579.4 Z"/>
-    <path class="country-part" d="M 1231.2 578.4 1230.7 578 1230.4 577.9 1230.1 577.7 1229.9 577.1 1230 576.8 1230 576.6 1230.2 575.4 1230.1 575.3 1230.3 574.9 1230.8 574.8 1231 575.1 1230.8 576.3 1230.9 576.6 1231.1 577 1231.2 577.5 1231.4 578.1 1231.2 578.4 Z"/>
-  </g>
-  <g id="g-cape-verde" data-name="Cape Verde" class="country">
-    <path class="country-part" d="M 847.8 406.5 847.6 406.8 847.4 406.6 847.4 406.3 847.7 406.2 847.8 406.5 Z"/>
-    <path class="country-part" d="M 849.7 406.6 849.5 406.7 849.1 406.6 848.8 406.3 848.7 406 848.9 405.6 849.4 405.3 849.8 405.3 850 406 849.9 406.4 849.7 406.6 Z"/>
-    <path class="country-part" d="M 853.2 403.5 853.4 403.6 853.4 403.8 853.6 404 854 404.5 854.2 404.5 854.4 404.8 854.6 405.3 854.8 405.5 854.5 406 854.2 406.1 853.7 406 853.4 405.9 853.1 405.6 853.1 405.4 852.9 405.3 852.8 404.9 852.9 404.7 852.9 404.4 853.1 404 852.9 403.5 853.2 403.5 Z"/>
-    <path class="country-part" d="M 856.3 403.5 856.6 403.6 856.7 404.2 856.6 404.6 856.2 404.8 855.8 404.4 856 404 855.9 403.8 856.3 403.5 Z"/>
-    <path class="country-part" d="M 858.3 397.8 858.6 397.6 859.1 397.8 859.2 398 859.2 398.7 858.8 399 858.5 399.2 858.2 399.2 857.7 399 857.7 398.5 857.9 398.3 857.9 397.7 858 397.6 858.3 397.8 Z"/>
-    <path class="country-part" d="M 850.3 395 850.7 394.9 851 395.1 851.4 395.1 851.7 395.3 851.8 395.5 851.3 395.5 850.6 395.2 850.4 395.3 850.1 395.9 849.8 395.3 849.7 395.2 849.6 394.8 849.9 394.7 850.3 395 Z"/>
-    <path class="country-part" d="M 858.1 394.5 858.2 394.6 858.1 395.2 857.9 395.3 857.9 394.8 857.7 394.5 857.7 394.2 857.6 393.9 858 393.6 858.2 393.8 858.1 394.4 858.1 394.5 Z"/>
-    <path class="country-part" d="M 846.8 393.2 847 393.5 847.1 393.8 846.4 394.1 846.1 393.9 845.9 393.7 846.3 393.3 846.8 393.2 Z"/>
-    <path class="country-part" d="M 846 391.4 846.3 391.5 846.3 391.7 846.6 392 846.4 392.4 845.8 392.7 845.4 393.1 844.7 393.2 844.7 393.1 844.7 392.6 844.5 392.4 844.5 392.2 844.7 392 844.9 392 845.1 391.8 845.8 391.4 846 391.4 Z"/>
-  </g>
-  <g id="g-cayman-islands" data-name="Cayman Islands" class="country">
-    <path class="country-part" d="M 532.7 377.8 533 377.9 533.2 377.5 533.6 377.6 534.1 377.6 534.2 377.8 534 378 533.8 377.9 533.4 378 533.2 378.1 532.5 378.1 532.7 377.8 Z"/>
-    <path class="country-part" d="M 540.8 375.3 540.1 375.6 540.3 375.3 540.8 375.3 Z"/>
-    <path class="country-part" d="M 541.4 375.4 541.3 375.3 542.1 375 541.9 375.3 541.4 375.4 Z"/>
-  </g>
-  <g id="g-cyprus" data-name="Cyprus" class="country">
-    <path class="country-part" d="M 1168.2 276.7 1168.3 276.9 1168.6 277.3 1168.2 277.2 1167.9 277.2 1167.5 277.4 1167.2 277.1 1167.2 276.8 1167.5 276.7 1167.7 276.8 1168.2 276.7 Z"/>
-    <path class="country-part" d="M 1166.5 277.2 1166.5 277.3 1166.3 277.5 1166.2 278.1 1166.1 278.3 1165.8 278.3 1165.6 278.5 1165.1 278.7 1164.9 278.8 1164.3 279.1 1163.9 279 1163.4 279.1 1163.1 279.5 1162.9 279.2 1162.6 279.3 1162.4 279.3 1162.1 279 1161.7 279.3 1161.2 279.3 1160.7 279.1 1160.2 279 1159.8 278.7 1159.5 278.1 1159.2 277.8 1159 277.1 1158.8 276.8 1158.9 276.5 1159.4 276.8 1159.8 276.7 1160 276.4 1160.1 276.1 1160.4 276 1160.6 276.1 1160.8 275.9 1161 275.9 1161.1 276.3 1161.6 276.5 1161.7 276.7 1162.3 276.7 1162.9 276.2 1163.3 276.3 1163.6 276.1 1163.9 276.2 1164.3 276.4 1164.5 276.1 1164.8 276.1 1165.1 276.5 1165.1 277.1 1165.4 276.9 1165.7 277.1 1165.8 277 1166.5 277.2 Z"/>
-  </g>
-  <g id="g-falkland-islands" data-name="Falkland Islands" class="country">
-    <path class="country-part" d="M 697.4 836.2 697.8 836.1 697.8 836.5 697 836.2 697.3 835.9 697.5 835.8 697.4 836.2 Z"/>
-    <path class="country-part" d="M 696.7 834.8 696.9 835 697.3 835.1 697.4 835.5 697.1 835.6 697 835.2 696.8 835 696.7 834.8 Z"/>
-    <path class="country-part" d="M 702.9 834 703.1 834.1 703 834.5 702.7 834.4 702.5 834.1 702.8 833.9 702.9 834 Z"/>
-    <path class="country-part" d="M 690.8 833.1 690.8 833.3 690.9 833.6 690.5 833.7 690.2 833.6 690 833.4 689.7 833.3 689.6 832.9 689.8 832.9 689.9 832.7 690.2 832.6 690.4 832.7 690.1 833 690.4 833.1 690.7 832.8 690.8 833.1 Z"/>
-    <path class="country-part" d="M 693.7 831.8 693.3 831.6 692.8 831.3 692 831 692.1 830.6 691.4 830.5 691.1 830.4 690.8 830 691 829.9 691.8 830.2 692.6 830.6 693.1 830.7 693.5 830.8 693.8 830.5 693.9 830.2 694.1 830.3 694.5 830.1 694.6 830.3 695.1 830.3 695.1 830.6 695.4 830.6 696.3 830.4 696.4 830.6 696.7 830.6 697.1 830.5 696.8 830.3 696.7 830 697.1 830 697.7 830.2 697.8 830.6 697.4 831.1 697.5 831.4 697.3 831.6 696.9 831.6 696.6 832.4 696.3 832.7 696 833.3 695.9 833.6 695.4 833.9 695.3 833.7 694.9 833.7 694.9 834 694.1 833.9 694 834 694.3 834.4 694.2 834.5 694 834.9 693.6 834.9 693.3 835.3 693 835.4 692.8 835.4 692.6 835.1 692.2 834.8 692.2 834.6 691.7 834.6 692.3 835 691.9 835 691.4 834.7 691.2 834.6 690.8 834.4 690.5 834.2 690.5 834 691.2 834.2 691.8 834 691.3 833.8 691.2 833.7 692.1 833.7 692.5 833.8 692.8 834 692.8 833.8 693.2 833.7 693.3 833.4 692.9 833.2 692.7 832.7 692.8 832.5 693.4 832.5 693.6 832.6 694 832.5 693.9 832.2 693.1 832.2 693.1 832.3 692.7 832.5 692.1 832.5 691.6 832.2 691.6 831.9 692.3 832.1 692.9 831.9 693.2 831.9 693.7 831.8 694.1 832 694.1 831.9 693.7 831.8 Z"/>
-    <path class="country-part" d="M 695.3 829.9 695.6 829.9 695.9 830.2 695.6 830.3 695.3 830.3 695.3 829.9 Z"/>
-    <path class="country-part" d="M 694.3 829.9 694 829.9 693.9 829.6 694.3 829.7 694.3 829.9 Z"/>
-    <path class="country-part" d="M 692.9 829.7 693.5 829.6 693.7 829.9 693.4 830.3 693.2 830.2 692.9 830.3 692.6 830.1 692.9 829.9 693.2 830.1 693.3 829.9 692.8 829.8 692.9 829.7 Z"/>
-    <path class="country-part" d="M 700.1 829.8 700.7 829.8 700.8 829.7 701.3 829.6 701.7 829.8 702.1 830.1 702.2 830.4 702.2 830.5 701.7 830.6 701.5 830.3 701.3 830.2 701.2 830.5 701.4 830.6 701.5 830.9 701.8 830.7 702 830.8 702.1 831.2 702.4 831.3 702.5 831.2 703 831.5 703.1 831.1 702.3 830.9 702.4 830.4 702.7 830.2 704.2 830.1 704.9 830.7 705.1 830.8 705.1 831.2 704.5 831.1 704 830.9 703.4 831.1 703.7 831.3 704.1 831.4 705 831.5 705.3 831.6 705.4 831.8 705.2 832.3 704.7 832.3 704.6 832.4 703.9 832.5 703.4 832.7 703.7 832.9 702.8 833.3 702.4 833.2 701.9 833.3 701.2 833.3 700.6 833.1 700 832.7 700 833 700.3 833.2 700.9 833.4 701.2 833.7 701.4 833.6 701.8 833.7 702.2 834 702 834.1 702.2 834.6 702 834.6 701.7 834.3 701.3 834.2 700.8 834.6 700.6 834.3 700.3 834.1 700 834.1 699.5 833.9 699.3 834 699.5 834.4 699.8 834.4 700 834.6 699.8 834.7 700.5 835.3 700.3 835.4 699.9 835.2 699.6 835.2 699.3 834.9 699 834.8 698.7 834.7 698.6 835.3 699.1 835.4 699.1 835.7 699 835.9 698.6 835.8 698.5 835.6 698 835.4 697.9 835.2 697.7 835.2 697.3 834.7 697.6 834.3 697.6 834.1 697.2 833.6 697.2 833.4 697.7 833.2 697.6 833 698.1 832.9 698 832.6 698.6 832.2 699.2 832 699.6 832.4 699.6 832.8 699.9 832.7 699.4 832.1 699.5 831.8 698.9 831.6 698.5 831.3 698.6 831.1 699 831.3 699.1 830.8 698.4 830.6 698.5 830.3 698.7 830.4 699 830.2 699.3 830.2 699.5 829.9 699.2 829.6 699.6 829.6 700.1 829.8 Z"/>
-    <path class="country-part" d="M 695.1 829.4 695.8 829.4 696 829.6 696.2 829.4 696.4 829.5 696.6 829.8 696.4 829.9 696 829.8 695.6 829.6 694.8 829.5 694.9 829.3 695.1 829.4 Z"/>
-    <path class="country-part" d="M 688.3 828.3 687.8 828.2 687.9 828 688.3 828.3 Z"/>
-  </g>
-  <g id="g-faeroe-islands" data-name="Faeroe Islands" class="country">
-    <path class="country-part" d="M 955.6 112 956 112.2 956.3 112.2 956.4 112.4 956.4 112.8 956.6 113.1 956.5 113.3 955.9 112.9 955.7 112.5 955.5 112.3 955.3 112 955.6 112 Z"/>
-    <path class="country-part" d="M 955.9 110.4 956.7 110.6 956.9 110.8 956.8 111.2 956.7 111.3 956.3 110.8 955.8 110.7 955.6 110.3 955.9 110.4 Z"/>
-    <path class="country-part" d="M 954.62 109.03999999999999 954.7 109.2 955 109.2 955 109.5 954.6 109.5 954.4 109.7 953.8 109.5 953.6 109.4 953.4 109.1 953.9 109 954 108.9 954.5571428571428 108.99285714285715 954.3 108.8 954.5 108 955 108.1 955.3 108.6 955.3 108.7 955.9 108.9 956.2 109.4 956.5 109.6 956.4 110.2 955.9 109.8 955.7 109.6 955.5 109.5 955.4 109.3 955.2 109.1 954.7 109.1 954.62 109.03999999999999 Z"/>
-    <path class="country-part" d="M 958.3 108.4 958.1 108.2 958.4 108 958.3 108.4 Z"/>
-    <path class="country-part" d="M 955.9 108.9 955.5 108.7 955.2 108.4 955.1 108.1 955.2 108 955.6 107.9 955.9 107.9 956.5 108.3 956.4 108.5 956.5 108.7 957.1 108.9 957.1 109.1 956.7 109.4 955.9 108.9 Z"/>
-    <path class="country-part" d="M 958.1 108.3 957.8 108.7 957.5 108.5 957.2 108.5 957.4 108.2 957.3 107.8 957.4 107.7 957.6 108.1 958.1 108.3 Z"/>
-    <path class="country-part" d="M 957.2 108.3 957 108.3 956.8 107.9 956.9 107.6 957.1 108 957.2 108.3 Z"/>
-  </g>
-  <g id="g-federated-states-of-micronesia" data-name="Federated States of Micronesia" class="country">
-    <path class="country-part" d="M 1909.4 467.7 1909.2 468 1908.7 467.9 1908.7 467.7 1909.2 467.3 1909.4 467.7 Z"/>
-    <path class="country-part" d="M 1881.2 457.1 1881.6 457.1 1881.9 457.3 1882 457.7 1881.8 457.8 1881.9 458 1881.8 458.2 1881.2 458.2 1881 458 1881 457.8 1880.8 457.5 1880.8 457.2 1881.2 457.1 Z"/>
-    <path class="country-part" d="M 1766.5 440.5 1766.6 440.8 1766.3 440.8 1766 441.3 1765.9 441.2 1766.2 440.4 1766.6 440.3 1766.5 440.5 Z"/>
-  </g>
-  <g id="g-saint-kitts-and-nevis" data-name="Saint Kitts and Nevis" class="country">
-    <path class="country-part" d="M 636.3 392 636 392 635.9 391.8 636.1 391.4 636.3 391.4 636.4 391.6 636.3 392 Z"/>
-    <path class="country-part" d="M 635.6 390.5 635.5 390.8 635.3 390.8 634.9 390.6 634.7 390.4 635 390 635.5 390.4 635.6 390.5 Z"/>
-  </g>
-  <g id="g-malta" data-name="Malta" class="country">
-    <path class="country-part" d="M 1063.9 271.7 1063.7 272 1063.2 271.8 1062.7 271.5 1062.7 271 1062.6 270.9 1063.2 270.9 1063.6 271.2 1063.8 271.4 1063.9 271.7 Z"/>
-    <path class="country-part" d="M 1062.3 270.6 1061.8 270.5 1061.8 270.3 1062.2 270.2 1062.6 270.5 1062.3 270.6 Z"/>
-  </g>
-  <g id="g-northern-mariana-islands" data-name="Northern Mariana Islands" class="country">
-    <path class="country-part" d="M 1802.5 411.1 1802.4 411.2 1802.2 411.1 1802.1 410.9 1802.6 410.7 1802.8 410.9 1802.5 411.1 Z"/>
-    <path class="country-part" d="M 1804 406 1803.8 406 1803.5 405.4 1803.6 405.1 1803.9 405.1 1803.9 405.4 1804.1 405.6 1804 406 Z"/>
-    <path class="country-part" d="M 1804.5 404.4 1804.3 404.6 1804.4 404.9 1804 404.9 1804 404.2 1804.1 404 1804.5 403.8 1804.4 404.3 1804.5 404.4 Z"/>
-    <path class="country-part" d="M 1802.6 396.9 1802.3 396.9 1802.2 396.7 1802.6 396.7 1802.6 396.9 Z"/>
-    <path class="country-part" d="M 1800.7 385.9 1800.6 385.7 1800.6 385.2 1800.9 385.1 1801.1 385.4 1800.7 385.9 Z"/>
-    <path class="country-part" d="M 1799.5 381.6 1799.1 381.5 1799.1 381.2 1799.3 381.1 1799.5 381.3 1799.5 381.6 Z"/>
-  </g>
-  <g id="g-mauritius" data-name="Mauritius" class="country">
-    <path class="country-part" d="M 1307.7 630.8 1308.1 631.7 1307.9 632.3 1307.5 632.7 1307.6 633 1307.3 633.3 1306.8 633.5 1306.3 633.5 1305.7 633.4 1305.6 633.5 1305.3 633.2 1305.5 633 1305.6 632.6 1305.7 631.9 1305.9 631.5 1306.4 631.1 1306.5 630.9 1306.7 630.4 1307.1 630.1 1307.5 630.2 1307.7 630.8 Z"/>
-    <path class="country-part" d="M 1339.5 628.7 1339.2 628.4 1339.6 628.2 1339.9 628.1 1340.1 628.2 1340 628.4 1339.5 628.7 Z"/>
-  </g>
-  <g id="g-new-caledonia" data-name="New Caledonia" class="country">
-    <path class="country-part" d="M 1915.2 646.9 1915 647 1914.8 647.4 1914.4 647.2 1914.6 646.7 1914.7 646.5 1915 646.6 1915.2 646.9 Z"/>
-    <path class="country-part" d="M 1919.6 639.1 1919.5 639.2 1919.7 639.6 1920 639.6 1920.4 639.4 1920.3 640 1920.1 640.2 1920 640.6 1919.5 640.9 1919.1 640.7 1919.1 640.6 1918.8 640.3 1918.9 640.1 1918.7 639.9 1918.8 639.5 1918.7 639.1 1918.8 639.1 1919.2 639.2 1919.6 639.1 Z"/>
-    <path class="country-part" d="M 1916.9 634.8 1916.7 635.3 1916.7 635.7 1916.5 636 1916.8 636.2 1917 636.3 1917.1 636.5 1917 636.7 1917.3 637.1 1917.1 637.1 1916.9 637.6 1916.7 637.8 1916.4 637.7 1916.2 637.4 1916.1 637.2 1915.5 637.1 1915.2 636.6 1915.2 636.4 1915.1 636.1 1915.4 636.1 1915.7 635.9 1916.1 635.6 1916.2 635.3 1915.8 635.1 1915.4 635.2 1915.6 634.8 1915.9 634.7 1916.1 634.8 1916.5 634.5 1916.9 634.8 Z"/>
-    <path class="country-part" d="M 1913.5 633.2 1913.2 633.8 1913.1 634.1 1913.4 634.1 1912.9 634.6 1912.7 634.8 1912.6 634.6 1912.9 634.2 1913.1 633.7 1913.5 633.2 Z"/>
-    <path class="country-part" d="M 1913.5 633.2 1913.3 632.8 1913.7 632.8 1913.8 633.2 1913.5 633.2 Z"/>
-    <path class="country-part" d="M 1899.6 630.8 1899.8 630.9 1900.3 631.8 1900.6 632.1 1900.9 632 1901.1 631.7 1902 632.2 1902.3 632.7 1903 633.3 1903.3 633.7 1903.4 634 1903.8 634.4 1903.9 634.6 1904.1 634.6 1904.4 634.9 1905.3 635.1 1905.4 635.4 1905.4 635.8 1905.7 636.2 1906.1 636.3 1905.8 636.8 1905.9 637 1906.3 637.5 1906.4 637.5 1906.8 638 1906.7 638.4 1907.4 638.6 1907.8 639.1 1908.1 639.1 1908.4 639.3 1908.9 639.7 1908.8 640 1909.1 640 1909.5 640.5 1910.1 640.9 1910.1 641.1 1910.4 641.2 1910.7 641.5 1910.7 641.7 1911 642.3 1911.4 642.7 1911.5 642.6 1911.9 643.2 1912.4 643.3 1912.7 643.6 1912.7 644 1912.8 644.4 1912.9 644.5 1912.7 645.1 1912 645.5 1911.9 645.2 1911.6 645.3 1911.3 645.6 1910.7 644.8 1910.3 644.8 1910.2 644.6 1910 644.6 1909.8 644.9 1908.9 644 1908.7 644 1908.3 643.5 1908.4 642.7 1908.1 642.7 1907.7 642.7 1907.4 642.5 1907.3 642.3 1907.1 642.2 1906.8 642.2 1906.8 641.9 1906.6 641.4 1906.2 641.5 1905.4 641 1905.3 640.8 1905.3 640.5 1905 640.7 1904.4 640.4 1904.3 640 1903.9 639.7 1903.7 639.2 1903.2 639.1 1903.4 638.9 1903.1 638.6 1902.8 638.5 1902.5 637.8 1902.5 637.4 1902.3 637.1 1902 637.1 1901.8 636.5 1901.9 636.3 1901.2 635.9 1900.9 635.7 1900.5 635.1 1900.8 634.9 1900.6 634.7 1900.4 634.4 1900.4 633.9 1899.9 633.6 1899.9 633 1899.7 632.7 1900 632.7 1900.1 632.4 1900 632.2 1899.4 632.2 1899.2 631.9 1899.7 631.2 1899.4 630.9 1899.6 630.8 Z"/>
-    <path class="country-part" d="M 1900.7 631.1 1900.4 631 1900.5 630.6 1900.7 631.1 Z"/>
-    <path class="country-part" d="M 1898.4 628.7 1898.2 628.9 1898.1 628.5 1898.3 628.3 1898.4 628.7 Z"/>
-  </g>
-  <g id="g-puerto-rico" data-name="Puerto Rico" class="country">
-    <path class="country-part" d="M 607.1 385.9 606.8 385.7 606.9 385.5 607.2 385.5 607.3 385.6 607.1 385.9 Z"/>
-    <path class="country-part" d="M 621.7 385.4 621.5 385.4 620.6 385.7 620 385.7 620.2 385.5 620.6 385.3 621 385.2 621.6 385.3 621.7 385.4 Z"/>
-    <path class="country-part" d="M 612.2 383 612.8 383.1 613.4 383.1 613.7 383.2 614.3 383.1 614.6 383.2 615 383.1 615.2 383.2 615.7 383.1 616.1 383.2 616.4 383.2 617.2 383.4 617.2 383.2 617.8 383.4 617.9 383.3 618.7 383.4 618.9 383.6 619.1 383.6 619.7 383.9 619.9 383.8 619.8 384.5 620 384.8 619.1 385.1 618.8 385.5 618.5 386.1 618.2 386.3 617.9 386.4 617.5 386.4 616.9 386.5 616.6 386.7 615.9 386.6 615.7 386.4 615.2 386.6 614.9 386.3 614.2 386.5 613.3 386.4 613 386.5 612.4 386.6 612.2 386.7 612 386.5 611.6 386.4 611.3 386.6 610.7 386.5 611 385.8 611 385.4 611.2 385 611 384.4 610.8 384.3 610.7 383.9 611.1 383.7 611.3 383.6 611.3 383.1 611.7 382.9 612.2 383 Z"/>
-  </g>
-  <g id="g-french-polynesia" data-name="French Polynesia" class="country">
-    <path class="country-part" d="M 195.3 679.3 195.2 679.2 195 678.9 195.1 678.7 195.4 678.9 195.3 679.3 Z"/>
-    <path class="country-part" d="M 205.6 641.2 205.5 641.3 205.2 641.1 205.4 640.9 205.6 641.2 Z"/>
-    <path class="country-part" d="M 199.4 616.5 199.2 616.4 199.4 615.8 199.9 615.4 200.2 615.4 200.2 615.6 200 616 199.4 616.5 Z"/>
-    <path class="country-part" d="M 151.7 615.5 152.4 615.7 152.7 616.1 152.7 616.4 152.5 616.5 152 616.4 151.6 615.8 151.5 615.6 150.9 615.8 150.7 615.8 150.1 615.7 149.9 615.3 149.6 614.8 149.6 614.5 149.7 614.3 150.2 614.2 150.7 614.2 151.2 614.4 151.4 614.8 151.5 615.4 151.7 615.5 Z"/>
-    <path class="country-part" d="M 148.7 614 148.5 614.6 148 614.4 148.1 614.1 148.6 613.9 148.7 614 Z"/>
-    <path class="country-part" d="M 141.1 609.7 140.9 609.8 140.7 609.5 141 609.4 141.1 609.7 Z"/>
-    <path class="country-part" d="M 139 610.1 138.7 610.3 138.4 610.3 138.2 609.5 138.4 609.3 139.1 610.1 139 610.1 Z"/>
-    <path class="country-part" d="M 138 608.3 138.2 608.4 138.2 608.9 137.8 608.7 137.7 608.4 138 608.3 Z"/>
-    <path class="country-part" d="M 166.3 605.4 166 605.5 166.1 605.2 166.3 605.4 Z"/>
-    <path class="country-part" d="M 204.3 569.5 204 569.5 204 569.1 203.8 568.8 204.2 568.9 204.3 569.3 204.3 569.5 Z"/>
-    <path class="country-part" d="M 201.2 566 201 566 201 565.6 201.2 565.3 201.5 565.5 201.3 565.7 201.2 566 Z"/>
-    <path class="country-part" d="M 202.4 564.4 202.4 564.7 202 564.8 201.4 564.8 201.4 565.1 201 565 200.8 564.8 200.7 564.5 201.4 564.1 201.7 564.1 201.9 564.3 202.4 564.4 Z"/>
-    <path class="country-part" d="M 195.5 561.8 195.5 562.2 195.5 562.4 195.2 562.4 194.9 562 195.2 561.7 195.5 561.8 Z"/>
-    <path class="country-part" d="M 197.9 558.8 198.2 558.9 198.3 559 197.7 559.2 197.6 558.9 197.9 558.8 Z"/>
-    <path class="country-part" d="M 194.2 558.2 195.1 558.3 195.4 558.6 195.4 558.8 195 559.1 194.2 559.1 194.1 558.6 194 558.2 194.2 558.2 Z"/>
-  </g>
-  <g id="g-solomon-islands" data-name="Solomon Islands" class="country">
-    <path class="country-part" d="M 1926.8 576.2 1927.1 576.4 1927 576.8 1927.3 576.8 1927.3 577 1926.5 577 1926.2 576.5 1926.4 576.2 1926.8 576.2 Z"/>
-    <path class="country-part" d="M 1888.5 575.6 1888.7 575.6 1889.7 576.4 1890.2 576.7 1891.1 577.4 1891 577.7 1890.8 577.7 1890.6 577.9 1890.4 577.6 1890.3 577.6 1890.1 577.4 1890 577 1889.6 576.9 1889.6 576.6 1889.3 576.5 1889.2 576.6 1889 576.6 1888.1 576.2 1887.9 575.8 1888.2 575.4 1888.5 575.6 Z"/>
-    <path class="country-part" d="M 1925.4 574.1 1925.2 574.4 1924.9 574.2 1924.9 574 1925.2 573.8 1925.4 574.1 Z"/>
-    <path class="country-part" d="M 1923.1 570.2 1923.2 570.3 1923.5 570.3 1923.4 570.7 1922.9 570.9 1922.6 570.9 1922.2 571 1921.8 571.6 1921.7 571.3 1921.4 571.4 1921.2 571.2 1921.2 570.9 1921.7 570.8 1921.7 570.6 1922 570.2 1922.7 570.3 1923.1 570.2 Z"/>
-    <path class="country-part" d="M 1896.8 567.4 1897.1 567.3 1897.7 567.6 1898.2 568.1 1898.5 568.4 1898.7 568.4 1898.9 568.6 1899.1 568.6 1899.4 568.9 1899.7 568.8 1900.1 568.9 1900.3 569.1 1900.7 569.1 1901 569 1901.2 569.3 1901.4 570.1 1901.7 570.4 1901.7 570.9 1901.5 571.1 1901.6 571.4 1901.2 571.2 1900.9 571.4 1900.6 571.3 1900.1 571 1899.9 571 1899.3 570.8 1898.9 570.7 1898.7 570.4 1898.4 570.2 1898.1 570.1 1897.9 569.8 1897.5 569.6 1897.7 569.2 1897.6 568.8 1897.6 568.4 1897.4 568.3 1896.8 568.1 1896.5 568.2 1896.4 568 1896.5 567.7 1896.6 567.4 1896.8 567.4 Z"/>
-    <path class="country-part" d="M 1900.8 564 1900.7 564.2 1900.7 564.9 1900.5 564.7 1900.5 564.2 1900.8 564 Z"/>
-    <path class="country-part" d="M 1897.9 562.2 1898.2 563.1 1898.4 563.5 1898.4 563.9 1898.5 564.4 1898.3 564.7 1897.9 564 1897.8 564.3 1897.5 563.8 1897.6 562.8 1897.7 562.6 1897.7 562.3 1897.9 562.2 Z"/>
-    <path class="country-part" d="M 1889.5 562.4 1889.8 562.4 1890.1 562.3 1890.5 562.4 1890.6 562.3 1891.1 562.3 1891.9 562.3 1892.1 562.6 1892.4 562.7 1892.6 563 1892.8 563 1893 563.1 1893.4 563.5 1893.4 564.1 1893.6 564.1 1894 564.3 1894.1 564.6 1894.1 565.2 1894 565.3 1893.3 565.5 1893.1 565.6 1892.7 565.5 1892.3 565.3 1891.9 565.3 1891.8 565.1 1891.3 564.8 1890.7 564.8 1890.2 564.9 1889.7 564.9 1889.2 564.8 1888.9 564.6 1888.6 564.7 1888.3 564.3 1888 564.1 1887.7 563.3 1887.5 562.9 1887.7 562.7 1887.6 562.5 1887.6 561.8 1887.7 561.5 1888.3 561.2 1888.7 561.4 1889.1 561.9 1889.2 562.2 1889.5 562.4 Z"/>
-    <path class="country-part" d="M 1891.8 560 1892.3 560.5 1892 560.8 1891.7 560.6 1891.7 560.5 1891.8 560 Z"/>
-    <path class="country-part" d="M 1891.8 560 1891.6 560.4 1891.5 560.4 1891.1 560.1 1890.8 560.2 1890.6 560.1 1890.5 559.9 1890.8 559.8 1891 559.6 1891.5 559.7 1891.8 560 Z"/>
-    <path class="country-part" d="M 1885.2 559.5 1885.3 559.7 1885.5 559.8 1885.3 560.2 1884.9 560.4 1884.6 560 1885.2 559.5 Z"/>
-    <path class="country-part" d="M 1876.7 557.7 1876.9 558 1876.8 558.3 1876 557.9 1876.5 557.6 1876.7 557.7 Z"/>
-    <path class="country-part" d="M 1880.1 558.5 1879.8 558.3 1879.9 558 1880.2 557.7 1880.2 558.2 1880.3 558.4 1880.1 558.5 Z"/>
-    <path class="country-part" d="M 1879.2 556.7 1879.4 556.6 1879.8 556.6 1879.8 556.8 1879.4 557.1 1879.6 557.3 1879.6 557.6 1879.2 558 1879 558.1 1878.7 558 1878.3 557.6 1878.4 557 1878.7 556.9 1878.9 556.5 1879.2 556.4 1879.2 556.7 Z"/>
-    <path class="country-part" d="M 1875.6 556.8 1875.4 556.9 1875.2 557.4 1875.6 557.9 1875.1 557.7 1875.1 557.5 1875 557.2 1874.6 556.8 1874.6 556.6 1875 556.4 1875.1 556.1 1875.5 555.8 1875.8 556 1875.8 556.4 1875.6 556.8 Z"/>
-    <path class="country-part" d="M 1888.5 556.3 1888.7 556.5 1888.6 556.7 1888.4 556.6 1887.8 556.1 1888 555.7 1888.3 555.6 1888.5 555.8 1888.4 556.1 1888.5 556.3 Z"/>
-    <path class="country-part" d="M 1895 555.5 1895.4 556.3 1896 557.1 1896 557.4 1895.6 557.6 1895.6 558.1 1895.6 558.4 1895.7 558.6 1895.9 558.6 1896.1 558.9 1896.6 559.3 1896.7 559.8 1896.8 560.1 1897 560.3 1896.8 560.5 1897.1 560.8 1897 560.9 1897.1 561.4 1896.9 561.6 1897.2 561.9 1897.3 562.4 1897.5 562.9 1897.5 563.5 1897.4 563.6 1897.1 563.3 1896.8 562.8 1896.8 562.5 1896.5 562.1 1896.1 561.8 1895.8 561.5 1895.3 560.9 1894.9 560.6 1894.6 559.7 1894.4 558.7 1894.2 558 1894.2 557.5 1894.1 557.1 1894.5 556.7 1894.4 556.4 1893.9 555.7 1893.8 555.4 1893.9 555.3 1894.3 555.4 1894.5 555.5 1894.8 555.2 1895 555.5 Z"/>
-    <path class="country-part" d="M 1874.3 555.2 1874.1 554.8 1873.8 554.5 1874.2 554.5 1874.3 555.2 Z"/>
-    <path class="country-part" d="M 1874.2 554.2 1874.6 554.3 1874.7 554.4 1874.8 554.9 1874.6 554.9 1874.4 554.5 1874.2 554.2 Z"/>
-    <path class="country-part" d="M 1877.3 554.4 1877.2 554.7 1877.4 554.7 1877.9 554.7 1878.3 555.4 1878.3 555.6 1878.5 555.9 1878.6 556.4 1878.4 556.6 1878.4 556.9 1877.8 556.7 1877.6 556.5 1877.3 556.5 1876.9 556.2 1876.8 556 1876.7 555.7 1877.1 555.8 1876.8 555 1876.7 554.8 1876.2 554.9 1876 555 1875.6 555 1875.3 555.4 1874.9 555.2 1874.9 554.6 1875.1 554.4 1875.5 554.4 1875.5 554 1875.9 553.4 1876.3 553.1 1876.6 552.9 1877 553.2 1877.2 553.6 1877.1 554.3 1877.3 554.4 Z"/>
-    <path class="country-part" d="M 1871.4 554.4 1871.3 554.4 1871.1 553.6 1871.2 553.3 1871.2 552.9 1871.4 553 1871.5 553.4 1871.5 554.1 1871.4 554.4 Z"/>
-    <path class="country-part" d="M 1874.8 553.9 1874.5 554.1 1874.4 554 1874 554 1873.7 553.7 1873.6 553.4 1873.5 553.1 1873.6 552.8 1873.9 552.4 1874.4 552.2 1874.6 552.4 1874.9 552.9 1874.9 553.5 1874.8 553.9 Z"/>
-    <path class="country-part" d="M 1871.8 550.4 1872.2 550.9 1872.2 551 1872.9 551.4 1872.8 551.7 1872.2 552.4 1872.2 552.7 1871.9 552.8 1871.9 552.4 1871.7 552.4 1871.7 552 1871.5 551.6 1871.2 551.4 1871.1 551.1 1871.2 550.8 1871.4 550.6 1871.6 550.4 1871.8 550.4 Z"/>
-    <path class="country-part" d="M 1882.1 550.5 1882.4 550.7 1882.2 550.8 1881.7 550.9 1881.6 550.6 1881.8 550.4 1882.1 550.5 Z"/>
-    <path class="country-part" d="M 1883 550.5 1883.2 550.4 1883.7 550.7 1884 550.8 1884.2 551 1884.5 551.5 1884.8 551.6 1885.1 551.9 1885.1 552.2 1885.6 552.3 1885.6 552.6 1885.9 552.7 1886.2 552.6 1886.3 552.7 1886.7 552.9 1886.8 553.1 1887.1 553 1887.4 553.1 1887.5 553.4 1887.9 553.7 1888.2 554 1888.6 554.3 1889.6 555.3 1889.3 555.7 1889.6 556.2 1889.7 556.8 1889.4 556.7 1889.1 556.3 1888.4 555.5 1888 555.4 1887.5 555 1886.9 554.9 1886.8 554.6 1886.2 554.4 1885.7 553.9 1885.5 553.9 1884.7 553.3 1884.2 553 1884.2 552.8 1883.8 552.6 1883.6 552.4 1883.4 552 1883 551.7 1882.9 551.5 1882.9 551.1 1882.5 550.6 1882.3 550.5 1882.3 550.2 1883 550.5 Z"/>
-    <path class="country-part" d="M 1881.5 549.9 1881.7 550.1 1881.9 550 1882.2 550.2 1882.1 550.4 1881.8 550.3 1881.5 549.9 Z"/>
-    <path class="country-part" d="M 1877 549.3 1877.5 549.3 1877.3 549.5 1877 549.4 1877 549.3 Z"/>
-    <path class="country-part" d="M 1881.3 549.3 1881.1 549.8 1881 549.6 1881.3 549.3 Z"/>
-    <path class="country-part" d="M 1878.6 549.7 1878.1 549.8 1877.9 549.6 1878.2 549.2 1878.5 549.3 1878.6 549.7 Z"/>
-    <path class="country-part" d="M 1866.1 548.8 1866.3 549.1 1866.1 549.3 1865.8 549.2 1865.7 549.1 1866.1 548.8 Z"/>
-    <path class="country-part" d="M 1867.6 546.9 1867.9 547.1 1867.8 547.4 1867.1 547.6 1866.8 547.3 1867.1 546.7 1867.3 546.6 1867.6 546.9 Z"/>
-    <path class="country-part" d="M 1869.3 546 1869.3 546.5 1869.1 546.3 1869.1 546.1 1869.3 546 Z"/>
-    <path class="country-part" d="M 1872.2 544.5 1872.5 544.6 1872.9 545.1 1873.2 545.3 1873.5 545.4 1873.8 545.7 1874.6 546.1 1875 546.6 1875 547 1875.1 547.6 1875.3 547.8 1875.6 548.1 1875.8 548.1 1875.9 548.5 1876.6 548.8 1877 548.7 1877.1 548.8 1877.1 549.1 1876.8 549.2 1876.6 549.5 1876.1 549.3 1875.3 548.9 1874.8 548.9 1874.5 548.5 1873.8 548.1 1873.2 547.1 1872.6 546.1 1872.1 545.8 1871.4 545.1 1871.4 544.6 1871.4 544.4 1871.7 544.2 1872 544.3 1872.2 544.5 Z"/>
-  </g>
-  <g id="g-s-o-tom-and-principe" data-name="São Tomé and Principe" class="country">
-    <path class="country-part" d="M 1023.9 501.3 1023.7 501.3 1023.5 501.6 1023.3 501.6 1023.2 501.2 1023 500.4 1023 500.1 1023.4 499.6 1023.7 499.5 1024 499.2 1024.4 499.3 1024.6 499.7 1024.7 500 1024.6 500.4 1024.4 500.7 1024.1 501.1 1023.9 501.3 Z"/>
-    <path class="country-part" d="M 1028.5 491.5 1028.4 491.8 1028.2 491.9 1027.9 491.8 1027.9 491.5 1028.1 491.4 1028.1 491.1 1028.3 490.9 1028.6 491 1028.5 491.5 Z"/>
-  </g>
-  <g id="g-seychelles" data-name="Seychelles" class="country">
-    <path class="country-part" d="M 1249 562.1 1248.7 562.3 1248.2 562.3 1247.8 562.5 1247.4 562.5 1247.4 562.3 1247.9 562.3 1248.3 562.2 1248.7 561.9 1248.9 561.9 1249 562.1 Z"/>
-    <path class="country-part" d="M 1248.5 561.8 1248.3 561.9 1247.9 561.9 1247.9 561.7 1248.5 561.8 Z"/>
-    <path class="country-part" d="M 1300.4 531.5 1300.8 531.9 1300.6 532.2 1300.4 531.9 1300.1 531.7 1300.3 531.2 1300.4 531.5 Z"/>
-  </g>
-  <g id="g-turks-and-caicos-islands" data-name="Turks and Caicos Islands" class="country">
-    <path class="country-part" d="M 587.7 361.6 588.4 361.6 588.7 362 588.4 362 588.1 361.9 587.6 362 587.5 361.7 587.7 361.6 Z"/>
-    <path class="country-part" d="M 585 361.5 585.3 361.9 585.9 361.8 585.7 362 585.1 362 584.7 361.8 585 361.5 Z"/>
-    <path class="country-part" d="M 587.2 360.9 587.2 361.4 586.7 361.2 586.6 360.9 586.7 360.8 587.2 360.9 Z"/>
-  </g>
-  <g id="g-tonga" data-name="Tonga" class="country">
-    <path class="country-part" d="M 14.7 639.5 14.2 639.2 14.2 639 14.5 638.8 14.7 639.5 Z"/>
-    <path class="country-part" d="M 11.9 637.4 12.2 637.4 12.6 637.7 12.9 637.8 13.1 637.4 13.4 637.7 13.1 638 13.2 638.2 13.1 638.4 12.9 638.3 12.6 638 11.9 637.8 11.9 637.4 Z"/>
-    <path class="country-part" d="M 11.1 628.8 10.9 628.9 10.8 628.4 11 628.5 11.1 628.8 Z"/>
-    <path class="country-part" d="M 15.5 621.3 15 621.6 14.8 621.6 14.7 621.5 15 621 15.3 621.1 15.5 621.3 Z"/>
-    <path class="country-part" d="M 1.4 602 1.3 602.1 1 602 1.1 601.8 1.4 601.8 1.4 602 Z"/>
-  </g>
-  <g id="g-trinidad-and-tobago" data-name="Trinidad and Tobago" class="country">
-    <path class="country-part" d="M 642.8 432.2 642.6 432.7 642.3 433.1 642.1 433.2 642 433.6 642.2 434.2 642 434.3 642 435 642.2 435.3 642.4 435.5 642.2 435.7 642.1 436 642.1 436.7 641.9 436.8 641.5 437 641 437.1 640.7 437.1 640.2 437.2 639.7 437.1 639.3 437.2 639 437.1 638.5 437.3 638.1 437.1 637.5 437.1 637.2 437.3 636.9 437.2 637.4 437 637.7 436.7 638.1 436.6 638.5 436.3 638.7 436 639.3 436.1 639.6 435.7 639.4 434.9 639.6 434.5 639.6 434 639.6 433.8 639.3 433.4 639 433.3 638.6 433.2 638.5 433.1 638.9 432.8 640 432.7 640.2 432.5 641.3 432.5 641.4 432.4 642.6 432.2 642.8 432.2 Z"/>
-    <path class="country-part" d="M 645.2 429 645.1 429.5 644.8 429.6 644.4 429.9 644.2 429.9 643.5 430.3 643.3 430.1 643.6 429.8 644.3 429.3 645.2 429 Z"/>
-  </g>
-  <g id="g-united-states-virgin-islands" data-name="United States Virgin Islands" class="country">
-    <path class="country-part" d="M 624.5 387.8 624.8 388.1 623.7 388.3 623.6 387.8 624.3 387.6 624.5 387.8 Z"/>
-    <path class="country-part" d="M 625.2 384 625 384.2 624.5 384.2 624.5 384 624.8 383.9 625.2 384 Z"/>
-    <path class="country-part" d="M 623.8 383.8 624.2 384.1 624 384.3 623.7 384.1 623.2 384.1 623.4 383.9 623.8 383.8 Z"/>
-  </g>
-  <g id="g-vanuatu" data-name="Vanuatu" class="country">
-    <path class="country-part" d="M 1931.8 631.8 1931.3 631.6 1931.5 631.2 1932 631.1 1932.2 631.5 1932.1 631.7 1931.8 631.8 Z"/>
-    <path class="country-part" d="M 1930.6 628 1930.4 628 1930.1 627.9 1929.7 627.4 1929.6 627 1929.6 626.6 1929.8 626.4 1929.9 626 1930.2 625.9 1930.6 625.9 1930.4 626.2 1930.4 626.7 1931.1 627.2 1930.8 627.5 1930.6 628 Z"/>
-    <path class="country-part" d="M 1930.6 622.1 1930.9 622.1 1931 622.3 1930.5 622.4 1930.6 622.7 1931 622.9 1931.1 623.2 1931 623.6 1930.6 623.7 1930.2 623.4 1929.8 623.4 1929.6 623.2 1929.3 623 1929.4 622.6 1929.4 622.3 1929.6 621.8 1929.9 621.4 1930.4 621.4 1930.6 621.5 1930.5 621.9 1930.6 622.1 Z"/>
-    <path class="country-part" d="M 1927.6 614.5 1928.2 614.4 1928.3 614.5 1928.5 615.1 1928.7 615.4 1928.8 615.5 1928.4 616.1 1927.6 616.3 1927.3 616 1927.2 615.5 1926.9 615.4 1926.5 615.7 1926.4 615.6 1926.6 615.2 1927 614.9 1927.4 614.4 1927.6 614.5 Z"/>
-    <path class="country-part" d="M 1929.9 610.6 1929.8 610.3 1930.1 610.3 1929.9 610.6 Z"/>
-    <path class="country-part" d="M 1928.3 608.2 1928.4 608.7 1928.4 608.9 1928.8 609 1929 609.5 1929.5 609.5 1929.5 609.9 1929.4 610 1929.1 609.7 1928.8 609.6 1928.2 609.8 1927.9 609.7 1927.8 609.5 1927.7 609.1 1927.9 608.6 1928.1 608.3 1928.3 608.2 Z"/>
-    <path class="country-part" d="M 1929.2 608 1929.1 608 1929 607.7 1929.2 607.7 1929.2 608 Z"/>
-    <path class="country-part" d="M 1929.4 606.6 1929.2 606.8 1928.6 606.8 1928.3 606.9 1928.1 606.7 1927.7 606.6 1927.2 606.2 1927.3 606 1927.8 605.8 1928.2 605.7 1928.6 605.4 1928.7 605.1 1928.9 605.1 1929 605.4 1929 606 1929.5 606.4 1929.4 606.6 Z"/>
-    <path class="country-part" d="M 1924.7 605.3 1924.9 605.6 1925.5 606 1926.2 606.7 1926.3 606.8 1926.3 607.2 1926.5 607.5 1926.2 607.7 1925.8 608.1 1925.8 607.9 1925.5 607.8 1925.1 607.8 1924.9 607.9 1924.9 608.1 1924.5 608.3 1924.2 608.2 1924.2 607.5 1924.1 606.9 1924.2 606.3 1924.3 605.8 1924.1 605.3 1923.5 605.6 1923.3 605.4 1923.2 605.1 1923.2 604.8 1923.5 604.5 1923.5 604.1 1923.6 603.8 1923.9 603.7 1924.5 604 1924.4 604.2 1924.6 604.7 1924.5 604.9 1924.7 605.3 Z"/>
-    <path class="country-part" d="M 1924.1 602.9 1923.8 602.9 1923.3 602.6 1923.3 602.5 1923.5 602.2 1923.7 602.1 1924.2 602.2 1924.1 602.6 1924.1 602.9 Z"/>
-    <path class="country-part" d="M 1923.6 601.9 1924 601.6 1924.1 601.7 1924.2 602 1923.7 602 1923.6 601.9 Z"/>
-    <path class="country-part" d="M 1929.3 604.5 1929.1 604.4 1929.2 603.2 1929.1 602.9 1929.2 602.4 1929.5 601.6 1929.6 601.1 1929.8 601.7 1929.7 602 1929.7 602.6 1929.7 603.6 1929.6 604.2 1929.3 604.5 Z"/>
-    <path class="country-part" d="M 1928 601.2 1927.3 601.2 1927 601.1 1927 600.9 1927.9 600.2 1928.4 600 1928.9 599.9 1928.9 600.1 1928.6 600.5 1928.4 600.8 1928 601.2 Z"/>
-    <path class="country-part" d="M 1929.9 600.5 1929.9 600.7 1929.6 600.7 1929.7 600.4 1929.9 599.1 1929.9 599 1930 597.8 1930.2 597.9 1930.1 599.2 1930.2 599.5 1930.1 600 1929.9 600.5 Z"/>
-    <path class="country-part" d="M 1923.6 601.9 1922.7 601.8 1922.1 602.1 1922 602.3 1921.8 602.3 1921.7 601.7 1921.5 601.6 1921.1 600.6 1921.5 599.8 1921.5 599.4 1921.4 599.2 1921.4 597.8 1921.3 597.5 1921.3 597 1921.5 596.7 1921.5 596.4 1921.7 596.1 1921.7 595.9 1922 595.8 1922.1 596.3 1922.3 596.7 1922.5 597 1922.6 598.3 1922.5 599.1 1922.5 599.2 1923.1 599.1 1923.4 598.8 1923.6 598 1923.6 597.8 1923.9 597.6 1924.2 597.7 1924.1 598.1 1924.1 599 1924.4 599.1 1924.4 599.6 1924.2 599.7 1924.5 600.1 1924.3 600.3 1924.3 600.8 1924.5 601.3 1924.4 601.5 1924.1 601.5 1923.6 601.9 Z"/>
-    <path class="country-part" d="M 1927.8 592.6 1928.2 592.9 1928.1 593.3 1927.8 593.6 1927.6 593.8 1927 593.8 1927 593.4 1927.1 593 1927.3 592.7 1927.8 592.6 Z"/>
-    <path class="country-part" d="M 1928.4 590.7 1928.1 590.9 1927.9 591 1927.9 591.2 1927.7 591.3 1927.7 591 1927.5 590.8 1927.4 590.5 1927.5 590.1 1927.7 590 1928.1 589.8 1928.2 590 1928.3 590.4 1928.3 590.5 1928.4 590.7 Z"/>
-    <path class="country-part" d="M 1923.4 586.5 1923.3 586.4 1923.4 585.9 1923.6 586.1 1923.4 586.5 Z"/>
-  </g>
-  <g id="g-samoa" data-name="Samoa" class="country">
-    <path class="country-part" d="M 21.9 591.3 22.2 591.4 22.5 591.5 22.8 591.7 22.7 592 21.7 592 21.4 591.9 21.1 592 20.9 591.9 20.5 591.7 20.2 591.8 19.9 591.6 19.7 591.4 19.1 591.1 19.2 590.7 19.6 590.5 20 590.5 20.5 590.5 21.4 590.9 21.9 591 21.9 591.3 Z"/>
-    <path class="country-part" d="M 17.4 588.5 18 589.1 18.2 589.8 18.1 590.1 18.2 590.4 17.9 590.4 17.6 590.2 17.3 590.4 16.4 590.5 16.1 590.2 15.9 589.8 15.7 589.7 15.4 589.4 14.9 589 14.7 588.8 14.7 588.6 15.1 588.7 15.4 588.6 16 588.4 16.4 588.4 16.9 588.3 17.2 588.3 17.4 588.5 Z"/>
-  </g>
-  <g id="g-canary-islands-spain" data-name="Canary Islands (Spain)" class="country">
-    <path class="country-part" d="M 888.4 323.4 888.1 323.9 887.7 324.4 887.4 324 887 324 886.8 323.8 887 323.5 887.4 323.6 887.8 323.2 888.1 323 888.3 323.1 888.4 323.4 Z"/>
-    <path class="country-part" d="M 902 321.1 902 321.6 902.2 322 902 322.7 902.1 323 901.7 323.4 901.2 323.6 901 323.8 900.4 323.6 899.9 323.1 899.7 322.7 899.7 322.1 900.3 321.7 900.4 321.2 900.4 321 901 321.1 901.4 321.1 901.7 321.2 902 321.1 Z"/>
-    <path class="country-part" d="M 892.1 321.9 891.9 321.9 891.6 321.7 891.4 321.4 891.5 321 891.6 320.7 891.9 320.7 892.2 320.7 892.7 321.1 892.8 321.4 892.3 321.9 892.1 321.9 Z"/>
-    <path class="country-part" d="M 898.2 318.4 898.2 318.6 897.6 318.9 897.2 319.4 896.9 319.6 896.9 320 896.5 320.7 896.4 321.1 895.9 321.7 895.8 321.9 895.6 321.9 895 322.1 894.9 322 894.8 321.6 894.5 321.2 894.4 321 894.2 320.7 894.2 320.4 893.8 319.8 894.3 319.5 894.6 319.7 895.2 319.5 895.6 319.5 896.1 319.3 896.6 318.9 896.6 318.7 897.2 318.4 897.8 318.4 898.1 318.3 898.2 318.4 Z"/>
-    <path class="country-part" d="M 908.4 321.2 908.1 321.6 907.7 321.7 907.4 321.6 907 321.6 907 321.4 907.3 321.4 907.9 321.2 908.3 320.9 908.6 320.6 908.7 320.1 908.8 319.8 909 319.3 909.3 318.9 909.6 318.3 909.8 317.5 910 317.3 910.4 317.2 910.7 317.5 910.8 318 910.7 318.5 910.6 319 910.6 319.5 910.5 319.6 910.2 320.3 909.9 320.6 909.3 320.7 908.6 321 908.4 321.2 Z"/>
-    <path class="country-part" d="M 888.8 316.7 889.1 316.6 889.3 316.9 889.5 317.4 889.3 317.7 889.4 318.1 888.8 319.1 888.7 319 888.6 318.6 888.2 317.7 888.1 317.4 888 317.2 888.2 316.8 888.5 316.6 888.8 316.7 Z"/>
-    <path class="country-part" d="M 912.9 314.7 912.9 315.1 912.7 315.6 912 316.1 911.5 316.2 911.1 316.7 910.6 316.5 910.6 316.4 910.8 316 910.8 315.6 911 315.3 911.3 315.1 911.6 315.1 911.9 314.8 912.4 314.8 912.5 314.7 912.7 314.2 912.9 314.1 913.1 314.3 912.9 314.7 Z"/>
-  </g>
-  <g id="g-guadeloupe" data-name="Guadeloupe" class="country">
-    <path class="country-part" d="M 643 399.9 642.7 399.9 642.5 399.5 642.6 399.3 642.9 399 643.2 399.2 643.3 399.5 643.3 399.7 643 399.9 Z"/>
-    <path class="country-part" d="M 641.2 397.3 641.5 397.3 641.5 397.5 641.5 397.6 641.3 397.7 641.3 398.5 641.3 398.9 641.1 399.1 640.5 399.4 640.5 399.2 640.3 399 640.2 398.5 640.2 398 640.1 397.5 640.1 397.2 640.3 396.9 640.6 396.8 641.1 397.1 641.2 397.3 Z"/>
-    <path class="country-part" d="M 642.6 396.9 643 397 643.5 397.4 642.2 397.7 641.9 397.8 641.5 397.5 641.6 396.9 641.8 396.8 641.7 396.2 641.8 396 642.1 395.8 642.4 396.2 642.4 396.6 642.6 396.9 Z"/>
-  </g>
-  <g id="g-fiji" data-name="Fiji" class="country">
-    <path class="country-part" d="M 1989.1 624.9 1988.8 625 1988.9 624.6 1989.1 624.9 Z"/>
-    <path class="country-part" d="M 1981.6 623.3 1981.8 623.5 1982.1 623.6 1982.1 623.9 1981.6 624.1 1981.1 623.8 1980.6 624.1 1980.3 624.1 1980.1 624.4 1980.2 624.7 1979.8 624.6 1979.7 624.8 1979.3 624.7 1979.2 624.8 1978.8 624.6 1979.1 624.5 1979.3 624.4 1979.5 624.2 1979.9 624.3 1980.2 624 1980.4 623.7 1980.9 623.6 1981.4 623.3 1981.6 623.3 Z"/>
-    <path class="country-part" d="M 1982.5 623.2 1982.3 623.3 1982.1 623.2 1982.3 623 1982.5 623.2 Z"/>
-    <path class="country-part" d="M 1988.4 617.1 1988.5 617.6 1988.3 618.2 1988.2 618 1988.1 617.6 1987.9 617.6 1988 617.1 1988.2 617 1988.4 617.1 Z"/>
-    <path class="country-part" d="M 1985.8 615.7 1985.7 615.7 1985.6 615.3 1985.8 615.1 1986.2 615 1986.2 615.4 1986 615.6 1985.8 615.7 Z"/>
-    <path class="country-part" d="M 1983.6 613.2 1983.5 613.6 1983.8 613.8 1983.9 614.1 1984.2 614.5 1984.5 614.6 1984.6 614.9 1984.8 614.9 1984.9 615.3 1984.6 615.8 1984.7 616 1984.8 616.5 1984.5 616.7 1984.5 617.2 1984.7 617.2 1984.8 617.7 1984.5 618 1983.9 618.2 1983.8 618 1983.5 618.1 1983.4 618.3 1983.1 618 1982.3 618.3 1981.5 619 1981.2 618.9 1980.8 619.1 1980.5 619 1979.9 619.1 1979.6 618.9 1978.7 618.6 1978.4 618.5 1977.8 618.4 1977.6 618.3 1977.1 618.1 1976.9 617.1 1977.2 616.4 1977.5 616.4 1977.8 616.3 1977.9 615.8 1978.2 615.7 1978.3 615.3 1978.1 615.1 1978.7 614.7 1979.1 614.2 1979.2 614.3 1979.8 613.8 1980 613.8 1980.9 613.4 1981.5 613.6 1981.8 613.5 1982.3 613.3 1982.9 613.2 1983.2 612.9 1983.6 613.2 Z"/>
-    <path class="country-part" d="M 1989.9 613.4 1989.7 613.5 1989.9 612.6 1990.3 612.6 1990.2 613 1989.9 613.4 Z"/>
-    <path class="country-part" d="M 1978.5 611.4 1978.3 611.7 1977.8 612 1977.8 611.7 1978.2 611.3 1978.5 611.4 Z"/>
-    <path class="country-part" d="M 1993.4 611 1993.2 610.8 1993.3 610.6 1993.8 610.1 1994.1 609.6 1993.8 610.7 1993.4 611 Z"/>
-    <path class="country-part" d="M 1994.4 606 1994 606.4 1993.2 607.5 1992.9 607.6 1992.2 608 1992 608.6 1991.6 608.8 1991.4 609.1 1991.3 609.3 1991.6 609.4 1992.2 609.1 1992.3 609 1992.6 608.7 1992.8 608.4 1993.4 608.1 1993.7 607.8 1994.3 607.5 1994.3 607.8 1993.8 608.5 1993.6 608.6 1993.7 609.2 1993.4 609.5 1993.1 609.2 1992.7 609.2 1992.2 609.3 1991.8 609.6 1991.1 609.7 1990.1 609.7 1990.6 609.2 1990.2 609 1989.6 609.2 1989.2 609.4 1989.2 609.6 1988.9 609.7 1988.7 609.8 1988.6 610.2 1988.4 610.5 1988.1 610.4 1988.1 610.2 1987.7 610.1 1987.3 610.3 1987.1 610.8 1986.8 611 1986.5 611 1986.5 610.7 1986.5 610.3 1986.3 609.9 1986.4 609.7 1986.3 609.6 1985.7 609.8 1985.7 609.4 1986.1 609.1 1986.2 609.1 1986.1 608.6 1986.4 608.5 1986.9 608.8 1987.5 608.4 1987.7 608.4 1988 608.1 1988.2 608.1 1988.5 607.8 1988.5 607.6 1989.3 607.5 1990.2 607.2 1990.5 607.1 1990.9 607.2 1991.4 607 1991.6 606.6 1991.8 606.6 1992 606.2 1992.4 606.3 1992.5 606.1 1992.7 606.2 1993.7 605.7 1993.8 606 1994 605.9 1994.2 606 1994.5 605.7 1995 605.5 1995.1 605.6 1994.6 606 1994.4 606 Z"/>
-  </g>
-
-        <!-- Dots rendered by JS -->
-        <g id="dots-layer"></g>
-      </svg>
-      <div class="map-legend" aria-hidden="true">
-        <div class="map-legend-item"><div class="map-legend-dot"></div><span>Click to explore</span></div>
-      </div>
+  </svg>
     </div>
+    <div id="info">Click a country for its full list, or click a dot for a single tradition.</div>
+    <div id="tooltip"></div>
   </div>
 
-  <!-- ABOUT -->
   <div class="about-section">
     <div class="about-left">
       <h2 class="about-title">About the <em>Series</em></h2>
@@ -1092,7 +485,6 @@ footer{background:#fafafa;color:#161616;padding:3vw 3vw 0;margin-top:6vw}
   </div>
 </main>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-items">
     <div class="footer-flex">
@@ -1123,536 +515,689 @@ footer{background:#fafafa;color:#161616;padding:3vw 3vw 0;margin-top:6vw}
   </div>
 </footer>
 
-<!-- REGION PANEL -->
-<div id="region-panel" role="dialog" aria-modal="true" aria-labelledby="panelName">
-  <div class="panel-header">
-    <button class="panel-close" id="panelClose" aria-label="Close panel">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <line x1="18" y1="6" x2="6" y2="18"/>
-        <line x1="6" y1="6" x2="18" y2="18"/>
-      </svg>
-    </button>
-    <div class="panel-region-tag" id="panelTag">Region</div>
-    <h2 class="panel-region-name" id="panelName">&#8212;</h2>
-    <p class="panel-region-desc" id="panelDesc"></p>
-  </div>
-  <div class="panel-body">
-    <div class="panel-filter-row" id="panelFilters" role="group" aria-label="Filter by type"></div>
-    <div id="panelCards" aria-live="polite"></div>
-  </div>
-</div>
+<div class="panel-backdrop" id="panel-backdrop"></div>
+<aside id="region-panel" role="dialog" aria-modal="true" aria-hidden="true">
+  <button class="panel-close" id="panelClose" aria-label="Close">&times;</button>
+  <button class="panel-back" id="panelBack" style="display:none;">&larr; See all from this region</button>
+  <div class="panel-tag" id="panelTag"></div>
+  <h2 class="panel-name" id="panelName"></h2>
+  <div class="panel-origin" id="panelOrigin" style="display:none;"></div>
+  <p class="panel-desc" id="panelDesc"></p>
+  <div class="panel-filters" id="panelFilters"></div>
+  <div class="panel-cards" id="panelCards"></div>
+</aside>
 
+<script src="virtuscorporis.js"></script>
 
 <script>
-(function () {
-  'use strict';
+(function(){
+'use strict';
 
-  /* ════════════════════════════════════════════
-     DATA  — single source of truth
-     All strings use straight quotes only.
-     ════════════════════════════════════════════ */
-
-  /* Dot positions in SVG viewBox 0 0 2000 857
-     Calculated from lon/lat via Miller projection */
-  var DOTS = {
-    japan:           { cx: 1767, cy: 257, label: 'Japan'        },
-    korea:           { cx: 1706, cy: 252, label: 'Korea'        },
-    china:           { cx: 1578, cy: 262, label: 'China'        },
-    india:           { cx: 1433, cy: 333, label: 'India'        },
-    thailand:        { cx: 1561, cy: 357, label: 'Thailand'     },
-    'southeast-asia':{ cx: 1639, cy: 405, label: 'SE Asia'      },
-    'west-africa':   { cx:  989, cy: 381, label: 'W. Africa'    },
-    'east-africa':   { cx: 1206, cy: 428, label: 'E. Africa'    },
-    brazil:          { cx:  711, cy: 500, label: 'Brazil'       },
-    caribbean:       { cx:  611, cy: 343, label: 'Caribbean'    },
-    usa:             { cx:  467, cy: 248, label: 'USA'          },
-    spain:           { cx:  978, cy: 238, label: 'Spain'        },
-    greece:          { cx: 1122, cy: 248, label: 'Greece'       },
-    pacific:         { cx: 1878, cy: 720, label: 'Aotearoa'     }
-  };
-
-  var REGIONS = {
-    japan: {
-      name: 'Japan',
-      desc: 'An archipelago that turned every movement into philosophy. Japanese martial arts carry entire systems of ethics, aesthetics, and spiritual practice.',
-      disciplines: [
-        { name: 'Judo',        type: 'martial', origin: 'Founded 1882 by Jigoro Kano',       desc: 'The first martial art to become an Olympic sport. Kano stripped jujutsu of its killing techniques and built a system of mutual welfare and benefit. The throw — ippon — is the most elegant expression of applied physics in any sport.', tags: ['Olympic','Throws','Philosophy'] },
-        { name: 'Karate',      type: 'martial', origin: 'Okinawa / Japan',                    desc: 'Born in Okinawa from Chinese martial arts under occupation, refined on the Japanese mainland. The empty hand as ultimate weapon. 100+ million practitioners worldwide.', tags: ['Striking','Kata','Olympic 2020'] },
-        { name: 'Aikido',      type: 'martial', origin: 'Founded 1925 by Morihei Ueshiba',    desc: 'The art of harmonious spirit. Aikido seeks to neutralize aggression without causing harm, redirecting force rather than meeting it. A martial art explicitly opposed to martial ends.', tags: ['Non-violent','Redirection','Spiritual'] },
-        { name: 'Kendo',       type: 'martial', origin: 'Feudal Japan',                       desc: 'Sword fighting evolved into character-building. The bamboo shinai and armor allow full-contact training without lethal consequence. The samurai aesthetic lives on.', tags: ['Sword','Bushido','Modern'] },
-        { name: 'Bon Odori',   type: 'dance',   origin: 'Buddhist Festival Dance, 500+ years', desc: 'Danced every August during Obon, the festival honoring ancestral spirits. Communities gather in circles at temple grounds, moving in simple repetitive patterns. The dead and living move together.', tags: ['Festival','Buddhist','Communal'] },
-        { name: 'Nihon Buyo',  type: 'dance',   origin: 'Edo Period',                         desc: 'Classical Japanese dance developed from kabuki theater. Every gesture is codified — a raised sleeve means longing, a bent knee means humility. A language of impossible precision.', tags: ['Classical','Kabuki','Theatre'] },
-        { name: 'Sumo',        type: 'sport',   origin: '1500+ years',                        desc: 'Japan\'s national sport, rooted in Shinto ritual. The ring is sacred ground. Salt thrown before a match purifies it. Two enormous bodies collide in seconds, ending in a moment of perfect decision.', tags: ['Ancient','Shinto','National Sport'] }
-      ]
-    },
-    korea: {
-      name: 'Korea',
-      desc: 'Korean movement traditions balance explosive martial power with deep artistic expression — disciplines that survived occupation and division to carry national identity into the modern world.',
-      disciplines: [
-        { name: 'Taekwondo',          type: 'martial', origin: 'Codified 1955, ancient roots',    desc: 'The kick as thesis statement. Formalized post-liberation as a tool of national identity-building, roots trace to Subak practiced by Hwarang warriors. Now in 210 countries.', tags: ['Olympic','Kicks','National'] },
-        { name: 'Ssireum',            type: 'sport',   origin: '3rd Century CE',                  desc: 'Korean traditional wrestling depicted in 1,500-year-old Goguryeo murals. Each wrestler grips the opponent\'s sash; the first to touch the ground loses. Farmers and kings competed together.', tags: ['Wrestling','Ancient','Festival'] },
-        { name: 'Talchum',            type: 'dance',   origin: 'Goryeo Period',                   desc: 'Masked dance drama. The masks allowed commoners to satirize the aristocracy without punishment. Social commentary as art form — performance as political protection.', tags: ['Masked','Satirical','UNESCO'] },
-        { name: 'Ganggangsullae',     type: 'dance',   origin: 'Ancient',                         desc: 'Women\'s circle dance performed on full moons and harvest festivals. During the Joseon Dynasty it served as a military decoy against enemy armies.', tags: ['Women','Circle','UNESCO'] },
-        { name: 'Hiphop / Street',    type: 'dance',   origin: 'Seoul, 1990s to present',         desc: 'Seoul became the global capital of competitive street dance. Underground ciphers and battles alongside one of the most technically demanding breaking scenes on earth.', tags: ['Contemporary','Competitive','Global'] }
-      ]
-    },
-    china: {
-      name: 'China',
-      desc: 'The breadth of Chinese movement tradition is almost incomprehensible — thousands of years, hundreds of regional styles, a philosophy that sees the body as a microcosm of the universe.',
-      disciplines: [
-        { name: 'Wushu / Kung Fu',       type: 'martial', origin: '4000+ years, countless schools', desc: 'Not one art but thousands. Shaolin, Wing Chun, Tai Chi, Baguazhang — each a complete philosophical system expressed through the body. The Five Animals, the Eight Trigrams: each metaphor a combat methodology.', tags: ['Ancient','Philosophical','Diverse'] },
-        { name: 'Tai Chi Chuan',         type: 'martial', origin: 'Chen Village, 17th Century',    desc: 'The slowest martial art in the world is one of its most sophisticated. Internal force, rooting, the principle of yielding to overcome — practiced by 200+ million people, most at dawn in public parks.', tags: ['Internal','Health','Meditative'] },
-        { name: 'Chinese Opera Motion',  type: 'dance',   origin: 'Tang Dynasty, 618 to 907 CE',  desc: 'Beijing Opera performers train for decades to master the codified movement vocabulary: sleeve techniques, acrobatics, combat sequences. The Monkey King is as technically demanding as any martial art.', tags: ['Opera','Acrobatics','Classical'] },
-        { name: 'Dragon Dance',          type: 'dance',   origin: 'Han Dynasty, 200 BCE',          desc: 'A team of 9 to 15 dancers manipulate a dragon effigy on poles to drive away evil spirits. Lunar New Year across the diaspora: the same dragon, the same prayer, the same city street.', tags: ['Festival','Diaspora','Lunar New Year'] },
-        { name: 'Sanda / San Shou',      type: 'sport',   origin: '20th Century',                  desc: 'Full-contact Chinese kickboxing that synthesizes wushu, boxing, and wrestling. The modern combat sport face of a very ancient martial culture.', tags: ['Full Contact','Modern','MMA'] }
-      ]
-    },
-    india: {
-      name: 'India',
-      desc: 'Indian movement traditions are among the most ancient and codified on earth. Dance is devotion. Combat is philosophy. The body is temple.',
-      disciplines: [
-        { name: 'Bharatanatyam', type: 'dance',   origin: 'Tamil Nadu, 2000+ years',    desc: '64 mudras, 108 karanas codified in the Natya Shastra. Suppressed during British colonial rule, revived by cultural resisters in the 20th century.', tags: ['Classical','Devotional','UNESCO'] },
-        { name: 'Kathak',        type: 'dance',   origin: 'North India, Mughal Period',  desc: 'The dance of storytellers. Originally devotional, it became a court art under Mughal patronage, absorbing Persian influences in its footwork and spins.', tags: ['Storytelling','Syncretic','Classical'] },
-        { name: 'Kalaripayattu', type: 'martial', origin: 'Kerala, 3rd Century BCE',    desc: 'Claimed as the world\'s oldest martial art. Full-body weapons system that influenced both Yoga and Kung Fu. The kalari training ground is sacred space; the guru-student relationship, unbroken lineage.', tags: ['Ancient','Weapons','Yoga'] },
-        { name: 'Mallakhamba',   type: 'sport',   origin: '12th Century, Maharashtra',  desc: 'Gymnastics performed on a vertical wooden pole or rope. Now a national sport, performed competitively by children in impossible geometries.', tags: ['Gymnastics','Traditional','Youth'] },
-        { name: 'Kushti',        type: 'sport',   origin: '5000+ years',                desc: 'Traditional Indian wrestling in mud pits called akharas. Wrestlers follow strict dietary and spiritual regimens. The pit itself is sacred. A practice of devotion as much as competition.', tags: ['Wrestling','Ancient','Spiritual'] }
-      ]
-    },
-    'southeast-asia': {
-      name: 'Southeast Asia',
-      desc: 'A crossroads of cultures where Indian, Chinese, Islamic, and indigenous traditions blended into some of the world\'s most diverse movement forms.',
-      disciplines: [
-        { name: 'Pencak Silat',  type: 'martial', origin: 'Malay Archipelago, ancient',            desc: 'Over 800 recognized styles across Indonesia, Malaysia, Brunei, and Singapore. Integrated with music — the gamelan sets the rhythm of combat. UNESCO listed. The most diverse martial art family on earth.', tags: ['UNESCO','Weapons','800+ styles'] },
-        { name: 'Tari Saman',    type: 'dance',   origin: 'Aceh, Indonesia, 13th Century',         desc: 'The Dance of a Thousand Hands. 60+ performers moving in explosive synchronized sequences: clapping, patting, slapping, swaying. Speed and synchrony as a single organism. UNESCO Intangible Heritage.', tags: ['UNESCO','Synchronized','Sufi origin'] },
-        { name: 'Muay Boran',    type: 'martial', origin: 'Thailand / SE Asia, ancient',           desc: 'The mother system before Muay Thai\'s modernization. Full-body weapons: head, elbows, knees, shins, feet. Used in palace battles, in war, in ritual. Preserved today by monks and cultural historians.', tags: ['Ancient','Battlefield','Ritual'] },
-        { name: 'Apsara Dance',  type: 'dance',   origin: 'Cambodia, Angkor Period, 9th-15th c.',  desc: 'The sacred court dance of the Khmer Empire. Survived genocide — the Khmer Rouge killed 90% of Cambodia\'s classical artists. Rebuilt from near nothing by surviving masters.', tags: ['Sacred','Survival','UNESCO'] }
-      ]
-    },
-    thailand: {
-      name: 'Thailand',
-      desc: 'Thai movement is inseparable from Buddhist practice, royal ceremony, and a warrior history spanning two millennia.',
-      disciplines: [
-        { name: 'Muay Thai',      type: 'martial', origin: 'Sukhothai Kingdom, 13th Century',      desc: 'The art of eight limbs. Fists, elbows, knees, shins — a complete weapons system. The Wai Kru Ram Muay ritual before each fight is prayer, tribute to the teacher, and psychological warfare simultaneously.', tags: ['Eight Limbs','National Sport','Ancient'] },
-        { name: 'Krabi Krabong', type: 'martial', origin: 'Ayutthaya Period, 14th-18th Century',  desc: 'Thai weapons system: sword and staff, twin swords, pike, spear. The precursor to Muay Boran. Court demonstrations incorporated dance elements — the line between war and ceremony deliberately blurred.', tags: ['Weapons','Historical','Royal Court'] },
-        { name: 'Ram Thai',       type: 'dance',   origin: 'Ancient Thai courts',                  desc: 'Classical Thai dance performed at royal ceremonies and religious festivals. The Khon masked dance drama depicts the Ramakien — 311 episodes requiring a lifetime of study.', tags: ['Classical','Royal','UNESCO'] }
-      ]
-    },
-    brazil: {
-      name: 'Brazil',
-      desc: 'Brazil\'s movement traditions are the product of one of history\'s most violent collisions — indigenous, African, and European bodies forced together, generating something new and permanently significant.',
-      disciplines: [
-        { name: 'Capoeira',           type: 'martial', origin: 'Quilombos, 16th to 18th Century', desc: 'Created by enslaved Africans who disguised combat training as dance so it could be practiced openly. The ginga — the constant rocking motion — is both deception and readiness. Outlawed 1890; revived through cultural resistance.', tags: ['UNESCO','Resistance','African Diaspora'] },
-        { name: 'Samba',              type: 'dance',   origin: 'Bahia / Rio, African roots',      desc: 'Not one dance but a family: samba de roda, pagode, samba-enredo. Rooted in Candomble religious practice. Appropriated, commodified, reclaimed.', tags: ['UNESCO','Carnival','African roots'] },
-        { name: 'Forro',              type: 'dance',   origin: 'Northeastern Brazil',             desc: 'Close partner dance of the Brazilian northeast. Born in the working class, dismissed by elites, now danced in universities worldwide. Gonzaga\'s accordion is its heartbeat.', tags: ['Social','Working Class','Partner'] },
-        { name: 'Brazilian Jiu-Jitsu', type: 'martial', origin: 'Belem, 1920s',                  desc: 'Mitsuyo Maeda brought judo to Brazil; the Gracie family transformed it. Emphasis on ground fighting and leverage over strength. The foundation of modern MMA.', tags: ['Grappling','Ground Game','MMA foundation'] }
-      ]
-    },
-    caribbean: {
-      name: 'Caribbean',
-      desc: 'The Caribbean\'s movement cultures are the direct descendants of African retention, colonial encounter, and extraordinary creative resilience.',
-      disciplines: [
-        { name: 'Dancehall',             type: 'dance',   origin: 'Kingston, Jamaica, 1970s',     desc: 'Born in the sound system culture of Kingston\'s yards. Moves created in yard sessions spread globally within days. The street as choreographic laboratory.', tags: ['Street','Sound System','Global'] },
-        { name: 'Cumbia',                type: 'dance',   origin: 'Colombia / Caribbean coast',   desc: 'African percussion, Indigenous flute, Spanish guitar. The shuffling step traces directly to West African ancestors who danced in chains. Freedom encoded in limitation.', tags: ['Syncretic','African roots','Pan-American'] },
-        { name: 'Stickfighting / Kalinda', type: 'martial', origin: 'Trinidad, African-Caribbean', desc: 'Brought by enslaved Africans from Yoruba and Congolese stick-fighting traditions. Practiced at Carnival — permitted then banned by colonial authorities, survived underground.', tags: ['Carnival','African','Resistance'] }
-      ]
-    },
-    usa: {
-      name: 'United States',
-      desc: 'American movement culture is the world\'s greatest import-export story: absorbing every tradition brought by immigrants and the enslaved, transforming it, and broadcasting it back globally.',
-      disciplines: [
-        { name: 'Breaking / B-Boying', type: 'dance',  origin: 'South Bronx, 1973',       desc: 'Born at DJ Kool Herc\'s parties in a burned-out borough. Toprock, downrock, power moves, freezes — an entire movement vocabulary from a housing project. Olympic sport, Paris 2024.', tags: ['Olympic 2024','Bronx','Hip-Hop'] },
-        { name: 'Voguing',             type: 'dance',  origin: 'Harlem, 1980s',           desc: 'Created by Black and Latino LGBTQ+ youth in Harlem ballrooms as a survival space. An entire underground culture with its own houses, mothers, and children.', tags: ['LGBTQ+','Ballroom','Harlem'] },
-        { name: 'Lindy Hop',           type: 'dance',  origin: 'Harlem, 1920s',           desc: 'Named for Lindbergh\'s transatlantic flight. Created by Black Harlemites at the Savoy Ballroom, the one racially integrated public space in 1920s New York.', tags: ['Jazz Age','Integration','Partner'] },
-        { name: 'American Football',   type: 'sport',  origin: '1869',                    desc: 'A collision sport built on tactical deception and physical overwhelming force. The most watched sport in America. The parallels to military strategy are not accidental.', tags: ['Tactical','Contact','National'] },
-        { name: 'Basketball',          type: 'sport',  origin: 'Springfield, 1891',       desc: 'Invented by a Canadian, adopted by Black American culture, returned to the world as something transcendent. The NBA\'s aesthetic influence on global fashion and movement is incalculable.', tags: ['Urban','Global','Cultural export'] }
-      ]
-    },
-    'west-africa': {
-      name: 'West Africa',
-      desc: 'West Africa is the source of much of the diaspora\'s movement vocabulary. These traditions are the roots of an enormous global tree.',
-      disciplines: [
-        { name: 'Sabar',          type: 'dance',   origin: 'Senegal / Gambia, Wolof tradition', desc: 'Drum-driven social dance where women improvise solos in response to specific drum rhythms. A direct dialogue between body and drum. Community as performance context.', tags: ['Drumming','Women','Improvisation'] },
-        { name: 'Eyo Masquerade', type: 'dance',   origin: 'Lagos, Nigeria',                   desc: 'White-robed masked figures that process through Lagos, communicating between the living and the dead. A ceremony predating Lagos\'s modern form by centuries.', tags: ['Spiritual','Masquerade','Lagos'] },
-        { name: 'Dambe',          type: 'martial', origin: 'Hausa people, West Africa',        desc: 'Traditional Hausa boxing with one fist wrapped in rope. Historically practiced by butchers\' guilds during harvest festivals. Now documented by international combat sports media.', tags: ['Boxing','Hausa','Traditional'] },
-        { name: 'Laamb',          type: 'martial', origin: 'Senegal, ancient',                 desc: 'Senegalese traditional wrestling — the country\'s most popular sport. Wrestlers wear amulets prepared by marabouts. Ritual preparation as important as physical training. Stadium crowds of 50,000.', tags: ['Wrestling','Spiritual','National'] }
-      ]
-    },
-    'east-africa': {
-      name: 'East Africa',
-      desc: 'East African movement traditions reflect the region\'s position as a crossroads: indigenous cultures, Swahili coast trade networks, and the world\'s greatest concentration of endurance athletes.',
-      disciplines: [
-        { name: 'Beni Ngoma',       type: 'dance',  origin: 'Swahili Coast, 19th Century',   desc: 'Competitive military-style dance that spread along East African trade routes. Groups performed in uniforms mimicking European military dress — a complex response to colonial power through satire.', tags: ['Competitive','Swahili','Colonial response'] },
-        { name: 'Adumu',            type: 'dance',  origin: 'Maasai, Kenya / Tanzania',      desc: 'The jumping dance. Young Maasai warriors compete to jump highest, chanting together. Height indicates strength and status. The most economical sport imaginable.', tags: ['Maasai','Warrior','Competitive'] },
-        { name: 'Distance Running', type: 'sport',  origin: 'East African Rift Valley',      desc: 'The Kalenjin people of Kenya\'s Rift Valley have produced a disproportionate number of the world\'s greatest distance runners. The tradition of running as communal practice since childhood.', tags: ['Olympic','Endurance','Dominant'] }
-      ]
-    },
-    spain: {
-      name: 'Spain',
-      desc: 'Spain\'s movement traditions are the product of a dramatic cultural fusion: Romani, Moorish, Jewish, and Castilian influences creating forms of extraordinary power.',
-      disciplines: [
-        { name: 'Flamenco',         type: 'dance',   origin: 'Andalucia, 18th Century',    desc: 'The product of Romani, Moorish, and Sephardic Jewish communities. Duende — the dark spirit — distinguishes authentic flamenco from performance. Federico Garcia Lorca: "The duende is a power, not a work."', tags: ['UNESCO','Romani','Emotional'] },
-        { name: 'Juego del Palo',   type: 'martial', origin: 'Canary Islands / Spain',     desc: 'Canarian stick fighting — a martial system from the indigenous Guanche people that survived colonization. Practiced as cultural memory, practiced as refusal to be forgotten.', tags: ['Indigenous','Canary Islands','Survival'] },
-        { name: 'Sardana',          type: 'dance',   origin: 'Catalonia',                  desc: 'The national dance of Catalonia, danced in circles in public squares. Forbidden under Franco\'s dictatorship and danced in secret. Circle dances as political resistance.', tags: ['Political','Catalan','Resistance'] }
-      ]
-    },
-    greece: {
-      name: 'Ancient Greece / Mediterranean',
-      desc: 'The foundation of Western sport culture. The ancient Greeks understood sport as inseparable from civic duty, aesthetic beauty, and the worship of the gods.',
-      disciplines: [
-        { name: 'Pankration',         type: 'martial', origin: '648 BCE, Ancient Olympic Games', desc: 'Boxing and wrestling combined with almost no rules. Practitioners were heroes. Arrichion won his third Olympic crown while being strangled to death.', tags: ['Ancient Olympic','No Rules','Heroic'] },
-        { name: 'Pyrrhichios',        type: 'dance',   origin: 'Ancient Greece, pre-classical', desc: 'The armed war dance — performed fully armored with weapons. Sparta required it of children from age five. Dance and military training indistinguishable.', tags: ['War Dance','Sparta','Armed'] },
-        { name: 'Ancient Olympics',   type: 'sport',   origin: '776 BCE, Olympia',              desc: 'Running, discus, javelin, jumping, wrestling — the pentathlon. Every four years for over a thousand years. Wars paused. The sacred truce held. Movement as the highest form of civic participation.', tags: ['Historic','Pan-Hellenic','Foundation'] },
-        { name: 'Hasapiko / Syrtaki', type: 'dance',   origin: 'Byzantine / Greek tradition',   desc: 'The hasapiko — dance of the butchers — evolved into the famous Zorba\'s dance. Originally a slow processional from the Constantinople butchers\' guild. Now the world\'s shorthand for Greek identity.', tags: ['Folk','Byzantine roots','Iconic'] }
-      ]
-    },
-    pacific: {
-      name: 'Pacific / Aotearoa',
-      desc: 'The Pacific\'s movement traditions carry the weight of vast ocean migrations, complex chieftain societies, and a confrontation with colonialism that reshaped what indigenous movement could mean.',
-      disciplines: [
-        { name: 'Haka',         type: 'dance',   origin: 'Maori, Aotearoa, ancient',  desc: 'War challenge, welcome, ceremony of grief and joy. The haka Ka Mate, composed in 1820 by Te Rauparaha, is performed by the All Blacks before every match. Ancient geopolitics in a rugby stadium.', tags: ['Maori','War / Welcome','All Blacks'] },
-        { name: 'Hula',         type: 'dance',   origin: 'Hawaii, ancient',           desc: 'The living library of Hawaiian culture. Each gesture is a word in a sung history. Suppressed under Calvinist mission rule, revived in the Hawaiian Renaissance of the 1970s as an act of cultural sovereignty.', tags: ['Living Library','Sovereignty','Revived'] },
-        { name: 'Faataupati',   type: 'dance',   origin: 'Samoa, ancient',            desc: 'The Samoan slap dance — uses the body itself as percussion instrument: thighs, chest, arms. No external instruments. The body is the drum.', tags: ['Body Percussion','Faasamoa','Men\'s'] },
-        { name: 'Mau Rakau',    type: 'martial', origin: 'Maori, Aotearoa',           desc: 'Traditional Maori weapons training — taiaha, mere, tewhatewha. Nearly eradicated by colonization, reconstructed from oral history and carving iconography. Now taught in schools as cultural reclamation.', tags: ['Weapons','Reclamation','Taiaha'] }
-      ]
-    }
-  };
-
-  /* ── PRELOADER ── */
-  var pBar = document.getElementById('preloader-bar');
-  var pPct = document.getElementById('preloader-percent');
-  var prog = 0;
-  var preloadTimer = setInterval(function () {
-    prog += Math.random() * 14 + 3;
-    if (prog >= 100) { prog = 100; clearInterval(preloadTimer); onReady(); }
-    pBar.style.width = prog + '%';
-    pPct.textContent = Math.floor(prog) + '%';
-  }, 110);
-
-  function onReady() {
-    setTimeout(function () { document.getElementById('preloader').classList.add('remove'); }, 400);
-    setTimeout(revealHero, 900);
+/* REGIONS DATA */
+var REGIONS = {
+  japan: {
+    name: 'Japan',
+    desc: 'An archipelago that turned every movement into philosophy. Japanese martial arts carry entire systems of ethics, aesthetics, and spiritual practice.',
+    disciplines: [
+      { name: 'Judo', type: 'martial', origin: 'Founded 1882 by Jigoro Kano', desc: 'The first martial art to become an Olympic sport. Kano stripped jujutsu of its killing techniques and built a system of mutual welfare and benefit.', tags: ['Olympic','Throws','Philosophy'] },
+      { name: 'Karate', type: 'martial', origin: 'Okinawa / Japan', desc: 'Born in Okinawa from Chinese martial arts under occupation, refined on the Japanese mainland. The empty hand as ultimate weapon.', tags: ['Striking','Kata','Olympic 2020'] },
+      { name: 'Aikido', type: 'martial', origin: 'Founded 1925 by Morihei Ueshiba', desc: 'The art of harmonious spirit. Aikido seeks to neutralize aggression without causing harm, redirecting force rather than meeting it.', tags: ['Non-violent','Redirection','Spiritual'] },
+      { name: 'Kendo', type: 'martial', origin: 'Feudal Japan', desc: 'Sword fighting evolved into character-building. The bamboo shinai and armor allow full-contact training without lethal consequence.', tags: ['Sword','Bushido','Modern'] },
+      { name: 'Bon Odori', type: 'dance', origin: 'Buddhist Festival Dance, 500+ years', desc: 'Danced every August during Obon, the festival honoring ancestral spirits, in circles at temple grounds.', tags: ['Festival','Buddhist','Communal'] },
+      { name: 'Nihon Buyo', type: 'dance', origin: 'Edo Period', desc: 'Classical Japanese dance developed from kabuki theater, with a codified gesture vocabulary.', tags: ['Classical','Kabuki','Theatre'] },
+      { name: 'Sumo', type: 'sport', origin: '1500+ years', desc: "Japan's national sport, rooted in Shinto ritual. The ring is sacred ground; salt purifies it before a match.", tags: ['Ancient','Shinto','National Sport'] }
+    ]
+  },
+  korea: {
+    name: 'Korea',
+    desc: 'Korean movement traditions balance explosive martial power with deep artistic expression.',
+    disciplines: [
+      { name: 'Taekwondo', type: 'martial', origin: 'Codified 1955, ancient roots', desc: 'The kick as thesis statement. Formalized post-liberation as a tool of national identity-building.', tags: ['Olympic','Kicks','National'] },
+      { name: 'Ssireum', type: 'sport', origin: '3rd Century CE', desc: 'Korean traditional wrestling depicted in Goguryeo murals; grip the sash, first to touch ground loses.', tags: ['Wrestling','Ancient','Festival'] },
+      { name: 'Talchum', type: 'dance', origin: 'Goryeo Period', desc: 'Masked dance drama that let commoners satirize the aristocracy without punishment.', tags: ['Masked','Satirical','UNESCO'] },
+      { name: 'Ganggangsullae', type: 'dance', origin: 'Ancient', desc: "Women's circle dance performed on full moons; served as a military decoy during Joseon.", tags: ['Women','Circle','UNESCO'] },
+      { name: 'Hiphop / Street', type: 'dance', origin: 'Seoul, 1990s to present', desc: 'Seoul became the global capital of competitive street dance and breaking.', tags: ['Contemporary','Competitive','Global'] }
+    ]
+  },
+  china: {
+    name: 'China',
+    desc: 'The breadth of Chinese movement tradition spans thousands of years and hundreds of regional styles.',
+    disciplines: [
+      { name: 'Wushu / Kung Fu', type: 'martial', origin: '4000+ years, countless schools', desc: 'Not one art but thousands — Shaolin, Wing Chun, Baguazhang — each a full philosophical system.', tags: ['Ancient','Philosophical','Diverse'] },
+      { name: 'Tai Chi Chuan', type: 'martial', origin: 'Chen Village, 17th Century', desc: 'The slowest martial art is one of the most sophisticated — internal force and yielding to overcome.', tags: ['Internal','Health','Meditative'] },
+      { name: 'Chinese Opera Motion', type: 'dance', origin: 'Tang Dynasty, 618–907 CE', desc: 'Beijing Opera performers train for decades to master a codified movement vocabulary.', tags: ['Opera','Acrobatics','Classical'] },
+      { name: 'Dragon Dance', type: 'dance', origin: 'Han Dynasty, 200 BCE', desc: 'A team of dancers manipulate a dragon effigy on poles to drive away evil spirits.', tags: ['Festival','Diaspora','Lunar New Year'] },
+      { name: 'Sanda / San Shou', type: 'sport', origin: '20th Century', desc: 'Full-contact Chinese kickboxing that synthesizes wushu, boxing, and wrestling.', tags: ['Full Contact','Modern','MMA'] }
+    ]
+  },
+  india: {
+    name: 'India',
+    desc: 'Indian movement traditions are among the most ancient and codified on earth. The body is temple.',
+    disciplines: [
+      { name: 'Bharatanatyam', type: 'dance', origin: 'Tamil Nadu, 2000+ years', desc: '64 mudras and 108 karanas codified in the Natya Shastra; revived after colonial suppression.', tags: ['Classical','Devotional','UNESCO'] },
+      { name: 'Kathak', type: 'dance', origin: 'North India, Mughal Period', desc: 'The dance of storytellers, absorbing Persian influences under Mughal court patronage.', tags: ['Storytelling','Syncretic','Classical'] },
+      { name: 'Kalaripayattu', type: 'martial', origin: 'Kerala, 3rd Century BCE', desc: "Claimed as the world's oldest martial art, influencing both Yoga and Kung Fu.", tags: ['Ancient','Weapons','Yoga'] },
+      { name: 'Mallakhamba', type: 'sport', origin: '12th Century, Maharashtra', desc: 'Gymnastics performed on a vertical wooden pole or rope.', tags: ['Gymnastics','Traditional','Youth'] },
+      { name: 'Kushti', type: 'sport', origin: '5000+ years', desc: 'Traditional wrestling in sacred mud pits called akharas.', tags: ['Wrestling','Ancient','Spiritual'] }
+    ]
+  },
+  'southeast-asia': {
+    name: 'Southeast Asia',
+    desc: 'A crossroads of cultures where Indian, Chinese, Islamic, and indigenous traditions blended into diverse movement forms.',
+    disciplines: [
+      { name: 'Pencak Silat', type: 'martial', origin: 'Malay Archipelago, ancient', desc: 'Over 800 recognized styles across Indonesia, Malaysia, Brunei and Singapore, set to gamelan rhythm.', tags: ['UNESCO','Weapons','800+ styles'] },
+      { name: 'Tari Saman', type: 'dance', origin: 'Aceh, Indonesia, 13th Century', desc: 'The Dance of a Thousand Hands — 60+ performers in explosive synchronized sequences.', tags: ['UNESCO','Synchronized','Sufi origin'] },
+      { name: 'Muay Boran', type: 'martial', origin: 'Thailand / SE Asia, ancient', desc: "The mother system before Muay Thai's modernization; a full-body weapons system.", tags: ['Ancient','Battlefield','Ritual'] },
+      { name: 'Apsara Dance', type: 'dance', origin: 'Cambodia, Angkor Period', desc: "The sacred court dance of the Khmer Empire, rebuilt after the Khmer Rouge's genocide of classical artists.", tags: ['Sacred','Survival','UNESCO'] }
+    ]
+  },
+  thailand: {
+    name: 'Thailand',
+    desc: 'Thai movement is inseparable from Buddhist practice, royal ceremony, and a warrior history spanning two millennia.',
+    disciplines: [
+      { name: 'Muay Thai', type: 'martial', origin: 'Sukhothai Kingdom, 13th Century', desc: 'The art of eight limbs — fists, elbows, knees, shins — with the Wai Kru ritual before each fight.', tags: ['Eight Limbs','National Sport','Ancient'] },
+      { name: 'Krabi Krabong', type: 'martial', origin: 'Ayutthaya Period', desc: 'Thai weapons system of sword, staff and spear; court demonstrations blurred war and ceremony.', tags: ['Weapons','Historical','Royal Court'] },
+      { name: 'Ram Thai', type: 'dance', origin: 'Ancient Thai courts', desc: 'Classical Thai dance performed at royal ceremonies; the Khon masked drama depicts the Ramakien.', tags: ['Classical','Royal','UNESCO'] }
+    ]
+  },
+  brazil: {
+    name: 'Brazil',
+    desc: "Brazil's movement traditions are the product of one of history's most violent collisions — indigenous, African, and European.",
+    disciplines: [
+      { name: 'Capoeira', type: 'martial', origin: 'Quilombos, 16th–18th Century', desc: 'Created by enslaved Africans who disguised combat training as dance so it could be practiced openly.', tags: ['UNESCO','Resistance','African Diaspora'] },
+      { name: 'Samba', type: 'dance', origin: 'Bahia / Rio, African roots', desc: 'A family of dances rooted in Candomble religious practice, from samba de roda to samba-enredo.', tags: ['UNESCO','Carnival','African roots'] },
+      { name: 'Forro', type: 'dance', origin: 'Northeastern Brazil', desc: 'Close partner dance born in the working class, now danced in universities worldwide.', tags: ['Social','Working Class','Partner'] },
+      { name: 'Brazilian Jiu-Jitsu', type: 'martial', origin: 'Belem, 1920s', desc: 'Mitsuyo Maeda brought judo to Brazil; the Gracie family built the foundation of modern MMA.', tags: ['Grappling','Ground Game','MMA foundation'] }
+    ]
+  },
+  caribbean: {
+    name: 'Caribbean',
+    desc: "The Caribbean's movement cultures descend from African retention, colonial encounter, and extraordinary resilience.",
+    disciplines: [
+      { name: 'Dancehall', type: 'dance', origin: 'Kingston, Jamaica, 1970s', desc: "Born in Kingston's sound system yards; moves spread globally within days.", tags: ['Street','Sound System','Global'] },
+      { name: 'Cumbia', type: 'dance', origin: 'Colombia / Caribbean coast', desc: 'African percussion, Indigenous flute, Spanish guitar — freedom encoded in a shuffling step.', tags: ['Syncretic','African roots','Pan-American'] },
+      { name: 'Stickfighting / Kalinda', type: 'martial', origin: 'Trinidad, African-Caribbean', desc: 'Brought from Yoruba and Congolese traditions; practiced at Carnival, banned, and survived underground.', tags: ['Carnival','African','Resistance'] }
+    ]
+  },
+  usa: {
+    name: 'United States',
+    desc: "American movement culture is the world's greatest import-export story, absorbing and re-broadcasting global traditions.",
+    disciplines: [
+      { name: 'Breaking / B-Boying', type: 'dance', origin: 'South Bronx, 1973', desc: "Born at DJ Kool Herc's parties; now an Olympic sport (Paris 2024).", tags: ['Olympic 2024','Bronx','Hip-Hop'] },
+      { name: 'Voguing', type: 'dance', origin: 'Harlem, 1980s', desc: 'Created by Black and Latino LGBTQ+ youth in Harlem ballrooms as a survival space.', tags: ['LGBTQ+','Ballroom','Harlem'] },
+      { name: 'Lindy Hop', type: 'dance', origin: 'Harlem, 1920s', desc: 'Created by Black Harlemites at the Savoy Ballroom, the one integrated public space of its era.', tags: ['Jazz Age','Integration','Partner'] },
+      { name: 'American Football', type: 'sport', origin: '1869', desc: 'A collision sport built on tactical deception and physical overwhelming force.', tags: ['Tactical','Contact','National'] },
+      { name: 'Basketball', type: 'sport', origin: 'Springfield, 1891', desc: "Invented by a Canadian, transformed by Black American culture into a global cultural export.", tags: ['Urban','Global','Cultural export'] }
+    ]
+  },
+  'west-africa': {
+    name: 'West Africa',
+    desc: "West Africa is the source of much of the diaspora's movement vocabulary — roots of an enormous global tree.",
+    disciplines: [
+      { name: 'Sabar', type: 'dance', origin: 'Senegal / Gambia, Wolof tradition', desc: 'Drum-driven social dance where women improvise solos in dialogue with the drum.', tags: ['Drumming','Women','Improvisation'] },
+      { name: 'Eyo Masquerade', type: 'dance', origin: 'Lagos, Nigeria', desc: 'White-robed masked figures process through Lagos, mediating between the living and the dead.', tags: ['Spiritual','Masquerade','Lagos'] },
+      { name: 'Dambe', type: 'martial', origin: 'Hausa people, West Africa', desc: "Traditional Hausa boxing with one fist wrapped in rope, historically tied to butchers' guilds.", tags: ['Boxing','Hausa','Traditional'] },
+      { name: 'Laamb', type: 'martial', origin: 'Senegal, ancient', desc: "Senegalese wrestling — the country's most popular sport, with ritual preparation by marabouts.", tags: ['Wrestling','Spiritual','National'] }
+    ]
+  },
+  'east-africa': {
+    name: 'East Africa',
+    desc: 'East African movement traditions reflect a crossroads of indigenous cultures and Swahili coast trade networks.',
+    disciplines: [
+      { name: 'Beni Ngoma', type: 'dance', origin: 'Swahili Coast, 19th Century', desc: 'Competitive military-style dance mimicking European uniforms — satire in response to colonial power.', tags: ['Competitive','Swahili','Colonial response'] },
+      { name: 'Adumu', type: 'dance', origin: 'Maasai, Kenya / Tanzania', desc: 'The jumping dance — young warriors compete to jump highest, chanting together.', tags: ['Maasai','Warrior','Competitive'] },
+      { name: 'Distance Running', type: 'sport', origin: 'East African Rift Valley', desc: "The Kalenjin people of Kenya's Rift Valley have produced a disproportionate share of elite distance runners.", tags: ['Olympic','Endurance','Dominant'] }
+    ]
+  },
+  spain: {
+    name: 'Spain',
+    desc: "Spain's movement traditions blend Romani, Moorish, Jewish, and Castilian influences into forms of extraordinary power.",
+    disciplines: [
+      { name: 'Flamenco', type: 'dance', origin: 'Andalucia, 18th Century', desc: 'Born of Romani, Moorish, and Sephardic Jewish communities; duende marks the authentic from the performed.', tags: ['UNESCO','Romani','Emotional'] },
+      { name: 'Juego del Palo', type: 'martial', origin: 'Canary Islands / Spain', desc: 'Canarian stick fighting from the indigenous Guanche people, preserved as cultural memory.', tags: ['Indigenous','Canary Islands','Survival'] },
+      { name: 'Sardana', type: 'dance', origin: 'Catalonia', desc: "Catalonia's national circle dance, forbidden under Franco and danced in secret.", tags: ['Political','Catalan','Resistance'] }
+    ]
+  },
+  greece: {
+    name: 'Ancient Greece / Mediterranean',
+    desc: 'The foundation of Western sport culture — sport as civic duty, aesthetic beauty, and worship.',
+    disciplines: [
+      { name: 'Pankration', type: 'martial', origin: '648 BCE, Ancient Olympic Games', desc: 'Boxing and wrestling combined with almost no rules; practitioners became legends.', tags: ['Ancient Olympic','No Rules','Heroic'] },
+      { name: 'Pyrrhichios', type: 'dance', origin: 'Ancient Greece, pre-classical', desc: 'The armed war dance, performed fully armored — Sparta required it of children from age five.', tags: ['War Dance','Sparta','Armed'] },
+      { name: 'Ancient Olympics', type: 'sport', origin: '776 BCE, Olympia', desc: 'Running, discus, javelin, wrestling — held every four years for over a thousand years.', tags: ['Historic','Pan-Hellenic','Foundation'] },
+      { name: 'Hasapiko / Syrtaki', type: 'dance', origin: 'Byzantine / Greek tradition', desc: "The butchers' dance that evolved into the famous Zorba's dance.", tags: ['Folk','Byzantine roots','Iconic'] }
+    ]
+  },
+  russia: {
+    name: 'Russia',
+    desc: 'Movement traditions across the largest country on earth — from Soviet-era combat sport engineering to folk dance built for staying warm and staying fierce.',
+    disciplines: [
+      { name: 'Sambo', type: 'martial', origin: 'Soviet Union, 1920s–30s', desc: 'Built by the Red Army as a synthesis of judo, traditional Slavic wrestling, and regional folk-combat styles from across the USSR — designed as an all-purpose, scientifically engineered self-defense and combat sport system.', tags: ['Soviet','Grappling','Combat Sport'] },
+      { name: 'Cossack Dance / Hopak', type: 'dance', origin: 'Don and Kuban Cossack regions, centuries old', desc: 'High-energy folk dance famous for its squatting kicks (prisiadka) and gravity-defying jumps, originally performed by Cossack horsemen and warriors to display strength and stamina.', tags: ['Folk','Squat Kicks','Warrior Display'] }
+    ]
+  },
+  pacific: {
+    name: 'Pacific / Aotearoa',
+    desc: "The Pacific's movement traditions carry the weight of vast ocean migrations and complex chieftain societies.",
+    disciplines: [
+      { name: 'Haka', type: 'dance', origin: 'Maori, Aotearoa, ancient', desc: 'War challenge, welcome, and ceremony of grief and joy — performed by the All Blacks before every match.', tags: ['Maori','War / Welcome','All Blacks'] },
+      { name: 'Hula', type: 'dance', origin: 'Hawaii, ancient', desc: 'The living library of Hawaiian culture, revived in the 1970s as an act of cultural sovereignty.', tags: ['Living Library','Sovereignty','Revived'] },
+      { name: 'Faataupati', type: 'dance', origin: 'Samoa, ancient', desc: 'The Samoan slap dance — the body itself as the percussion instrument.', tags: ['Body Percussion','Faasamoa',"Men's"] },
+      { name: 'Mau Rakau', type: 'martial', origin: 'Maori, Aotearoa', desc: 'Traditional Maori weapons training, reconstructed from oral history after near-eradication.', tags: ['Weapons','Reclamation','Taiaha'] }
+    ]
   }
+};
 
-  function revealHero() {
-    ['heroEyebrow','heroLine1','heroLine2'].forEach(function (id) {
-      document.getElementById(id).classList.add('show');
-    });
-    setTimeout(function () { document.getElementById('heroSub').classList.add('show'); }, 300);
-    setTimeout(function () { document.getElementById('heroMeta').classList.add('show'); }, 600);
-    setTimeout(function () { document.getElementById('heroScroll').classList.add('show'); }, 900);
-  }
+var REGION_MAP = {
+  'g-japan':'japan','KR':'korea','g-china':'china','IN':'india',
+  'g-indonesia':'southeast-asia','g-malaysia':'southeast-asia','g-philippines':'southeast-asia',
+  'BN':'southeast-asia','TL':'southeast-asia','LA':'southeast-asia','KH':'southeast-asia','VN':'southeast-asia','MM':'southeast-asia',
+  'TH':'thailand','BR':'brazil',
+  'CU':'caribbean','JM':'caribbean','HT':'caribbean','DO':'caribbean','g-bahamas':'caribbean','g-puerto-rico':'caribbean',
+  'g-trinidad-and-tobago':'caribbean','g-antigua-and-barbuda':'caribbean','g-saint-kitts-and-nevis':'caribbean',
+  'DM':'caribbean','LC':'caribbean','VC':'caribbean','GD':'caribbean','BB':'caribbean',
+  'g-turks-and-caicos-islands':'caribbean','g-cayman-islands':'caribbean','AW':'caribbean','CW':'caribbean',
+  'g-united-states-virgin-islands':'caribbean','VG':'caribbean','MQ':'caribbean','MS':'caribbean',
+  'BQBO':'caribbean','BQSE':'caribbean','BQSA':'caribbean','AI':'caribbean','BL':'caribbean','MF':'caribbean','SX':'caribbean',
+  'g-united-states':'usa',
+  'SN':'west-africa','GN':'west-africa','GW':'west-africa','GM':'west-africa','SL':'west-africa','LR':'west-africa',
+  'CI':'west-africa','GH':'west-africa','TG':'west-africa','BJ':'west-africa','NG':'west-africa','ML':'west-africa',
+  'BF':'west-africa','NE':'west-africa','MR':'west-africa','g-cape-verde':'west-africa',
+  'KE':'east-africa','ET':'east-africa','SO':'east-africa','TZ':'east-africa','UG':'east-africa','RW':'east-africa',
+  'BI':'east-africa','DJ':'east-africa','ER':'east-africa',
+  'ES':'spain','g-canary-islands-spain':'spain','g-greece':'greece',
+  'g-russian-federation':'russia',
+  'g-new-zealand':'pacific','g-fiji':'pacific','g-samoa':'pacific','g-american-samoa':'pacific','g-tonga':'pacific',
+  'g-vanuatu':'pacific','g-solomon-islands':'pacific','g-new-caledonia':'pacific','g-papua-new-guinea':'pacific','g-french-polynesia':'pacific'
+};
 
-  /* ── CLOCK ── */
-  function updateClock() {
-    var d = new Date();
-    var h = String(d.getHours()).padStart(2, '0');
-    var m = String(d.getMinutes()).padStart(2, '0');
-    document.getElementById('clock').innerHTML = h + '<span>:</span>' + m;
-  }
-  updateClock();
-  setInterval(updateClock, 1000);
+var COUNTRIES = {"AF":"Afghanistan","AL":"Albania","AE":"United Arab Emirates","AM":"Armenia","AT":"Austria","BI":"Burundi","BE":"Belgium","BJ":"Benin","BF":"Burkina Faso","BD":"Bangladesh","BG":"Bulgaria","BA":"Bosnia and Herzegovina","BY":"Belarus","BZ":"Belize","BO":"Bolivia","BR":"Brazil","BN":"Brunei Darussalam","BT":"Bhutan","BW":"Botswana","CF":"Central African Republic","CH":"Switzerland","CI":"Côte d'Ivoire","CM":"Cameroon","CD":"Democratic Republic of the Congo","CG":"Republic of Congo","CO":"Colombia","CR":"Costa Rica","CU":"Cuba","CZ":"Czech Republic","DE":"Germany","DJ":"Djibouti","DO":"Dominican Republic","DZ":"Algeria","EC":"Ecuador","EG":"Egypt","ER":"Eritrea","EE":"Estonia","ET":"Ethiopia","FI":"Finland","GA":"Gabon","GE":"Georgia","GH":"Ghana","GN":"Guinea","GM":"The Gambia","GW":"Guinea-Bissau","GQ":"Equatorial Guinea","GT":"Guatemala","GY":"Guyana","HN":"Honduras","HR":"Croatia","HT":"Haiti","HU":"Hungary","IN":"India","IE":"Ireland","IR":"Iran","IQ":"Iraq","IS":"Iceland","IL":"Israel","JM":"Jamaica","JO":"Jordan","KZ":"Kazakhstan","KE":"Kenya","KG":"Kyrgyzstan","KH":"Cambodia","KR":"Republic of Korea","KW":"Kuwait","LA":"Lao PDR","LB":"Lebanon","LR":"Liberia","LY":"Libya","LK":"Sri Lanka","LS":"Lesotho","LT":"Lithuania","LU":"Luxembourg","LV":"Latvia","MA":"Morocco","MD":"Moldova","MG":"Madagascar","MX":"Mexico","MK":"Macedonia","ML":"Mali","MM":"Myanmar","ME":"Montenegro","MN":"Mongolia","MZ":"Mozambique","MR":"Mauritania","MW":"Malawi","NA":"Namibia","NE":"Niger","NG":"Nigeria","NI":"Nicaragua","NP":"Nepal","PK":"Pakistan","PA":"Panama","PE":"Peru","PL":"Poland","KP":"Dem. Rep. Korea","PY":"Paraguay","PS":"Palestine","QA":"Qatar","RO":"Romania","RW":"Rwanda","EH":"Western Sahara","SA":"Saudi Arabia","SD":"Sudan","SS":"South Sudan","SN":"Senegal","SL":"Sierra Leone","SV":"El Salvador","RS":"Serbia","SR":"Suriname","SK":"Slovakia","SI":"Slovenia","SE":"Sweden","SZ":"Swaziland","SY":"Syria","TD":"Chad","TG":"Togo","TH":"Thailand","TJ":"Tajikistan","TM":"Turkmenistan","TL":"Timor-Leste","TN":"Tunisia","TW":"Taiwan","TZ":"Tanzania","UG":"Uganda","UA":"Ukraine","UY":"Uruguay","UZ":"Uzbekistan","VE":"Venezuela","VN":"Vietnam","YE":"Yemen","ZM":"Zambia","ZW":"Zimbabwe","SO":"Somalia","XK":"Kosovo","ZA":"South Africa","NL":"Netherlands","PT":"Portugal","ES":"Spain","GF":"French Guiana","AW":"Aruba","AI":"Anguilla","BH":"Bahrain","BL":"Saint-Barthélemy","BM":"Bermuda","BB":"Barbados","CW":"Curaçao","DM":"Dominica","GD":"Grenada","GU":"Guam","LC":"Saint Lucia","MF":"Saint-Martin","MV":"Maldives","MH":"Marshall Islands","MS":"Montserrat","NR":"Nauru","PW":"Palau","SX":"Sint Maarten","TV":"Tuvalu","VC":"Saint Vincent and the Grenadines","VG":"British Virgin Islands","BQBO":"Netherlands","BQSE":"St. Eustatius","BQSA":"Saba","MQ":"Martinique","YT":"Mayotte","RE":"Reunion","g-angola":"Angola","g-argentina":"Argentina","g-australia":"Australia","g-azerbaijan":"Azerbaijan","g-canada":"Canada","g-china":"China","g-denmark":"Denmark","g-united-kingdom":"United Kingdom","g-greece":"Greece","g-indonesia":"Indonesia","g-italy":"Italy","g-japan":"Japan","g-malaysia":"Malaysia","g-norway":"Norway","g-oman":"Oman","g-philippines":"Philippines","g-papua-new-guinea":"Papua New Guinea","g-turkey":"Turkey","g-new-zealand":"New Zealand","g-chile":"Chile","g-russian-federation":"Russian Federation","g-france":"France","g-united-states":"United States","g-american-samoa":"American Samoa","g-antigua-and-barbuda":"Antigua and Barbuda","g-bahamas":"Bahamas","g-comoros":"Comoros","g-cape-verde":"Cape Verde","g-cayman-islands":"Cayman Islands","g-cyprus":"Cyprus","g-falkland-islands":"Falkland Islands","g-faeroe-islands":"Faeroe Islands","g-federated-states-of-micronesia":"Federated States of Micronesia","g-saint-kitts-and-nevis":"Saint Kitts and Nevis","g-malta":"Malta","g-northern-mariana-islands":"Northern Mariana Islands","g-mauritius":"Mauritius","g-new-caledonia":"New Caledonia","g-puerto-rico":"Puerto Rico","g-french-polynesia":"French Polynesia","g-solomon-islands":"Solomon Islands","g-s-o-tom-and-principe":"São Tomé and Principe","g-seychelles":"Seychelles","g-turks-and-caicos-islands":"Turks and Caicos Islands","g-tonga":"Tonga","g-trinidad-and-tobago":"Trinidad and Tobago","g-united-states-virgin-islands":"United States Virgin Islands","g-vanuatu":"Vanuatu","g-samoa":"Samoa","g-canary-islands-spain":"Canary Islands (Spain)","g-guadeloupe":"Guadeloupe","g-fiji":"Fiji"};
 
-  /* ── CURSOR ── */
-  var cursor = document.getElementById('cursor');
-  var cx = 0, cy = 0;
-  document.addEventListener('mousemove', function (e) {
-    cx = e.clientX; cy = e.clientY;
-    cursor.classList.add('visible');
+var DOTS = [
+  // Japan
+  {region:'japan', index:0, cx:1717, cy:250}, // Judo — Tokyo
+  {region:'japan', index:1, cx:1700, cy:296}, // Karate — Okinawa
+  {region:'japan', index:2, cx:1706, cy:246}, // Aikido — Tokyo area
+  {region:'japan', index:3, cx:1721, cy:238}, // Kendo — central Japan
+  {region:'japan', index:4, cx:1710, cy:259}, // Bon Odori — Kyoto area
+  {region:'japan', index:5, cx:1717, cy:253}, // Nihon Buyo — Edo/Tokyo
+  {region:'japan', index:6, cx:1723, cy:261}, // Sumo — Tokyo (Ryogoku)
+  // Korea
+  {region:'korea', index:0, cx:1665, cy:235}, // Taekwondo — Seoul
+  {region:'korea', index:1, cx:1658, cy:250}, // Ssireum
+  {region:'korea', index:2, cx:1669, cy:243}, // Talchum
+  {region:'korea', index:3, cx:1662, cy:255}, // Ganggangsullae — coastal south
+  {region:'korea', index:4, cx:1666, cy:233}, // Hiphop/Street — Seoul
+  // China
+  {region:'china', index:0, cx:1520, cy:288}, // Wushu/Kung Fu — Henan/Shaolin
+  {region:'china', index:1, cx:1514, cy:294}, // Tai Chi Chuan — Chen Village
+  {region:'china', index:2, cx:1560, cy:228}, // Chinese Opera Motion — Beijing
+  {region:'china', index:3, cx:1538, cy:342}, // Dragon Dance — Guangdong
+  {region:'china', index:4, cx:1500, cy:280}, // Sanda/San Shou — national
+  // India
+  {region:'india', index:0, cx:1438, cy:322}, // Bharatanatyam — Tamil Nadu
+  {region:'india', index:1, cx:1440, cy:258}, // Kathak — North India
+  {region:'india', index:2, cx:1424, cy:326}, // Kalaripayattu — Kerala
+  {region:'india', index:3, cx:1419, cy:290}, // Mallakhamba — Maharashtra
+  {region:'india', index:4, cx:1452, cy:268}, // Kushti — North India
+  // Southeast Asia
+  {region:'southeast-asia', index:0, cx:1611, cy:540}, // Pencak Silat — Java/Sumatra
+  {region:'southeast-asia', index:1, cx:1591, cy:499}, // Tari Saman — Aceh
+  {region:'southeast-asia', index:2, cx:1580, cy:415}, // Muay Boran — Cambodia border
+  {region:'southeast-asia', index:3, cx:1575, cy:417}, // Apsara Dance — Angkor
+  // Thailand
+  {region:'thailand', index:0, cx:1560, cy:372}, // Muay Thai — Sukhothai
+  {region:'thailand', index:1, cx:1566, cy:388}, // Krabi Krabong — Ayutthaya
+  {region:'thailand', index:2, cx:1569, cy:402}, // Ram Thai — Bangkok
+  // Brazil
+  {region:'brazil', index:0, cx:702, cy:500}, // Capoeira — Bahia
+  {region:'brazil', index:1, cx:692, cy:520}, // Samba — Bahia/Rio
+  {region:'brazil', index:2, cx:707, cy:495}, // Forro — Northeast Brazil
+  {region:'brazil', index:3, cx:660, cy:462}, // BJJ — Belem
+  // Caribbean
+  {region:'caribbean', index:0, cx:552, cy:377}, // Dancehall — Kingston
+  {region:'caribbean', index:1, cx:580, cy:420}, // Cumbia — Colombia coast
+  {region:'caribbean', index:2, cx:643, cy:432}, // Stickfighting/Kalinda — Trinidad
+  // USA
+  {region:'usa', index:0, cx:640, cy:201}, // Breaking — South Bronx
+  {region:'usa', index:1, cx:636, cy:198}, // Voguing — Harlem
+  {region:'usa', index:2, cx:637, cy:199}, // Lindy Hop — Harlem/Savoy
+  {region:'usa', index:3, cx:500, cy:212}, // American Football — national
+  {region:'usa', index:4, cx:644, cy:194}, // Basketball — Springfield MA
+  // West Africa
+  {region:'west-africa', index:0, cx:900, cy:412}, // Sabar — Senegal
+  {region:'west-africa', index:1, cx:1015, cy:428}, // Eyo Masquerade — Lagos
+  {region:'west-africa', index:2, cx:1035, cy:400}, // Dambe — northern Nigeria
+  {region:'west-africa', index:3, cx:905, cy:417}, // Laamb — Senegal
+  // East Africa
+  {region:'east-africa', index:0, cx:1225, cy:502}, // Beni Ngoma — Swahili coast
+  {region:'east-africa', index:1, cx:1202, cy:486}, // Adumu — Maasai
+  {region:'east-africa', index:2, cx:1210, cy:475}, // Distance Running — Rift Valley
+  // Spain
+  {region:'spain', index:0, cx:965, cy:250}, // Flamenco — Andalucia
+  {region:'spain', index:1, cx:900, cy:320}, // Juego del Palo — Canary Islands
+  {region:'spain', index:2, cx:990, cy:220}, // Sardana — Catalonia
+  // Greece
+  {region:'greece', index:0, cx:1110, cy:250}, // Pankration
+  {region:'greece', index:1, cx:1116, cy:245}, // Pyrrhichios
+  {region:'greece', index:2, cx:1100, cy:256}, // Ancient Olympics — Olympia
+  {region:'greece', index:3, cx:1109, cy:261}, // Hasapiko/Syrtaki
+  // Russia
+  {region:'russia', index:0, cx:1222, cy:148}, // Sambo — Moscow
+  {region:'russia', index:1, cx:1245, cy:188}, // Cossack Dance/Hopak — Don/Kuban region
+  // Pacific
+  {region:'pacific', index:0, cx:1900, cy:772}, // Haka — NZ
+  {region:'pacific', index:1, cx:150, cy:600},  // Hula — Hawaii (approx, not separately drawn)
+  {region:'pacific', index:2, cx:20, cy:591},   // Faataupati — Samoa
+  {region:'pacific', index:3, cx:1878, cy:780}  // Mau Rakau — NZ
+];
+
+var svg = document.getElementById('world-svg');
+var tip = document.getElementById('tooltip');
+var info = document.getElementById('info');
+var search = document.getElementById('search');
+var selectedCountryEl = null;
+var NS = 'http://www.w3.org/2000/svg';
+
+Object.keys(REGION_MAP).forEach(function(id){
+  var el = document.getElementById(id);
+  if (el) el.setAttribute('data-region', REGION_MAP[id]);
+});
+
+var dotsLayer = document.createElementNS(NS, 'g');
+dotsLayer.setAttribute('id', 'dots-layer');
+svg.appendChild(dotsLayer);
+
+DOTS.forEach(function(d, i){
+  var discipline = REGIONS[d.region].disciplines[d.index];
+  var g = document.createElementNS(NS, 'g');
+  g.setAttribute('class', 'dot-group');
+  g.dataset.region = d.region;
+  g.dataset.index = d.index;
+  g.setAttribute('role', 'button');
+  g.setAttribute('tabindex', '0');
+  g.setAttribute('aria-label', discipline.name);
+
+  var pulse = document.createElementNS(NS, 'circle');
+  pulse.setAttribute('class', 'dot-pulse');
+  pulse.setAttribute('cx', d.cx); pulse.setAttribute('cy', d.cy); pulse.setAttribute('r', 5);
+  var animR = document.createElementNS(NS, 'animate');
+  animR.setAttribute('attributeName','r'); animR.setAttribute('values','5;10;5');
+  animR.setAttribute('dur','2.6s'); animR.setAttribute('repeatCount','indefinite');
+  pulse.appendChild(animR);
+  var animO = document.createElementNS(NS, 'animate');
+  animO.setAttribute('attributeName','opacity'); animO.setAttribute('values','0.65;0;0.65');
+  animO.setAttribute('dur','2.6s'); animO.setAttribute('repeatCount','indefinite');
+  pulse.appendChild(animO);
+
+  var core = document.createElementNS(NS, 'circle');
+  core.setAttribute('class', 'dot-core');
+  core.setAttribute('cx', d.cx); core.setAttribute('cy', d.cy); core.setAttribute('r', 3);
+
+  g.appendChild(pulse);
+  g.appendChild(core);
+  dotsLayer.appendChild(g);
+
+  g.addEventListener('mouseenter', function(){
+    tip.textContent = discipline.name + ' — ' + REGIONS[d.region].name;
+    tip.style.opacity = 1;
   });
-  (function cursorLoop() {
-    cursor.style.left = cx + 'px';
-    cursor.style.top  = cy + 'px';
-    requestAnimationFrame(cursorLoop);
-  }());
-
-  function addCursorHover(el) {
-    el.addEventListener('mouseenter', function () { cursor.classList.add('big'); });
-    el.addEventListener('mouseleave', function () { cursor.classList.remove('big'); });
-  }
-
-  /* ── SCROLL REVEAL ── */
-  var ioStrip = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (e.isIntersecting) { e.target.classList.add('revealed'); ioStrip.unobserve(e.target); }
-    });
-  }, { threshold: 0.08 });
-
-  var ioReveal = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (e.isIntersecting) { e.target.classList.add('show'); ioReveal.unobserve(e.target); }
-    });
-  }, { threshold: 0.15 });
-
-  document.querySelectorAll('.js-strip').forEach(function (el) {
-    ioStrip.observe(el);
-    addCursorHover(el);
+  g.addEventListener('mouseleave', function(){ tip.style.opacity = 0; });
+  g.addEventListener('click', function(e){
+    e.stopPropagation();
+    openDiscipline(d.region, d.index);
   });
-  document.querySelectorAll('.js-reveal').forEach(function (el) { ioReveal.observe(el); });
-
-  /* ── PARALLAX ──
-     The image is 140% tall with top:-20%, so it starts centred.
-     We shift it ±12% of its own height based on scroll position.
-     That stays well within the 40% of extra image height available. */
-  var parallaxEls = document.querySelectorAll('.js-parallax');
-
-  /* ── HERO PARALLAX ── */
-  var heroImg = document.querySelector('.js-hero-parallax');
-  function onScroll() {
-    /* Hero: moves at half scroll speed for depth effect */
-    if (heroImg) {
-      var scrollY = window.scrollY || window.pageYOffset;
-      heroImg.style.transform = 'translateY(' + (scrollY * 0.35) + 'px)';
-    }
-    /* Strip parallax */
-    var vh = window.innerHeight;
-    parallaxEls.forEach(function (strip) {
-      var rect = strip.getBoundingClientRect();
-      if (rect.bottom < 0 || rect.top > vh) return;
-      var img = strip.querySelector('.strip-img');
-      if (!img) return;
-      // Normalised: 0 when strip centre is at viewport centre
-      var progress = ((rect.top + rect.height / 2) - vh / 2) / vh;
-      img.style.transform = 'translateY(' + (progress * 12) + '%)';
-    });
-  }
-
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll(); // position correctly on first paint
-
-
-   /* ════════════════════════════════════════════
-     MAP DOTS — rendered via DOM API (no innerHTML)
-     viewBox: 0 0 2000 857
-     ════════════════════════════════════════════ */
-  var NS = 'http://www.w3.org/2000/svg';
-  var dotsLayer   = document.getElementById('dots-layer');
-  var mapTooltip  = document.getElementById('map-tooltip');
-  var mapCont     = document.getElementById('mapContainer');
-
-  var DOT_R_CORE  = 7;
-  var DOT_R_PULSE_START = 12;
-  var DOT_R_PULSE_END   = 24;
-  var DOT_LABEL_DX = 12;
-  var DOT_FONT_SIZE = 13;
-
-  Object.keys(DOTS).forEach(function (key) {
-    var dot    = DOTS[key];
-    var region = REGIONS[key];
-    if (!region) return;
-
-    var g = document.createElementNS(NS, 'g');
-    g.setAttribute('class', 'dot-group');
-    g.setAttribute('role', 'button');
-    g.setAttribute('tabindex', '0');
-    g.setAttribute('aria-label', 'Explore ' + region.name + ' disciplines');
-    g.dataset.region = key;
-
-    /* Pulse ring with SMIL animate */
-    var pulse = document.createElementNS(NS, 'circle');
-    pulse.setAttribute('class', 'dot-pulse');
-    pulse.setAttribute('cx', dot.cx);
-    pulse.setAttribute('cy', dot.cy);
-    pulse.setAttribute('r', DOT_R_PULSE_START);
-
-    var animR = document.createElementNS(NS, 'animate');
-    animR.setAttribute('attributeName', 'r');
-    animR.setAttribute('values', DOT_R_PULSE_START + ';' + DOT_R_PULSE_END + ';' + DOT_R_PULSE_START);
-    animR.setAttribute('dur', '2.8s');
-    animR.setAttribute('repeatCount', 'indefinite');
-    pulse.appendChild(animR);
-
-    var animO = document.createElementNS(NS, 'animate');
-    animO.setAttribute('attributeName', 'opacity');
-    animO.setAttribute('values', '0.7;0;0.7');
-    animO.setAttribute('dur', '2.8s');
-    animO.setAttribute('repeatCount', 'indefinite');
-    pulse.appendChild(animO);
-
-    /* Core circle */
-    var core = document.createElementNS(NS, 'circle');
-    core.setAttribute('class', 'dot-core');
-    core.setAttribute('cx', dot.cx);
-    core.setAttribute('cy', dot.cy);
-    core.setAttribute('r', DOT_R_CORE);
-
-    /* Label */
-    var label = document.createElementNS(NS, 'text');
-    label.setAttribute('class', 'dot-label');
-    label.setAttribute('x', dot.cx + DOT_LABEL_DX);
-    label.setAttribute('y', dot.cy + 4);
-    label.setAttribute('font-size', DOT_FONT_SIZE);
-    label.textContent = dot.label;
-
-    g.appendChild(pulse);
-    g.appendChild(core);
-    g.appendChild(label);
-    dotsLayer.appendChild(g);
-
-    /* Mouse events */
-    g.addEventListener('mouseenter', function () {
-      cursor.classList.add('big');
-      mapTooltip.textContent = region.name;
-      mapTooltip.classList.add('show');
-    });
-    g.addEventListener('mousemove', function (e) {
-      var r = mapCont.getBoundingClientRect();
-      mapTooltip.style.left = (e.clientX - r.left + 14) + 'px';
-      mapTooltip.style.top  = (e.clientY - r.top  - 10) + 'px';
-    });
-    g.addEventListener('mouseleave', function () {
-      cursor.classList.remove('big');
-      mapTooltip.classList.remove('show');
-    });
-    g.addEventListener('click', function () { openPanel(key); });
-    g.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPanel(key); }
-    });
+  g.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); e.stopPropagation(); openDiscipline(d.region, d.index); }
   });
+});
 
-  /* ════════════════════════════════════════════
-     REGION PANEL
-     ════════════════════════════════════════════ */
-  var panel    = document.getElementById('region-panel');
-  var backdrop = document.getElementById('panel-backdrop');
-  var btnClose = document.getElementById('panelClose');
-  var lastFocus = null;
+var mapWrap = document.getElementById('map-wrap');
+var scale = 1, panX = 0, panY = 0;
+var MIN_SCALE = 1, MAX_SCALE = 6;
 
-  function openPanel(key) {
-    var data = REGIONS[key];
-    if (!data) return;
-    lastFocus = document.activeElement;
+function applyTransform(){
+  svg.style.transform = 'translate(' + panX + 'px,' + panY + 'px) scale(' + scale + ')';
+}
 
-    document.getElementById('panelTag').textContent  = 'Region';
-    document.getElementById('panelName').textContent = data.name;
-    document.getElementById('panelDesc').textContent = data.desc;
-    buildFilters(data.disciplines);
-    renderCards(data.disciplines, 'all');
+function clampPan(){
+  var rect = mapWrap.getBoundingClientRect();
+  var contentW = rect.width, contentH = rect.width * (857 / 2000);
+  var minX = contentW - contentW * scale, maxX = 0;
+  var minY = contentH - contentH * scale, maxY = 0;
+  panX = Math.min(maxX, Math.max(minX, panX));
+  panY = Math.min(maxY, Math.max(minY, panY));
+}
 
-    panel.classList.add('open');
-    backdrop.classList.add('show');
-    document.body.style.overflow = 'hidden';
-    panel.scrollTop = 0;
-    btnClose.focus();
+function setScale(newScale, pivotX, pivotY){
+  newScale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, newScale));
+  if (pivotX === undefined){
+    var r = mapWrap.getBoundingClientRect();
+    pivotX = r.width / 2; pivotY = r.height / 2;
   }
+  var contentX = (pivotX - panX) / scale;
+  var contentY = (pivotY - panY) / scale;
+  scale = newScale;
+  panX = pivotX - contentX * scale;
+  panY = pivotY - contentY * scale;
+  clampPan();
+  applyTransform();
+  svg.style.cursor = scale > 1 ? 'grab' : 'default';
+}
 
-  function closePanel() {
-    panel.classList.remove('open');
-    backdrop.classList.remove('show');
-    document.body.style.overflow = '';
-    if (lastFocus) lastFocus.focus();
+document.getElementById('zoom-in').addEventListener('click', function(e){ e.stopPropagation(); setScale(scale * 1.5); });
+document.getElementById('zoom-out').addEventListener('click', function(e){ e.stopPropagation(); setScale(scale / 1.5); });
+document.getElementById('zoom-reset').addEventListener('click', function(e){ e.stopPropagation(); scale = 1; panX = 0; panY = 0; applyTransform(); svg.style.cursor='default'; });
+
+mapWrap.addEventListener('wheel', function(e){
+  if (e.target.closest('#zoom-controls')) return;
+  e.preventDefault();
+  var r = mapWrap.getBoundingClientRect();
+  var pivotX = e.clientX - r.left, pivotY = e.clientY - r.top;
+  var factor = e.deltaY < 0 ? 1.15 : 1/1.15;
+  setScale(scale * factor, pivotX, pivotY);
+}, { passive:false });
+
+var dragging = false, dragMoved = false, dragStartX, dragStartY, panStartX, panStartY;
+mapWrap.addEventListener('pointerdown', function(e){
+  if (e.target.closest('#zoom-controls')) return; // never treat button clicks as a drag
+  if (scale <= 1) return;
+  dragging = true; dragMoved = false;
+  dragStartX = e.clientX; dragStartY = e.clientY;
+  panStartX = panX; panStartY = panY;
+  svg.classList.add('dragging');
+});
+document.addEventListener('pointermove', function(e){
+  if (!dragging) return;
+  var dx = e.clientX - dragStartX, dy = e.clientY - dragStartY;
+  if (Math.abs(dx) > 3 || Math.abs(dy) > 3) dragMoved = true;
+  panX = panStartX + dx; panY = panStartY + dy;
+  clampPan();
+  applyTransform();
+});
+function endDrag(){ dragging = false; svg.classList.remove('dragging'); }
+document.addEventListener('pointerup', endDrag);
+document.addEventListener('pointercancel', endDrag);
+
+svg.addEventListener('click', function(e){
+  if (dragMoved){ e.stopPropagation(); dragMoved = false; }
+}, true);
+
+document.addEventListener('mousemove', function(e){
+  tip.style.left = (e.clientX + 14) + 'px';
+  tip.style.top  = (e.clientY - 30) + 'px';
+});
+
+function getCountry(el){
+  while (el && el !== document.body){
+    if (el.classList && el.classList.contains('country')) return el;
+    el = el.parentElement;
   }
+  return null;
+}
 
-  function buildFilters(disciplines) {
-    var seen  = {};
-    var types = ['all'];
-    disciplines.forEach(function (d) {
-      if (!seen[d.type]) { seen[d.type] = true; types.push(d.type); }
-    });
-    var labels = { all: 'All', martial: 'Martial Arts', dance: 'Dance', sport: 'Sport' };
-    var row = document.getElementById('panelFilters');
-    row.innerHTML = '';
-    types.forEach(function (t, i) {
-      var btn = document.createElement('button');
-      btn.className   = 'filter-btn' + (i === 0 ? ' active' : '');
-      btn.dataset.type = t;
-      btn.textContent  = labels[t] || t;
-      btn.addEventListener('click', function () {
-        row.querySelectorAll('.filter-btn').forEach(function (b) { b.classList.remove('active'); });
-        btn.classList.add('active');
-        renderCards(disciplines, t);
-      });
-      row.appendChild(btn);
-    });
+svg.addEventListener('mouseover', function(e){
+  if (e.target.closest && e.target.closest('.dot-group')) return;
+  var c = getCountry(e.target);
+  if (!c){ tip.style.opacity = 0; return; }
+  var region = c.dataset.region;
+  tip.textContent = region ? REGIONS[region].name : (COUNTRIES[c.id] || c.dataset.name || c.id);
+  tip.style.opacity = 1;
+});
+svg.addEventListener('mouseleave', function(){ tip.style.opacity = 0; });
+
+/* ===================== Click => country opens full region ===================== */
+svg.addEventListener('click', function(e){
+  if (e.target.closest && e.target.closest('.dot-group')) return;
+  var c = getCountry(e.target);
+  if (!c) return;
+  var region = c.dataset.region;
+  if (!region){
+    info.innerHTML = '<span style="color:#666">' + (COUNTRIES[c.id] || c.id) + ' — no tradition documented yet.</span>';
+    return;
   }
+  highlightRegion(region);
+  openRegion(region);
+});
 
-  function renderCards(disciplines, filter) {
-    var filtered = filter === 'all'
-      ? disciplines
-      : disciplines.filter(function (d) { return d.type === filter; });
-
-    var container = document.getElementById('panelCards');
-    container.innerHTML = '';
-
-    if (!filtered.length) {
-      var empty = document.createElement('p');
-      empty.className   = 'panel-empty';
-      empty.textContent = 'No disciplines in this category for this region yet.';
-      container.appendChild(empty);
-      return;
-    }
-
-    var typeLabel = { martial: 'Martial Art', dance: 'Dance', sport: 'Sport' };
-
-    filtered.forEach(function (d) {
-      var card  = document.createElement('div');
-      card.className = 'discipline-card';
-      addCursorHover(card);
-
-      var inner  = document.createElement('div');
-      inner.className = 'discipline-card-inner';
-
-      var badge  = document.createElement('span');
-      badge.className   = 'dc-type-badge ' + d.type;
-      badge.textContent = typeLabel[d.type] || d.type;
-
-      var name   = document.createElement('div');
-      name.className   = 'dc-name';
-      name.textContent = d.name;
-
-      var origin = document.createElement('div');
-      origin.className   = 'dc-origin';
-      origin.textContent = d.origin;
-
-      var desc   = document.createElement('div');
-      desc.className   = 'dc-desc';
-      desc.textContent = d.desc;
-
-      var tags   = document.createElement('div');
-      tags.className = 'dc-tags';
-      d.tags.forEach(function (t) {
-        var span = document.createElement('span');
-        span.className   = 'dc-tag';
-        span.textContent = t;
-        tags.appendChild(span);
-      });
-
-      inner.appendChild(badge);
-      inner.appendChild(name);
-      inner.appendChild(origin);
-      inner.appendChild(desc);
-      inner.appendChild(tags);
-      card.appendChild(inner);
-      container.appendChild(card);
-    });
-  }
-
-  /* Close triggers */
-  btnClose.addEventListener('click', closePanel);
-  backdrop.addEventListener('click', closePanel);
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && panel.classList.contains('open')) closePanel();
-  });
-
-  /* ── Focus trap inside open panel (FIXED: correct first/last logic) ── */
-  panel.addEventListener('keydown', function (e) {
-    if (e.key !== 'Tab') return;
-    var focusable = panel.querySelectorAll(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-    );
-    if (!focusable.length) return;
-    var first = focusable[0];
-    var last  = focusable[focusable.length - 1];
-    if (e.shiftKey) {
-      /* Shift+Tab: if on first element, wrap to last */
-      if (document.activeElement === first) { e.preventDefault(); last.focus(); }
-    } else {
-      /* Tab: if on last element, wrap to first */
-      if (document.activeElement === last)  { e.preventDefault(); first.focus(); }
+var highlightedEls = [];
+function clearHighlights(){
+  highlightedEls.forEach(function(el){ el.classList.remove('selected'); });
+  highlightedEls = [];
+  if (selectedCountryEl){ selectedCountryEl.classList.remove('selected'); selectedCountryEl = null; }
+}
+function highlightRegion(regionKey){
+  clearHighlights();
+  Object.keys(REGION_MAP).forEach(function(id){
+    if (REGION_MAP[id] === regionKey){
+      var el = document.getElementById(id);
+      if (el){ el.classList.add('selected'); highlightedEls.push(el); }
     }
   });
+}
 
-}());
+/* ===================== Panel ===================== */
+var panel = document.getElementById('region-panel');
+var backdrop = document.getElementById('panel-backdrop');
+var btnClose = document.getElementById('panelClose');
+var btnBack = document.getElementById('panelBack');
+var lastFocus = null;
+var currentRegion = null;
 
+function openRegion(regionKey){
+  var data = REGIONS[regionKey];
+  if (!data) return;
+  currentRegion = regionKey;
+  lastFocus = document.activeElement;
+
+  btnBack.style.display = 'none';
+  document.getElementById('panelTag').textContent = 'Region';
+  document.getElementById('panelName').textContent = data.name;
+  document.getElementById('panelOrigin').style.display = 'none';
+  document.getElementById('panelDesc').textContent = data.desc;
+  document.getElementById('panelFilters').style.display = 'flex';
+  buildFilters(data.disciplines);
+  renderCards(data.disciplines, 'all');
+
+  showPanel();
+}
+
+function openDiscipline(regionKey, index){
+  var data = REGIONS[regionKey];
+  var d = data.disciplines[index];
+  currentRegion = regionKey;
+  lastFocus = document.activeElement;
+
+  highlightRegion(regionKey);
+
+  btnBack.style.display = 'inline-flex';
+  btnBack.onclick = function(){ openRegion(regionKey); };
+
+  var typeLabel = { martial:'Martial Art', dance:'Dance', sport:'Sport' };
+  document.getElementById('panelTag').textContent = typeLabel[d.type] + ' · ' + data.name;
+  document.getElementById('panelName').textContent = d.name;
+  document.getElementById('panelOrigin').style.display = 'block';
+  document.getElementById('panelOrigin').textContent = d.origin;
+  document.getElementById('panelDesc').textContent = d.desc;
+  document.getElementById('panelFilters').style.display = 'none';
+  document.getElementById('panelFilters').innerHTML = '';
+
+  var container = document.getElementById('panelCards');
+  container.innerHTML = '';
+  container.appendChild(buildCard(d, typeLabel));
+
+  showPanel();
+}
+
+function showPanel(){
+  panel.classList.add('open');
+  panel.setAttribute('aria-hidden','false');
+  backdrop.classList.add('show');
+  document.body.style.overflow = 'hidden';
+  panel.scrollTop = 0;
+  btnClose.focus();
+}
+
+function closePanel(){
+  panel.classList.remove('open');
+  panel.setAttribute('aria-hidden','true');
+  backdrop.classList.remove('show');
+  document.body.style.overflow = '';
+  if (selectedCountryEl){ selectedCountryEl.classList.remove('selected'); selectedCountryEl = null; }
+  if (lastFocus) lastFocus.focus();
+}
+
+function buildFilters(disciplines){
+  var seen = {}; var types = ['all'];
+  disciplines.forEach(function(d){ if (!seen[d.type]){ seen[d.type]=true; types.push(d.type); } });
+  var labels = { all:'All', martial:'Martial Arts', dance:'Dance', sport:'Sport' };
+  var row = document.getElementById('panelFilters');
+  row.innerHTML = '';
+  types.forEach(function(t, i){
+    var btn = document.createElement('button');
+    btn.className = 'filter-btn' + (i===0 ? ' active' : '');
+    btn.textContent = labels[t] || t;
+    btn.addEventListener('click', function(){
+      row.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      renderCards(disciplines, t);
+    });
+    row.appendChild(btn);
+  });
+}
+
+function buildCard(d, typeLabel){
+  var card = document.createElement('div');
+  card.className = 'discipline-card';
+  var badge = document.createElement('span');
+  badge.className = 'dc-type-badge ' + d.type;
+  badge.textContent = typeLabel[d.type] || d.type;
+  var name = document.createElement('div'); name.className='dc-name'; name.textContent=d.name;
+  var origin = document.createElement('div'); origin.className='dc-origin'; origin.textContent=d.origin;
+  var desc = document.createElement('div'); desc.className='dc-desc'; desc.textContent=d.desc;
+  var tags = document.createElement('div'); tags.className='dc-tags';
+  d.tags.forEach(function(t){ var s=document.createElement('span'); s.className='dc-tag'; s.textContent=t; tags.appendChild(s); });
+  card.appendChild(badge); card.appendChild(name); card.appendChild(origin); card.appendChild(desc); card.appendChild(tags);
+  return card;
+}
+
+function renderCards(disciplines, filter){
+  var typeLabel = { martial:'Martial Art', dance:'Dance', sport:'Sport' };
+  var filtered = filter === 'all' ? disciplines : disciplines.filter(function(d){ return d.type === filter; });
+  var container = document.getElementById('panelCards');
+  container.innerHTML = '';
+  if (!filtered.length){
+    var empty = document.createElement('p');
+    empty.className = 'panel-empty';
+    empty.textContent = 'No disciplines in this category yet.';
+    container.appendChild(empty);
+    return;
+  }
+  filtered.forEach(function(d){ container.appendChild(buildCard(d, typeLabel)); });
+}
+
+btnClose.addEventListener('click', closePanel);
+backdrop.addEventListener('click', closePanel);
+document.addEventListener('keydown', function(e){
+  if (e.key === 'Escape' && panel.classList.contains('open')) closePanel();
+});
+
+/* ===================== Search — type-ahead suggestions, no auto-select ===================== */
+var resultsBox = document.getElementById('search-results');
+
+function hideResults(){
+  resultsBox.classList.remove('show');
+  resultsBox.innerHTML = '';
+}
+
+function selectRegionResult(key){
+  search.value = REGIONS[key].name;
+  hideResults();
+  highlightRegion(key);
+  openRegion(key);
+}
+
+function selectCountryResult(id){
+  var el = document.getElementById(id);
+  search.value = COUNTRIES[id] || id;
+  hideResults();
+  if (!el) return;
+  var region = el.dataset.region;
+  if (region){ highlightRegion(region); openRegion(region); return; }
+  // plain country with no region data — just highlight it alone
+  clearHighlights();
+  el.classList.add('selected');
+  selectedCountryEl = el;
+  info.innerHTML = '<strong>' + (COUNTRIES[id] || id) + '</strong>';
+}
+
+search.addEventListener('input', function(){
+  var q = search.value.trim().toLowerCase();
+  if (!q){ hideResults(); info.innerHTML = 'Click a country for its full list, or click a dot for a single tradition.'; return; }
+
+  var matches = [];
+  var usedLabels = {};
+
+  Object.keys(REGIONS).forEach(function(key){
+    if (REGIONS[key].name.toLowerCase().includes(q)){
+      matches.push({ kind:'Region', label: REGIONS[key].name, action: function(){ selectRegionResult(key); } });
+      usedLabels[REGIONS[key].name.toLowerCase()] = true;
+    }
+  });
+
+  Object.keys(COUNTRIES).forEach(function(id){
+    if (matches.length >= 8) return;
+    var label = COUNTRIES[id];
+    if (usedLabels[label.toLowerCase()]) return; // already shown as a region (e.g. "Brazil")
+    if (label.toLowerCase().includes(q) && document.getElementById(id)){
+      matches.push({ kind:'Country', label: label, action: function(){ selectCountryResult(id); } });
+      usedLabels[label.toLowerCase()] = true;
+    }
+  });
+
+  matches = matches.slice(0, 8);
+
+  resultsBox.innerHTML = '';
+  if (!matches.length){
+    var empty = document.createElement('div');
+    empty.className = 'search-empty';
+    empty.textContent = 'No match for "' + search.value.trim() + '"';
+    resultsBox.appendChild(empty);
+  } else {
+    matches.forEach(function(m){
+      var row = document.createElement('div');
+      row.className = 'search-result';
+      var label = document.createElement('span');
+      label.textContent = m.label;
+      var kind = document.createElement('span');
+      kind.className = 'search-result-kind';
+      kind.textContent = m.kind;
+      row.appendChild(label);
+      row.appendChild(kind);
+      row.addEventListener('click', m.action);
+      resultsBox.appendChild(row);
+    });
+  }
+  resultsBox.classList.add('show');
+});
+
+search.addEventListener('keydown', function(e){
+  if (e.key === 'Escape') hideResults();
+});
+
+document.addEventListener('click', function(e){
+  if (!e.target.closest('#search-wrap')) hideResults();
+});
+
+document.getElementById('clear-btn').addEventListener('click', function(){
+  search.value = '';
+  hideResults();
+  clearHighlights();
+  info.innerHTML = 'Click a country for its full list, or click a dot for a single tradition.';
+});
+
+})();
 </script>
+
 </body>
 </html>

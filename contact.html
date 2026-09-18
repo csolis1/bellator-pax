@@ -24,7 +24,6 @@ body {
 }
 ::-webkit-scrollbar { display: none; }
 
-/* ── PAGE FADE IN ─────────────────────────────────────── */
 .page-fade {
   animation: pageFadeIn .7s var(--ease) both;
 }
@@ -33,7 +32,6 @@ body {
   to   { opacity: 1; }
 }
 
-/* ── CURSOR ───────────────────────────────────────────── */
 #cursor {
   position: fixed; width: 40px; height: 40px; border-radius: 50%;
   background: white; pointer-events: none; z-index: 9998;
@@ -45,7 +43,6 @@ body {
 #cursor.visible { clip-path: circle(50% at 50% 50%); }
 #cursor.big { width: 80px; height: 80px; }
 
-/* ── NAV ──────────────────────────────────────────────── */
 .menu {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
@@ -70,7 +67,6 @@ body {
 #clock span { animation: blink 1s steps(1) infinite; }
 @keyframes blink { 50% { visibility: hidden; } }
 
-/* ── PAGE LAYOUT ──────────────────────────────────────── */
 .page {
   padding: 0 3vw;
   min-height: 100vh;
@@ -80,7 +76,6 @@ body {
   gap: 0;
 }
 
-/* ── STATEMENT — full width top ───────────────────────── */
 .statement {
   grid-column: 1 / -1;
   padding-top: 12vw;
@@ -117,7 +112,6 @@ body {
   color: var(--fg); font-weight: 400;
 }
 
-/* ── LEFT COL — info ──────────────────────────────────── */
 .info-col {
   grid-column: 1;
   border-right: 1px solid var(--dim);
@@ -161,7 +155,6 @@ body {
   color: var(--muted);
 }
 
-/* ── RIGHT COL — FORM ─────────────────────────────────── */
 .form-col {
   grid-column: 2;
   padding: 4vw 0 6vw 4vw;
@@ -176,7 +169,6 @@ body {
   color: var(--muted); margin-bottom: 2.5vw;
 }
 
-/* form fields */
 .field {
   margin-bottom: 1.8vw;
   position: relative;
@@ -211,7 +203,6 @@ body {
 
 .field textarea { resize: none; height: 7rem; line-height: 1.65; }
 
-/* select arrow */
 .select-wrap { position: relative; }
 .select-wrap::after {
   content: '↓';
@@ -220,10 +211,8 @@ body {
 }
 .field select option { background: #1e1e1e; color: var(--fg); }
 
-/* two-col row */
 .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 2vw; }
 
-/* underline animation */
 .field::after {
   content: '';
   position: absolute; bottom: 0; left: 0;
@@ -232,7 +221,6 @@ body {
 }
 .field:focus-within::after { width: 100%; }
 
-/* submit */
 .submit-row {
   display: flex; align-items: center;
   justify-content: space-between;
@@ -262,7 +250,6 @@ body {
   opacity: .4; pointer-events: none;
 }
 
-/* ── CONFIRMATION ─────────────────────────────────────── */
 .confirmation {
   display: none;
   flex-direction: column;
@@ -301,7 +288,6 @@ body {
 }
 .conf-back:hover { color: var(--fg); }
 
-/* ── MOBILE NAV ───────────────────────────────────────── */
 .menu-burger {
   display: none;
   flex-direction: column; gap: 5px;
@@ -358,7 +344,6 @@ body {
   color: var(--muted); letter-spacing: .04em; text-decoration: none;
 }
 
-/* ── HERO IMAGE ───────────────────────────────────────── */
 .hero-img {
   grid-column: 1 / -1;
   width: 100%;
@@ -384,7 +369,6 @@ body {
   opacity: .6; pointer-events: none;
 }
 
-/* ── RESPONSIVE ───────────────────────────────────────── */
 @media (max-width: 860px) {
   .page { grid-template-columns: 1fr; }
   .hero-img { aspect-ratio: 4/3; }
@@ -404,7 +388,6 @@ body {
 
 <div id="cursor"></div>
 
-<!-- NAV -->
 <nav class="menu page-fade" style="animation-delay:.1s">
   <div class="menu-link-holder">
     <a href="/index.html" class="menu-logo">
@@ -433,7 +416,6 @@ body {
   </button>
 </nav>
 
-<!-- MOBILE NAV -->
 <div class="mobile-nav" id="mobileNav">
   <nav class="mobile-nav-links">
     <a href="/index.html"          class="mobile-nav-link">Fight Styles</a>
@@ -449,15 +431,12 @@ body {
   </div>
 </div>
 
-<!-- PAGE -->
 <div class="page">
 
-  <!-- HERO IMAGE -->
   <div class="hero-img" id="heroImg">
     <div class="hero-img-inner"></div>
   </div>
 
-  <!-- STATEMENT -->
   <div class="statement" id="statement">
     <div>
       <p class="statement-kicker"> — Contact</p>
@@ -472,7 +451,6 @@ body {
     </p>
   </div>
 
-  <!-- LEFT — INFO -->
   <div class="info-col" id="infoCol">
     <div>
       <div class="info-section">
@@ -516,8 +494,6 @@ body {
     </p>
   </div>
 
-  <!-- RIGHT — FORM -->
-  <!-- ↓ THE ONLY HTML CHANGE: <form> wraps the fields, with Netlify attributes -->
   <div class="form-col" id="formCol">
     <p class="form-title">Send a message</p>
 
@@ -528,7 +504,6 @@ body {
       netlify-honeypot="bot-field"
       id="contactForm"
     >
-      <!-- Required hidden fields for Netlify -->
       <input type="hidden" name="form-name" value="contact" />
       <p style="display:none;"><input name="bot-field" /></p>
 
@@ -581,7 +556,6 @@ body {
     </form>
   </div>
 
-  <!-- CONFIRMATION (swaps in after submit) -->
   <div class="confirmation" id="confirmation">
     <div class="conf-check">✓</div>
     <h2 class="conf-headline">Message<br/><em>received.</em></h2>
@@ -592,12 +566,10 @@ body {
     <button class="conf-back" id="confBack">← Send another message</button>
   </div>
 
-</div><!-- /page -->
+</div>
 
 <script>
 (function () {
-
-  /* ── PAGE REVEAL ────────────────────────────────────── */
   document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => { document.getElementById('heroImg').classList.add('show'); }, 80);
     setTimeout(() => {
@@ -609,7 +581,6 @@ body {
     }, 420);
   });
 
-  /* ── MOBILE BURGER ──────────────────────────────────── */
   const burger    = document.getElementById('menuBurger');
   const mobileNav = document.getElementById('mobileNav');
   burger.addEventListener('click', () => {
@@ -625,7 +596,6 @@ body {
     });
   });
 
-  /* ── CURSOR ─────────────────────────────────────────── */
   const cursor = document.getElementById('cursor');
   let cx = 0, cy = 0;
   document.addEventListener('mousemove', e => {
@@ -642,7 +612,6 @@ body {
     el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
   });
 
-  /* ── CLOCK ──────────────────────────────────────────── */
   const clockEl = document.getElementById('clock');
   function tick() {
     const d = new Date();
@@ -653,13 +622,11 @@ body {
   }
   tick(); setInterval(tick, 1000);
 
-  /* ── FORM SUBMIT ────────────────────────────────────── */
   const submitBtn    = document.getElementById('submitBtn');
   const formCol      = document.getElementById('formCol');
   const confirmation = document.getElementById('confirmation');
   const confBack     = document.getElementById('confBack');
 
-  /* Field refs */
   const fname   = document.getElementById('fname');
   const lname   = document.getElementById('lname');
   const email   = document.getElementById('email');
@@ -669,7 +636,6 @@ body {
 
   submitBtn.addEventListener('click', () => {
 
-    /* ── Validation — unchanged ── */
     if (!fname.value.trim() || !email.value.trim() || !reason.value || !message.value.trim()) {
       [fname, email, reason, message].forEach(el => {
         if (!el.value.trim()) {
@@ -681,7 +647,6 @@ body {
       return;
     }
 
-    /* ── Build FormData for Netlify ── */
     const formData = new FormData();
     formData.append('form-name', 'contact');
     formData.append('fname',   fname.value.trim());
@@ -694,13 +659,11 @@ body {
     submitBtn.disabled = true;
     submitBtn.textContent = 'Sending…';
 
-    /* ── POST to Netlify ── */
     fetch('/', {
       method: 'POST',
       body: formData,
     })
     .then(() => {
-      /* Success — animate out the form, animate in confirmation */
       formCol.style.transition = 'opacity .5s var(--ease), transform .5s var(--ease)';
       formCol.style.opacity = '0';
       formCol.style.transform = 'translateY(-10px)';
@@ -716,7 +679,6 @@ body {
       }, 500);
     })
     .catch(() => {
-      /* Error — reset button with brief message */
       submitBtn.disabled = false;
       submitBtn.textContent = 'Something went wrong — try again';
       submitBtn.style.borderColor = 'rgba(255,100,100,.7)';
@@ -727,7 +689,6 @@ body {
     });
   });
 
-  /* ── Reset form ── */
   confBack.addEventListener('click', () => {
     confirmation.classList.remove('show-panel', 'animate');
     formCol.style.display = '';
