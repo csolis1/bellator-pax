@@ -4,7 +4,6 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-  <!-- ═══ PRIMARY SEO ═══ -->
   <title>Inside The Fighter's Mind: Bongo the Fight Pirate | ELYSION DOCTRINE</title>
   <meta name="description" content="Marine veteran and 32-belt champion Sabastian 'Bongo' Aguilar is one of the most decorated fighters in Muay Thai, kickboxing, and boxing. A profile by C.I Solis for ELYSION DOCTRINE."/>
   <meta name="keywords" content="Bongo, Sabastian Aguilar, fight pirate, Muay Thai, kickboxing, boxing, Taekwondo, Karate, Marine veteran, ELYSION DOCTRINE, fight journalism, fighter profile, Striker Fight Center, Thailand Muay Thai"/>
@@ -12,7 +11,6 @@
   <meta name="robots" content="index, follow"/>
   <link rel="canonical" href="https://elysion-doctrine.com/articles/bongo"/>
 
-  <!-- ═══ OPEN GRAPH (Facebook, WhatsApp, LinkedIn) ═══ -->
   <meta property="og:type" content="article"/>
   <meta property="og:site_name" content="ELYSION DOCTRINE"/>
   <meta property="og:title" content="Inside The Fighter's Mind: Bongo the Fight Pirate"/>
@@ -30,7 +28,6 @@
   <meta property="article:tag" content="Fighter Profile"/>
   <meta property="article:tag" content="Kickboxing"/>
 
-  <!-- ═══ TWITTER / X CARD ═══ -->
   <meta name="twitter:card" content="summary_large_image"/>
   <meta name="twitter:site" content="@elysion_doctrine"/>
   <meta name="twitter:creator" content="@elysion_doctrine"/>
@@ -39,7 +36,6 @@
   <meta name="twitter:image" content="https://elysion-doctrine.com/images/bongo.jpg"/>
   <meta name="twitter:image:alt" content="Sabastian 'Bongo' Aguilar in the ring"/>
 
-  <!-- ═══ STRUCTURED DATA — Article (JSON-LD) ═══ -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -78,7 +74,6 @@
       padding: 0;
     }
 
-    /* ------------------- THEME ------------------- */
     :root {
       --bg: #161616;
       --fg: #fafafa;
@@ -115,7 +110,6 @@
     ::-webkit-scrollbar { display: none; }
 
 
-    /* ------------------- PRELOADER ------------------- */
     #preloader {
       position: fixed; inset: 0; background: var(--bg); z-index: 9999;
       display: flex; align-items: center; justify-content: center;
@@ -148,26 +142,21 @@
       to   { transform: rotate(360deg); }
     }
 
-
-    /* ------------------- CURSOR — desktop only ------------------- */
     #cursor {
       position: fixed; width: 40px; height: 40px; border-radius: 50%; background: #fff;
       pointer-events: none; z-index: 9998; transform: translate(-50%, -50%);
       mix-blend-mode: difference; clip-path: circle(0% at 50% 50%);
       transition: clip-path 0.6s var(--ease), width 0.4s var(--ease), height 0.4s var(--ease);
       top: 0; left: 0;
-      /* Hidden on touch devices via JS + media query below */
     }
     #cursor.visible { clip-path: circle(50% at 50% 50%); }
     #cursor.case-hover { width: 100px; height: 100px; }
 
-    /* Hide cursor element entirely on touch/mobile */
     @media (hover: none) and (pointer: coarse) {
       #cursor { display: none !important; }
     }
 
 
-    /* ------------------- NAV ------------------- */
     .menu {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
@@ -200,7 +189,6 @@
     #menuClock span { animation: blink 1s steps(1) infinite; }
     @keyframes blink { 50% { visibility: hidden; } }
 
-    /* Mobile nav — hide links, shrink logo, show only clock */
     @media (max-width: 768px) {
       .menu {
         padding: 4vw 5vw;
@@ -214,8 +202,6 @@
       }
     }
 
-
-    /* ------------------- THEME TOGGLE ------------------- */
     .theme-toggle {
       position: fixed;
       top: 1.5vw;
@@ -238,7 +224,6 @@
     }
 
     @media (max-width: 768px) {
-      /* Hide toggle on mobile — accessible via menu if needed */
       .theme-toggle {
         top: auto;
         bottom: 1rem;
@@ -248,8 +233,6 @@
       }
     }
 
-
-    /* ------------------- ARTICLE LAYOUT ------------------- */
     .article-con {
       position: relative;
       padding-top: 11vw;
@@ -263,7 +246,7 @@
 
     @media (max-width: 768px) {
       .article-con {
-        padding-top: 22vw; /* more room for fixed nav */
+        padding-top: 22vw; 
       }
       .article-content {
         padding: 0 5vw;
@@ -280,8 +263,6 @@
       }
     }
 
-
-    /* ------------------- ARTICLE HEADER ------------------- */
     .article-header {
       margin-bottom: 4vw;
       border-bottom: 1px solid rgba(255,255,255,0.08);
@@ -338,8 +319,6 @@
       }
     }
 
-
-    /* ------------------- ARTICLE BODY ------------------- */
     .article-body {
       line-height: 1.6;
       font-size: clamp(0.95rem, 1.1vw, 1.2rem);
@@ -390,8 +369,6 @@
       }
     }
 
-
-    /* ------------------- IMAGE BLOCKS ------------------- */
     .article-img-block {
       position: relative;
       margin: 3.5vw 0 1.5rem;
@@ -431,8 +408,6 @@
       }
     }
 
-
-    /* ------------------- FOOTER ------------------- */
     .footer {
       background: #fafafa; color: #161616;
       padding: 3vw 3vw 0;
@@ -579,8 +554,6 @@
 </head>
 <body>
 
-
-<!-- PRELOADER -->
 <div id="preloader">
   <svg id="preloader-logo" viewBox="0 0 449 449" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M125.8448,124.9432 C42.9118,207.8772 244.7638,409.7282 327.6968,326.7952 C410.4218,244.0692 208.5718,42.2172 125.8448,124.9432 M70.6248,71.3792 C101.8548,40.1502 135.7728,19.0542 171.3448,8.2992 C207.5368,-2.6608 243.1098,-2.6608 278.6808,7.6792 C314.4598,18.6412 347.7578,39.1152 378.5738,69.9302 C409.1818,100.5402 429.8628,134.0442 440.6168,169.6162 C451.3718,205.6012 451.7848,241.5872 441.2378,278.1932 C430.8978,314.1792 409.8018,348.0972 378.5738,379.3262 C347.5508,410.3482 313.8398,431.2362 278.0608,441.3712 C241.8678,451.5052 206.0888,450.8832 170.1038,440.1302 C134.5318,429.3762 101.2338,408.4872 70.6248,377.8792 C39.8098,347.0632 19.1278,313.9722 8.1668,278.1942 C-2.5872,243.0352 -2.5872,207.4632 7.9608,171.6832 C18.5078,136.3192 39.3968,102.6082 70.6248,71.3792" fill="white"/>
@@ -592,11 +565,8 @@
 
 
 <div class="load-overlay" id="loadOverlay"></div>
-<!-- Cursor only rendered on non-touch devices via JS -->
 <div id="cursor"></div>
 
-
-<!-- NAV -->
 <nav class="menu">
   <div class="menu-link-holder">
     <a href="/" class="menu-logo">
@@ -622,8 +592,6 @@
   </div>
 </nav>
 
-
-<!-- THEME TOGGLE -->
 <button class="theme-toggle" id="themeToggle" aria-label="Toggle light / dark mode">
   <svg viewBox="0 0 24 24" fill="currentColor">
     <circle cx="12" cy="12" r="5" />
@@ -632,8 +600,6 @@
   <span class="toggle-text">Light</span>
 </button>
 
-
-<!-- MAIN ARTICLE -->
 <main class="article-con">
   <div class="article-content">
 
@@ -662,7 +628,6 @@
         And now, Striker Fight Center is home to his latest.
       </p>
 
-      <!-- IMAGE BLOCK 1 -->
       <figure class="article-img-block">
         <img
           class="article-img"
@@ -719,7 +684,6 @@
         If you survive a class with Bongo, your body will protest loudly and continuously. But somewhere inside the wreckage that used to be your musculature, when the pain quiets down a little, you will notice you are better because of it.
       </p>
 
-      <!-- IMAGE BLOCK 2 -->
       <figure class="article-img-block">
         <img
           class="article-img"
@@ -767,7 +731,6 @@
         Bongo's Mantra: "Seek the kingdom of God for all is fallen and will turn to ash!" — Of the Holy Fathers
       </blockquote>
 
-      <!-- IMAGE BLOCK 3 -->
       <figure class="article-img-block">
         <img
           class="article-img"
@@ -789,7 +752,6 @@
 </main>
 
 
-<!-- FOOTER -->
 <footer class="footer">
   <div class="footer-items">
     <div class="footer-flex">
@@ -824,8 +786,6 @@
   </div>
 </footer>
 
-
-<!-- SCRIPTS -->
 <script>
   (function () {
     const preloader    = document.getElementById('preloader');
@@ -837,7 +797,6 @@
     const clockEl      = document.getElementById('menuClock');
     const htmlRoot     = document.getElementById('htmlRoot');
 
-    /* ------------------- PRELOADER ------------------- */
     let progress = 0;
     const interval = setInterval(() => {
       progress += Math.random() * 18;
@@ -855,8 +814,6 @@
       setTimeout(() => articleTitle.classList.add('show'), 1000);
     }
 
-    /* ------------------- CURSOR — desktop/mouse only ------------------- */
-    // Only activate cursor on devices that support hover (non-touch)
     const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
 
     if (!isTouchDevice) {
@@ -871,11 +828,9 @@
         requestAnimationFrame(loop);
       })();
     } else {
-      // Fully remove cursor element on touch devices
       cursor.remove();
     }
 
-    /* ------------------- CLOCK ------------------- */
     function tick() {
       const d = new Date();
       let h = d.getHours(), m = d.getMinutes();
@@ -885,7 +840,6 @@
     }
     tick(); setInterval(tick, 1000);
 
-    /* ------------------- THEME TOGGLE ------------------- */
     const applyTheme = (theme) => {
       if (theme === 'light') {
         htmlRoot.setAttribute('data-theme', 'light');

@@ -35,7 +35,6 @@
     text-align: center;
   }
 
-  /* 3-column grid mirroring the original 2|8|2 span ratio */
   .col-grid {
     display: grid;
     grid-template-columns: 2fr 8fr 2fr;
@@ -88,15 +87,12 @@
     color: var(--cream);
     letter-spacing: 0.05em;
   }
-
-  /* scale modifiers */
   .scale-73  { font-size: calc(1em * 0.73); }
   .scale-109 { font-size: calc(1em * 1.09); }
   .scale-139 { font-size: calc(1em * 1.39); }
   .scale-14  { font-size: calc(8rem * 1.4); }
   .scale-235 { font-size: calc(1.5rem * 2.35); }
 
-  /* ── BORDERED INFO BOX (left / right columns) ── */
   .info-box {
     display: inline-block;
     padding: 0.4rem;
@@ -110,13 +106,11 @@
     letter-spacing: 0.05em;
   }
 
-  /* highlight block used in centre column */
   .highlight {
     background-color: var(--cream);
     color: var(--red);
   }
 
-  /* general spacing helpers */
   .block { display: block; }
   .br    { display: block; height: 1em; }
   .br-sm { display: block; height: 0.4em; }
@@ -141,9 +135,6 @@
 <div class="page">
   <div class="col-grid">
 
-    <!-- ══════════════════════════════
-         LEFT COLUMN  (2 spans)
-    ═══════════════════════════════ -->
     <div class="col-left">
 
       <span class="t-l block">24–7</span>
@@ -176,9 +167,6 @@
 
     </div>
 
-    <!-- ══════════════════════════════
-         CENTRE COLUMN  (8 spans)
-    ═══════════════════════════════ -->
     <div class="col-centre">
 
       <span class="t-l block">FUTURE FORCE</span>
@@ -232,9 +220,6 @@
 
     </div>
 
-    <!-- ══════════════════════════════
-         RIGHT COLUMN  (2 spans)
-    ═══════════════════════════════ -->
     <div class="col-right">
 
       <span class="t-l block">24–7</span>

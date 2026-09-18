@@ -8,21 +8,19 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Serif+KR:wght@400;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
-
-/* ─── TOKENS ─────────────────────────────────────────── */
+ 
 :root {
   --black:  #0a0a0a;
   --white:  #f5f5f0;
-  --red:    #C8001C;      /* Taegukgi red   */
-  --blue:   #003478;      /* Taegukgi blue  */
+  --red:    #C8001C;      
+  --blue:   #003478;      
   --red-lt: rgba(200,0,28,.08);
   --blue-lt:rgba(0,52,120,.08);
   --mono:   'DM Mono', monospace;
   --serif:  'Noto Serif KR', serif;
   --display:'Bebas Neue', sans-serif;
 }
-
-/* ─── RESET ─────────────────────────────────────────── */
+ 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { background: var(--black); }
 body {
@@ -33,8 +31,7 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
-
-/* ─── PAGE ENTER ANIMATION ───────────────────────────── */
+ 
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(28px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -47,15 +44,13 @@ body {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
 }
-
-/* ─── LAYOUT ─────────────────────────────────────────── */
+ 
 .page {
   max-width: 1200px;
   margin: 0 auto;
   padding: 4rem 4rem 8rem;
 }
-
-/* ─── NAV ────────────────────────────────────────────── */
+ 
 nav {
   display: flex;
   justify-content: space-between;
@@ -85,8 +80,7 @@ nav {
   transition: color .2s;
 }
 .nav-links a:hover { color: var(--black); }
-
-/* thin top rule */
+ 
 .top-rule {
   width: 100%;
   height: 1px;
@@ -95,12 +89,11 @@ nav {
   opacity: 0;
   animation: revealRight .9s .2s ease forwards;
 }
-
-/* ─── HEADLINE BLOCK ─────────────────────────────────── */
+ 
 .headline-block {
   margin-bottom: 3.5rem;
 }
-
+ 
 .title-row {
   display: flex;
   align-items: baseline;
@@ -112,7 +105,7 @@ nav {
 .title-row:nth-child(1) { animation-delay: .25s; }
 .title-row:nth-child(2) { animation-delay: .38s; margin-left: 4vw; }
 .title-row:nth-child(3) { animation-delay: .51s; margin-left: 9vw; }
-
+ 
 .portfolio-word {
   font-family: var(--display);
   font-size: clamp(5rem, 14vw, 13rem);
@@ -120,8 +113,7 @@ nav {
   color: var(--black);
   line-height: .88;
 }
-
-/* small tag next to the big word */
+ 
 .title-tag {
   font-family: var(--mono);
   font-size: .65rem;
@@ -131,8 +123,7 @@ nav {
   white-space: nowrap;
   padding-bottom: .4em;
 }
-
-/* ─── KOREAN ACCENT BOX ──────────────────────────────── */
+ 
 .korean-box {
   position: relative;
   margin: 0 0 5rem;
@@ -140,8 +131,7 @@ nav {
   overflow: hidden;
   opacity: 0;
   animation: fadeUp .75s .65s ease forwards;
-
-  /* Base: deep night gradient */
+ 
   background: linear-gradient(135deg,
     #0a0a0a 0%,
     #0d1a2e 35%,
@@ -149,9 +139,9 @@ nav {
     #0a0a0a 100%
   );
   border: 1px solid rgba(245,245,240,.08);
+  transition: padding .4s ease;
 }
-
-/* Taeguk circles — pure CSS, no images */
+ 
 .korean-box::before,
 .korean-box::after {
   content: '';
@@ -159,7 +149,7 @@ nav {
   border-radius: 50%;
   pointer-events: none;
 }
-/* Blue orb */
+ 
 .korean-box::before {
   width: 280px; height: 280px;
   top: -80px; right: -60px;
@@ -169,7 +159,7 @@ nav {
     transparent 70%
   );
 }
-/* Red orb */
+ 
 .korean-box::after {
   width: 220px; height: 220px;
   bottom: -60px; right: 60px;
@@ -179,8 +169,7 @@ nav {
     transparent 70%
   );
 }
-
-/* Trigram bars — decorative vertical stack */
+ 
 .trigrams {
   position: absolute;
   right: 2.8rem;
@@ -211,8 +200,7 @@ nav {
   background: var(--black);
   border-radius: 2px;
 }
-
-/* Rotating taeguk circle */
+ 
 .taeguk {
   position: absolute;
   bottom: 1.4rem;
@@ -228,8 +216,7 @@ nav {
   );
   opacity: .25;
 }
-
-/* Korean character watermarks */
+ 
 .hangul-marks {
   position: absolute;
   top: 1.2rem;
@@ -243,7 +230,7 @@ nav {
   user-select: none;
   white-space: nowrap;
 }
-
+ 
 .box-inner {
   position: relative;
   z-index: 2;
@@ -252,9 +239,9 @@ nav {
   gap: 3rem;
   align-items: start;
 }
-
+ 
 .box-left { }
-
+ 
 .box-label {
   font-family: var(--mono);
   font-size: .62rem;
@@ -263,30 +250,92 @@ nav {
   color: var(--red);
   margin-bottom: 1.1rem;
 }
-
+ 
 .box-headline {
   font-family: var(--serif);
   font-size: clamp(1.4rem, 2.6vw, 2.2rem);
   font-weight: 700;
   line-height: 1.25;
-  color: var(--black);
+  color: var(--white);
   margin-bottom: 1.4rem;
 }
 .box-headline em {
   font-style: italic;
   color: rgba(245,245,240,.55);
 }
-
+ 
 .box-desc {
   font-family: var(--mono);
   font-size: .72rem;
   line-height: 1.85;
   color: rgba(245,245,240,.42);
-  max-width: 38ch;
+  max-width: 42ch;
   letter-spacing: .04em;
 }
-
-/* Stat pills on the right */
+ 
+.article-collapsed { }
+.article-full {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows .5s ease, opacity .4s ease .05s, margin-top .5s ease;
+  max-width: 44ch;
+}
+.article-full > div { overflow: hidden; }
+.korean-box.expanded .article-full {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  margin-top: 1.1rem;
+}
+.korean-box.expanded .article-collapsed { display: none; }
+ 
+.article-para {
+  font-family: var(--mono);
+  font-size: .72rem;
+  line-height: 1.9;
+  color: rgba(245,245,240,.42);
+  letter-spacing: .03em;
+  margin-bottom: 1.1rem;
+}
+.article-para:last-child { margin-bottom: 0; }
+.article-subhead {
+  font-family: var(--mono);
+  font-size: .6rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin: 1.3rem 0 .6rem;
+}
+.article-subhead:first-child { margin-top: 0; }
+ 
+.read-more-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  margin-top: 1.2rem;
+  background: none;
+  border: none;
+  border-top: 1px solid rgba(245,245,240,.2);
+  padding-top: .7rem;
+  font-family: var(--mono);
+  font-size: .62rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(245,245,240,.55);
+  cursor: pointer;
+  transition: color .2s;
+}
+.read-more-btn:hover { color: var(--white); }
+.read-more-btn .rm-chevron {
+  width: 6px;
+  height: 6px;
+  border-right: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform .3s ease;
+}
+.korean-box.expanded .rm-chevron { transform: rotate(-135deg); }
+ 
 .box-stats {
   display: flex;
   flex-direction: column;
@@ -314,8 +363,7 @@ nav {
   text-transform: uppercase;
   color: rgba(245,245,240,.3);
 }
-
-/* Horizontal rule inside box */
+ 
 .box-rule {
   width: 100%;
   height: 1px;
@@ -324,8 +372,7 @@ nav {
   position: relative;
   z-index: 2;
 }
-
-/* ─── STAGGERED LIST ─────────────────────────────────── */
+ 
 .stagger-section {
   margin-bottom: 6rem;
 }
@@ -337,27 +384,43 @@ nav {
   color: rgba(245,245,240,.28);
   margin-bottom: 2rem;
 }
-
+ 
 .stagger-item {
-  display: flex;
-  align-items: baseline;
-  gap: 1.6rem;
-  padding: 1.1rem 0;
   border-bottom: 1px solid rgba(245,245,240,.06);
   opacity: 0;
   animation: fadeUp .55s ease forwards;
 }
-.stagger-item:nth-child(1)  { animation-delay: .75s; margin-left: 0;    }
-.stagger-item:nth-child(2)  { animation-delay: .85s; margin-left: 3vw;  }
-.stagger-item:nth-child(3)  { animation-delay: .95s; margin-left: 7vw;  }
-.stagger-item:nth-child(4)  { animation-delay:1.05s; margin-left: 12vw; }
-.stagger-item:nth-child(5)  { animation-delay:1.15s; margin-left: 7vw;  }
-.stagger-item:nth-child(6)  { animation-delay:1.25s; margin-left: 2vw;  }
-
+.stagger-item:nth-child(1)  { animation-delay: .75s; }
+.stagger-item:nth-child(2)  { animation-delay: .85s; }
+.stagger-item:nth-child(3)  { animation-delay: .95s; }
+.stagger-item:nth-child(4)  { animation-delay:1.05s; }
+.stagger-item:nth-child(5)  { animation-delay:1.15s; }
+.stagger-item:nth-child(6)  { animation-delay:1.25s; }
+ 
+.stagger-row {
+  display: flex;
+  align-items: baseline;
+  gap: 1.6rem;
+  padding: 1.1rem 0;
+  cursor: pointer;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+}
+.stagger-item:nth-child(1) .stagger-row { margin-left: 0;    }
+.stagger-item:nth-child(2) .stagger-row { margin-left: 3vw;  }
+.stagger-item:nth-child(3) .stagger-row { margin-left: 7vw;  }
+.stagger-item:nth-child(4) .stagger-row { margin-left: 12vw; }
+.stagger-item:nth-child(5) .stagger-row { margin-left: 7vw;  }
+.stagger-item:nth-child(6) .stagger-row { margin-left: 2vw;  }
+ 
 .stagger-num {
   font-family: var(--display);
   font-size: .85rem;
-  color: rgba(245,245,240,.2);
+  color: rgba(10,10,10,.2);
   min-width: 2.2rem;
   letter-spacing: .05em;
 }
@@ -370,22 +433,94 @@ nav {
   flex: 1;
   transition: color .2s;
 }
-.stagger-item:hover .stagger-title { color: rgba(245,245,240,.5); }
-
+.stagger-row:hover .stagger-title { color: rgba(10,10,10,.5); }
+ 
 .stagger-meta {
   font-family: var(--mono);
   font-size: .62rem;
   letter-spacing: .1em;
   text-transform: uppercase;
-  color: rgba(245,245,240,.25);
+  color: rgba(10,10,10,.32);
   white-space: nowrap;
 }
-
-/* accent dots */
+ 
+.kr-chevron {
+  width: 8px;
+  height: 8px;
+  border-right: 1.5px solid rgba(10,10,10,.35);
+  border-bottom: 1.5px solid rgba(10,10,10,.35);
+  transform: rotate(45deg);
+  transition: transform .35s ease, border-color .2s ease;
+  flex-shrink: 0;
+}
+.stagger-row:hover .kr-chevron { border-color: var(--black); }
+.stagger-item.open .kr-chevron { transform: rotate(225deg); }
+ 
 .dot-red  { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--red);  margin-right: .5rem; vertical-align: middle; }
 .dot-blue { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--blue); margin-right: .5rem; vertical-align: middle; }
-
-/* ─── BOTTOM BAR ─────────────────────────────────────── */
+ 
+.carousel-wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows .45s ease, opacity .35s ease;
+}
+.stagger-item.open .carousel-wrap {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+.carousel-inner { overflow: hidden; }
+ 
+.carousel {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding: .4rem 0 1.6rem 3.4rem;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.carousel::-webkit-scrollbar { display: none; }
+ 
+.carousel-card {
+  flex: 0 0 auto;
+  width: 190px;
+  scroll-snap-align: start;
+  border: 1px solid rgba(10,10,10,.1);
+  padding: 0;
+  overflow: hidden;
+}
+.carousel-card-art {
+  width: 100%;
+  height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--display);
+  font-size: 2.4rem;
+  color: rgba(245,245,240,.5);
+}
+.carousel-card-art.red  { background: linear-gradient(135deg, var(--red), #6e0010); }
+.carousel-card-art.blue { background: linear-gradient(135deg, var(--blue), #011b3c); }
+ 
+.carousel-card-body {
+  padding: .9rem 1rem 1.1rem;
+}
+.carousel-card-title {
+  font-family: var(--mono);
+  font-size: .68rem;
+  letter-spacing: .03em;
+  color: var(--black);
+  line-height: 1.4;
+  margin-bottom: .5rem;
+}
+.carousel-card-meta {
+  font-family: var(--mono);
+  font-size: .56rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(10,10,10,.35);
+}
+ 
 .bottom-bar {
   display: flex;
   justify-content: space-between;
@@ -416,7 +551,7 @@ nav {
   transition: color .2s;
 }
 .bottom-link:hover { color: var(--black); }
-
+ 
 /* color bar accent */
 .color-bar {
   position: fixed;
@@ -426,8 +561,11 @@ nav {
   background: linear-gradient(to right, var(--red) 0%, var(--red) 50%, var(--blue) 50%, var(--blue) 100%);
   opacity: .7;
 }
-
-/* ─── RESPONSIVE ─────────────────────────────────────── */
+ 
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+ 
 @media (max-width: 700px) {
   .page { padding: 2.5rem 1.5rem 5rem; }
   .title-row:nth-child(2) { margin-left: 2vw; }
@@ -436,16 +574,23 @@ nav {
   .box-stats { flex-direction: row; padding-right: 0; }
   .trigrams, .hangul-marks { display: none; }
   .nav-links { gap: 1.2rem; }
+  .stagger-item:nth-child(1) .stagger-row,
+  .stagger-item:nth-child(2) .stagger-row,
+  .stagger-item:nth-child(3) .stagger-row,
+  .stagger-item:nth-child(4) .stagger-row,
+  .stagger-item:nth-child(5) .stagger-row,
+  .stagger-item:nth-child(6) .stagger-row { margin-left: 0; }
+  .carousel { padding-left: 0; }
 }
-
+ 
 </style>
 </head>
 <body>
-
+ 
 <div class="color-bar"></div>
-
+ 
 <div class="page">
-
+ 
   <!-- NAV -->
   <nav>
     <span class="nav-mark">작품집</span>
@@ -455,40 +600,36 @@ nav {
       <li><a href="#">Contact</a></li>
     </ul>
   </nav>
-
+ 
   <div class="top-rule"></div>
-
-  <!-- BIG STAGGERED TITLE -->
+ 
   <div class="headline-block">
-
+ 
     <div class="title-row">
       <span class="portfolio-word">TAE</span>
       <span class="title-tag"> What happens when elegance decides to move at light speed and refuses to apologize for it? &nbsp;—&nbsp; You get Taekwondo</span>
     </div>
-
+ 
     <div class="title-row">
       <span class="portfolio-word">KWON</span>
     </div>
-
+ 
      <div class="title-row">
       <span class="portfolio-word">DO</span>
     </div>
-
+ 
     <div class="title-row">
       <span class="portfolio-word" style="color: rgba(10,10,10,.15);">태권도</span>
       <span class="title-tag">태권도 · Jakpum</span>
     </div>
-
+ 
   </div>
-
-  <!-- KOREAN ACCENT BOX -->
-  <div class="korean-box">
-
-    <!-- decorative elements -->
+ 
+  <div class="korean-box" id="main-article">
+ 
     <div class="hangul-marks">정직 &nbsp; 창의</div>
     <div class="taeguk"></div>
-
-    <!-- trigrams right edge -->
+ 
     <div class="trigrams">
       <div class="trigram-line"></div>
       <div class="trigram-line broken"></div>
@@ -499,7 +640,7 @@ nav {
       <div class="trigram-line broken"></div>
       <div class="trigram-line"></div>
     </div>
-
+ 
     <div class="box-inner">
       <div class="box-left">
         <div class="box-label">진행 중 &nbsp;·&nbsp; In Progress</div>
@@ -507,13 +648,46 @@ nav {
           Design is the silence<br/>
           between <em>intention</em> and form.
         </div>
-        <div class="box-desc">
-          A collection of work spanning identity, digital, and spatial design.
-          Each project begins with a single question and ends with a decision
-          that cannot be taken back.
+ 
+        <div class="article-collapsed">
+          <div class="box-desc">
+            Korea banned martial arts under Japanese occupation. People kept training anyway,
+            behind closed doors and in rice paddies. Taekwondo was built out of that refusal.
+          </div>
         </div>
+ 
+        <div class="article-full">
+          <div>
+            <div class="article-subhead">Practiced in Secret</div>
+            <div class="article-para">
+              For 35 years under Japanese rule, Korean martial arts were pushed underground.
+              Instructors kept teaching anyway, quietly, in back rooms and border towns,
+              folding in what they remembered of taekkyon and subak alongside what they'd
+              picked up from Okinawan karate.
+            </div>
+ 
+            <div class="article-subhead">Nine Schools, One Name</div>
+            <div class="article-para">
+              After liberation in 1945, those separate lineages surfaced as nine competing kwans,
+              each with its own curriculum and its own idea of what came next. General Choi Hong Hi
+              pushed to unify them under a single name in 1955: taekwondo — the way of the foot and fist.
+            </div>
+ 
+            <div class="article-subhead">From Local to Olympic</div>
+            <div class="article-para">
+              The sport split into two federations, ITF and WT, each shaping the rules differently.
+              WT's version kept pushing toward the international stage — a demonstration sport in
+              1988 and 2000, then a full medal event, turning a wartime discipline into a global one.
+            </div>
+          </div>
+        </div>
+ 
+        <button class="read-more-btn" id="article-toggle" onclick="toggleArticle()">
+          <span id="article-toggle-label">Read More</span>
+          <span class="rm-chevron"></span>
+        </button>
       </div>
-
+ 
       <div class="box-stats">
         <div class="stat">
           <span class="stat-num red">24</span>
@@ -529,63 +703,290 @@ nav {
         </div>
       </div>
     </div>
-
+ 
     <div class="box-rule"></div>
   </div>
-
-  <!-- STAGGERED PROJECT LIST -->
+ 
   <div class="stagger-section">
-    <div class="stagger-label">Selected Projects</div>
-
+    <div class="stagger-label">Selected Categories</div>
+ 
     <div class="stagger-item">
-      <span class="stagger-num">01</span>
-      <span class="stagger-title"><span class="dot-red"></span>Brand Identity</span>
-      <span class="stagger-meta">2024 &nbsp;·&nbsp; Identity</span>
+      <button class="stagger-row" onclick="toggleCarousel(this)">
+        <span class="stagger-num">01</span>
+        <span class="stagger-title"><span class="dot-red"></span>Origins &amp; History</span>
+        <span class="stagger-meta">6 Articles</span>
+        <span class="kr-chevron"></span>
+      </button>
+      <div class="carousel-wrap">
+        <div class="carousel-inner">
+          <div class="carousel">
+            <div class="carousel-card">
+              <div class="carousel-card-art red">01</div>
+              <div class="carousel-card-body">
+                <div class="carousel-card-title">Banned Under Occupation</div>
+                <div class="carousel-card-meta">Placeholder</div>
+              </div>
+            </div>
+            <div class="carousel-card">
+              <div class="carousel-card-art blue">02</div>
+              <div class="carousel-card-body">
+                <div class="carousel-card-title">Nine Kwans, One Name</div>
+                <div class="carousel-card-meta">Placeholder</div>
+              </div>
+            </div>
+            <div class="carousel-card">
+              <div class="carousel-card-art red">03</div>
+              <div class="carousel-card-body">
+                <div class="carousel-card-title">General Choi's Unification</div>
+                <div class="carousel-card-meta">Placeholder</div>
+              </div>
+            </div>
+            <div class="carousel-card">
+              <div class="carousel-card-art blue">04</div>
+              <div class="carousel-card-body">
+                <div class="carousel-card-title">From Backroom to Olympic Floor</div>
+                <div class="carousel-card-meta">Placeholder</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
+ 
     <div class="stagger-item">
-      <span class="stagger-num">02</span>
-      <span class="stagger-title"><span class="dot-blue"></span>Digital Campaigns</span>
-      <span class="stagger-meta">2024 &nbsp;·&nbsp; Digital</span>
+      <button class="stagger-row" onclick="toggleCarousel(this)">
+        <span class="stagger-num">02</span>
+        <span class="stagger-title"><span class="dot-blue"></span>Belt System &amp; Ranks</span>
+        <span class="stagger-meta">5 Articles</span>
+        <span class="kr-chevron"></span>
+      </button>
+      <div class="carousel-wrap">
+        <div class="carousel-inner">
+          <div class="carousel">
+            <div class="carousel-card">
+              <div class="carousel-card-art blue">01</div>
+              <div class="carousel-card-body">
+                <div class="carousel-card-title">White to Black</div>
+                <div class="carousel-card-meta">Placeholder</div>
+              </div>
+            </div>
+            <div class="carousel-card">
+              <div class="carousel-card-art red">02</div>
+              <div class="carousel-card-body">
+                <div class="carousel-card-title">What Each Color Means</div>
+                <div class="carousel-card-meta">Placeholder</div>
+              </div>
+            </div>
+            <div class="carousel-card">
+              <div class="carousel-card-art blue">03</div>
+              <div class="carousel-card-body">
+                <div class="carousel-card-title">The Dan Ranks</div>
+                <div class="carousel-card-meta">Placeholder</div>
+              </div>
+            </div>
+            <div class="carousel-card">
+              <div class="carousel-card-art red">04</div>
+              <div class="carousel-card-body">
+                <div class="carousel-card-title">Testing Day</div>
+                <div class="carousel-card-meta">Placeholder</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
+ 
     <div class="stagger-item">
-      <span class="stagger-num">03</span>
-      <span class="stagger-title"><span class="dot-red"></span>Editorial Design</span>
-      <span class="stagger-meta">2023 &nbsp;·&nbsp; Print</span>
+      <button class="stagger-row" onclick="toggleCarousel(this)">
+        <span class="stagger-num">03</span>
+        <span class="stagger-title"><span class="dot-red"></span>Forms &amp; Technique</span>
+        <span class="stagger-meta">7 Articles</span>
+        <span class="kr-chevron"></span>
+      </button>
+      <div class="carousel-wrap">
+        <div class="carousel-inner">
+          <div class="carousel">
+            <div class="carousel-card">
+              <div class="carousel-card-art red">01</div>
+              <div class="carousel-card-body">
+                <div class="carousel-card-title">Reading a Poomsae</div>
+                <div class="carousel-card-meta">Placeholder</div>
+              </div>
+            </div>
+            <div class="carousel-card">
+              <div class="carousel-card-art blue">02</div>
+              <div class="carousel-card-body">
+                <div class="carousel-card-title">The Anatomy of a Kick</div>
+                <div class="carousel-card-meta">Placeholder</div>
+              </div>
+            </div>
+            <div class="carousel-card">
+              <div class="carousel-card-art red">03</div>
+              <div class="carousel-card-body">
+                <div class="carousel-card-title">Stance Before Strike</div>
+                <div class="carousel-card-meta">Placeholder</div>
+              </div>
+            </div>
+            <div class="carousel-card">
+              <div class="carousel-card-art blue">04</div>
+              <div class="carousel-card-body">
+                <div class="carousel-card-title">Breaking Boards, Breaking Habits</div>
+                <div class="carousel-card-meta">Placeholder</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
+ 
     <div class="stagger-item">
-      <span class="stagger-num">04</span>
-      <span class="stagger-title"><span class="dot-blue"></span>Motion &amp; Film</span>
-      <span class="stagger-meta">2023 &nbsp;·&nbsp; Motion</span>
+      <button class="stagger-row" onclick="toggleCarousel(this)">
+        <span class="stagger-num">04</span>
+        <span class="stagger-title"><span class="dot-blue"></span>Sparring &amp; Competition</span>
+        <span class="stagger-meta">5 Articles</span>
+        <span class="kr-chevron"></span>
+      </button>
+      <div class="carousel-wrap">
+        <div class="carousel-inner">
+          <div class="carousel">
+            <div class="carousel-card">
+              <div class="carousel-card-art blue">01</div>
+              <div class="carousel-card-body">
+                <div class="carousel-card-title">Point Fighting Explained</div>
+                <div class="carousel-card-meta">Placeholder</div>
+              </div>
+            </div>
+            <div class="carousel-card">
+              <div class="carousel-card-art red">02</div>
+              <div class="carousel-card-body">
+                <div class="carousel-card-title">Inside Olympic Scoring</div>
+                <div class="carousel-card-meta">Placeholder</div>
+              </div>
+            </div>
+            <div class="carousel-card">
+              <div class="carousel-card-art blue">03</div>
+              <div class="carousel-card-body">
+                <div class="carousel-card-title">Reading Your Opponent</div>
+                <div class="carousel-card-meta">Placeholder</div>
+              </div>
+            </div>
+            <div class="carousel-card">
+              <div class="carousel-card-art red">04</div>
+              <div class="carousel-card-body">
+                <div class="carousel-card-title">The Half-Second Rule</div>
+                <div class="carousel-card-meta">Placeholder</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
+ 
     <div class="stagger-item">
-      <span class="stagger-num">05</span>
-      <span class="stagger-title"><span class="dot-red"></span>Spatial Identity</span>
-      <span class="stagger-meta">2023 &nbsp;·&nbsp; Space</span>
+      <button class="stagger-row" onclick="toggleCarousel(this)">
+        <span class="stagger-num">05</span>
+        <span class="stagger-title"><span class="dot-red"></span>Philosophy &amp; Tenets</span>
+        <span class="stagger-meta">5 Articles</span>
+        <span class="kr-chevron"></span>
+      </button>
+      <div class="carousel-wrap">
+        <div class="carousel-inner">
+          <div class="carousel">
+            <div class="carousel-card">
+              <div class="carousel-card-art red">01</div>
+              <div class="carousel-card-body">
+                <div class="carousel-card-title">Courtesy First</div>
+                <div class="carousel-card-meta">Placeholder</div>
+              </div>
+            </div>
+            <div class="carousel-card">
+              <div class="carousel-card-art blue">02</div>
+              <div class="carousel-card-body">
+                <div class="carousel-card-title">Indomitable Spirit</div>
+                <div class="carousel-card-meta">Placeholder</div>
+              </div>
+            </div>
+            <div class="carousel-card">
+              <div class="carousel-card-art red">03</div>
+              <div class="carousel-card-body">
+                <div class="carousel-card-title">Self-Control Under Pressure</div>
+                <div class="carousel-card-meta">Placeholder</div>
+              </div>
+            </div>
+            <div class="carousel-card">
+              <div class="carousel-card-art blue">04</div>
+              <div class="carousel-card-body">
+                <div class="carousel-card-title">Integrity On and Off the Mat</div>
+                <div class="carousel-card-meta">Placeholder</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
+ 
     <div class="stagger-item">
-      <span class="stagger-num">06</span>
-      <span class="stagger-title"><span class="dot-blue"></span>Type &amp; Language</span>
-      <span class="stagger-meta">2022 &nbsp;·&nbsp; Typography</span>
+      <button class="stagger-row" onclick="toggleCarousel(this)">
+        <span class="stagger-num">06</span>
+        <span class="stagger-title"><span class="dot-blue"></span>Modern Era &amp; Olympics</span>
+        <span class="stagger-meta">4 Articles</span>
+        <span class="kr-chevron"></span>
+      </button>
+      <div class="carousel-wrap">
+        <div class="carousel-inner">
+          <div class="carousel">
+            <div class="carousel-card">
+              <div class="carousel-card-art blue">01</div>
+              <div class="carousel-card-body">
+                <div class="carousel-card-title">Sydney 2000</div>
+                <div class="carousel-card-meta">Placeholder</div>
+              </div>
+            </div>
+            <div class="carousel-card">
+              <div class="carousel-card-art red">02</div>
+              <div class="carousel-card-body">
+                <div class="carousel-card-title">Two Federations, One Sport</div>
+                <div class="carousel-card-meta">Placeholder</div>
+              </div>
+            </div>
+            <div class="carousel-card">
+              <div class="carousel-card-art blue">03</div>
+              <div class="carousel-card-body">
+                <div class="carousel-card-title">Taekwondo Goes Global</div>
+                <div class="carousel-card-meta">Placeholder</div>
+              </div>
+            </div>
+            <div class="carousel-card">
+              <div class="carousel-card-art red">04</div>
+              <div class="carousel-card-body">
+                <div class="carousel-card-title">What's Next for the Sport</div>
+                <div class="carousel-card-meta">Placeholder</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
+ 
   </div>
-
-  <!-- BOTTOM BAR -->
-  <div class="bottom-bar">
-    <span class="bottom-left">© 2024 &nbsp;·&nbsp; All rights reserved</span>
-    <div class="bottom-right">
-      <a class="bottom-link" href="#">Instagram</a>
-      <a class="bottom-link" href="#">LinkedIn</a>
-      <a class="bottom-link" href="#">Email</a>
-    </div>
-  </div>
-
+ 
+ 
 </div>
-
+ 
+<script>
+function toggleArticle() {
+  const box = document.getElementById('main-article');
+  const label = document.getElementById('article-toggle-label');
+  const expanded = box.classList.toggle('expanded');
+  label.textContent = expanded ? 'Read Less' : 'Read More';
+}
+ 
+function toggleCarousel(btn) {
+  const item = btn.closest('.stagger-item');
+  item.classList.toggle('open');
+}
+</script>
+ 
 </body>
 </html>
+ 

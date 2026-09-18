@@ -5,14 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Featured — ĒLÝSION DOCTRINE | Fight Journalism & Martial Arts Culture</title>
 
-<!-- SEO Meta -->
 <meta name="description" content="Featured fight journalism, cultural deep dives, and long-form storytelling from Ēlýsion Doctrine. Covering BJJ, Muay Thai, Boxing, Taekwondo, Wing Chun, MMA and more."/>
 <meta name="keywords" content="fight journalism, martial arts articles, muay thai features, boxing articles, BJJ stories, taekwondo, MMA culture, combat sports writing, fight culture magazine"/>
 <meta name="author" content="Ēlýsion Doctrine"/>
 <meta name="robots" content="index, follow"/>
 <link rel="canonical" href="https://elysiondoctrine.com/featured.html"/>
 
-<!-- Open Graph -->
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://elysiondoctrine.com/featured.html"/>
 <meta property="og:title" content="Featured — ĒLÝSION DOCTRINE | Fight Journalism & Martial Arts Culture"/>
@@ -21,13 +19,11 @@
 <meta property="og:locale" content="en_US"/>
 <meta property="og:site_name" content="Ēlýsion Doctrine"/>
 
-<!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="Featured — ĒLÝSION DOCTRINE | Fight Journalism & Martial Arts Culture"/>
 <meta name="twitter:description" content="The body as battlefield, instrument, and art form. Long-form fight journalism, cultural deep dives, and the philosophy of beautiful violence."/>
 <meta name="twitter:image" content="https://elysiondoctrine.com/images/og-image.jpg"/>
 
-<!-- Structured Data: CollectionPage -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -51,7 +47,6 @@
 }
 </script>
 
-<!-- Structured Data: Featured Article (Bongo) -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -81,9 +76,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Khmer:wght@900&display=swap" rel="stylesheet"/>
 
 <style>
-/* ============================================================
-   TOKENS & RESET
-   ============================================================ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
   --bg: #161616;
@@ -106,7 +98,6 @@ body {
   overflow-x: hidden;
   cursor: none;
 }
-/* Remove custom cursor on touch devices */
 @media (hover: none), (pointer: coarse) {
   body { cursor: auto; }
   #cursor { display: none !important; }
@@ -114,9 +105,6 @@ body {
 ::-webkit-scrollbar { display: none; }
 img, video { display: block; }
 
-/* ============================================================
-   SKIP LINK
-   ============================================================ */
 .skip-link {
   position: absolute;
   top: -100%;
@@ -133,9 +121,6 @@ img, video { display: block; }
 }
 .skip-link:focus { top: 1rem; }
 
-/* ============================================================
-   CURSOR
-   ============================================================ */
 #cursor {
   position: fixed; width: 40px; height: 40px; border-radius: 50%;
   background: white; pointer-events: none; z-index: 9998;
@@ -147,9 +132,6 @@ img, video { display: block; }
 #cursor.visible { clip-path: circle(50% at 50% 50%); }
 #cursor.hover   { width: 70px; height: 70px; }
 
-/* ============================================================
-   NAV
-   ============================================================ */
 .menu {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
@@ -175,9 +157,6 @@ img, video { display: block; }
 #clock span { animation: blink 1s steps(1) infinite; }
 @keyframes blink { 50% { visibility: hidden; } }
 
-/* ============================================================
-   HAMBURGER
-   ============================================================ */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -206,9 +185,6 @@ img, video { display: block; }
 .hamburger[aria-expanded="true"] .hamburger-line:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 .hamburger:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; border-radius: 2px; }
 
-/* ============================================================
-   MOBILE MENU OVERLAY
-   ============================================================ */
 .mobile-menu-overlay {
   display: none;
   position: fixed;
@@ -247,9 +223,6 @@ img, video { display: block; }
   gap: 0.5rem;
 }
 
-/* ============================================================
-   LOAD OVERLAY
-   ============================================================ */
 .load-overlay {
   position: fixed; inset: 0; background: var(--bg); z-index: 9000;
   clip-path: inset(0% 0% 100% 0%); pointer-events: none;
@@ -260,9 +233,6 @@ img, video { display: block; }
   100% { clip-path: inset(0% 0% 100% 0%); }
 }
 
-/* ============================================================
-   PAGE HEADER
-   ============================================================ */
 .page-header {
   padding: 2vw 3vw 0;
   padding-top: 11vw;
@@ -314,9 +284,6 @@ img, video { display: block; }
   color: var(--muted);
 }
 
-/* ============================================================
-   FILTER BAR
-   ============================================================ */
 .filter-bar {
   padding: 2vw 3vw 1.5vw;
   display: flex;
@@ -381,12 +348,8 @@ img, video { display: block; }
 .filter-clear:hover { color: var(--fg); }
 .filter-clear:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; border-radius: 2px; }
 
-/* ============================================================
-   FEATURED FEED
-   ============================================================ */
 .feed { padding: 0 3vw 6vw; }
 
-/* HERO */
 .feed-hero {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -450,7 +413,6 @@ img, video { display: block; }
 .feed-hero-read:hover { opacity: .6; }
 .feed-hero-read:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; border-radius: 2px; }
 
-/* TAGS */
 .tags { display: flex; flex-wrap: wrap; gap: .35rem; }
 .tag {
   font-size: clamp(.5rem, .6vw, .7rem);
@@ -472,7 +434,6 @@ img, video { display: block; }
 .tag-wrestling{ border-color: rgba(255,170,60,.4); color: rgba(255,170,60,.8); }
 .tag-judo    { border-color: rgba(60,220,230,.4);  color: rgba(60,220,230,.8); }
 
-/* SECTION DIVIDER */
 .section-row {
   display: flex;
   align-items: center;
@@ -484,7 +445,6 @@ img, video { display: block; }
 .section-row-label { font-size: clamp(.6rem, .7vw, .85rem); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
 .section-row-count { font-size: clamp(.6rem, .7vw, .85rem); letter-spacing: .08em; color: var(--dim); }
 
-/* GRID 3-up */
 .feed-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
 .feed-grid-item {
   border-right: 1px solid var(--dim);
@@ -517,7 +477,6 @@ img, video { display: block; }
 .feed-grid-item-meta { display: flex; justify-content: space-between; align-items: flex-end; margin-top: auto; }
 .feed-grid-item-date { font-size: clamp(.55rem, .65vw, .75rem); letter-spacing: .08em; color: var(--dim); }
 
-/* LIST */
 .feed-list { border-top: 1px solid var(--dim); }
 .feed-list-item {
   display: grid;
@@ -544,14 +503,9 @@ img, video { display: block; }
 .feed-list-thumb { width: clamp(60px, 7vw, 100px); aspect-ratio: 4/3; overflow: hidden; background: #1e1e1e; flex-shrink: 0; }
 .feed-list-thumb img { width: 100%; height: 100%; object-fit: cover; }
 .feed-list-thumb-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 8px; letter-spacing: .06em; text-transform: uppercase; color: var(--dim); }
-
-/* EMPTY STATE */
 .feed-empty { padding: 6vw 0; text-align: center; color: var(--muted); font-size: clamp(.75rem, .9vw, 1.1rem); letter-spacing: .06em; display: none; }
 .feed-empty.show { display: block; }
 
-/* ============================================================
-   FOOTER
-   ============================================================ */
 .footer { background: #fafafa; color: #161616; padding: 3vw 3vw 0; }
 .footer-items { border-bottom: 1px solid rgba(0,0,0,.08); padding-bottom: 2vw; margin-bottom: 3vw; }
 .footer-flex { display: flex; justify-content: flex-end; }
@@ -584,9 +538,6 @@ img, video { display: block; }
   font-size: clamp(3rem, 10vw, 14rem);
 }
 
-/* ============================================================
-   RESPONSIVE
-   ============================================================ */
 @media (max-width: 900px) {
   /* Show hamburger, hide desktop links + clock */
   .menu-links-holder { display: none; }
@@ -647,7 +598,6 @@ img, video { display: block; }
 <div class="load-overlay" aria-hidden="true"></div>
 <div id="cursor" aria-hidden="true"></div>
 
-<!-- Mobile menu overlay -->
 <div
   class="mobile-menu-overlay"
   id="mobileMenu"
@@ -668,7 +618,6 @@ img, video { display: block; }
   </div>
 </div>
 
-<!-- NAV -->
 <nav class="menu" aria-label="Main navigation">
   <div class="menu-link-holder">
     <a href="/index.html" class="menu-logo" aria-label="Ēlýsion Doctrine — Home">
@@ -705,7 +654,6 @@ img, video { display: block; }
   </button>
 </nav>
 
-<!-- PAGE HEADER -->
 <header class="page-header">
   <div class="page-header-inner">
     <div>
@@ -754,10 +702,8 @@ img, video { display: block; }
   <button class="filter-clear" id="filterClear" aria-label="Clear all filters">Clear filters</button>
 </div>
 
-<!-- FEATURED FEED -->
 <main class="feed" id="main-content">
 
-  <!-- HERO -->
   <article class="feed-hero" id="heroArticle"
     data-format="article" data-discipline="mma"
     aria-label="Featured: Bongo the Fight Pirate">
@@ -785,7 +731,6 @@ img, video { display: block; }
     </div>
   </article>
 
-  <!-- GRID -->
   <div class="section-row">
     <h2 class="section-row-label">Field Notes</h2>
     <span class="section-row-count" id="gridCount" aria-live="polite">1 feature</span>
@@ -813,7 +758,6 @@ img, video { display: block; }
 
   </div>
 
-  <!-- LIST -->
   <div class="section-row" style="margin-top:3vw;">
     <h2 class="section-row-label">Archive</h2>
     <span class="section-row-count" id="listCount" aria-live="polite">1 feature</span>
@@ -841,7 +785,6 @@ img, video { display: block; }
 
 </main>
 
-<!-- FOOTER -->
 <footer class="footer">
   <div class="footer-items">
     <div class="footer-flex">
@@ -878,7 +821,6 @@ img, video { display: block; }
 
 <script>
 
-  /* -- Footer wordmak auto-fit -- */
   function fitFooter () {
     var fw = document.getElementById('footerWordmark');
     if (!fw) return;
@@ -897,7 +839,6 @@ img, video { display: block; }
 
   
 (function () {
-  /* ── Cursor (desktop pointer only) ── */
   var cursor = document.getElementById('cursor');
   if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
     var cx = 0, cy = 0;
@@ -909,7 +850,6 @@ img, video { display: block; }
     (function loop() { cursor.style.left = cx + 'px'; cursor.style.top = cy + 'px'; requestAnimationFrame(loop); })();
   }
 
-  /* ── Clock ── */
   function tick() {
     var d = new Date();
     var h = String(d.getHours()).padStart(2,'0');
@@ -921,11 +861,9 @@ img, video { display: block; }
   }
   tick(); setInterval(tick, 1000);
 
-  /* ── Reveal on load ── */
   setTimeout(function() { document.getElementById('pageTitle').classList.add('show'); }, 400);
   setTimeout(function() { document.getElementById('heroArticle').classList.add('show'); }, 600);
 
-  /* ── Scroll reveal ── */
   var io = new IntersectionObserver(function(entries) {
     entries.forEach(function(e) {
       if (e.isIntersecting) {
@@ -939,7 +877,6 @@ img, video { display: block; }
   }, { threshold: 0.08 });
   document.querySelectorAll('.feed-grid-item, .feed-list-item').forEach(function(el) { io.observe(el); });
 
-  /* ── Hamburger / mobile menu ── */
   var hamburgerBtn = document.getElementById('hamburgerBtn');
   var mobileMenu   = document.getElementById('mobileMenu');
   var menuOpen = false;
@@ -969,7 +906,6 @@ img, video { display: block; }
   document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && menuOpen) { closeMenu(); hamburgerBtn.focus(); } });
   mobileMenu.querySelectorAll('a').forEach(function(link) { link.addEventListener('click', closeMenu); });
 
-  /* ── Filtering ── */
   var activeFormat = 'all';
   var activeDiscipline = 'all';
 

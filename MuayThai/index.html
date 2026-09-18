@@ -26,14 +26,12 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* ── SPLIT WRAPPER ───────────────────────────────── */
   .split {
     display: flex;
     align-items: flex-start;
     min-height: 100vh;
   }
 
-  /* ── LEFT PANEL ──────────────────────────────────── */
   .left {
     position: sticky;
     top: 0;
@@ -48,7 +46,6 @@
     overflow: hidden;
   }
 
-  /* subtle grain */
   .left::after {
     content: '';
     position: absolute;
@@ -59,14 +56,12 @@
   }
   .left > * { position: relative; z-index: 1; }
 
-  /* gold corner marks */
   .cm { position: absolute; width: 16px; height: 16px; z-index: 2; }
   .cm.tl { top:13px; left:13px;  border-top:1px solid rgba(201,168,76,.38); border-left:1px solid rgba(201,168,76,.38); }
   .cm.tr { top:13px; right:13px; border-top:1px solid rgba(201,168,76,.38); border-right:1px solid rgba(201,168,76,.38); }
   .cm.bl { bottom:13px; left:13px;  border-bottom:1px solid rgba(201,168,76,.38); border-left:1px solid rgba(201,168,76,.38); }
   .cm.br { bottom:13px; right:13px; border-bottom:1px solid rgba(201,168,76,.38); border-right:1px solid rgba(201,168,76,.38); }
 
-  /* ── LEFT TOP ────────────────────────────────────── */
   .left-top {
     display: flex;
     flex-direction: column;
@@ -79,7 +74,6 @@
     margin-bottom: 1.6rem;
   }
 
-  /* Title fill */
   .title-block { width: 100%; overflow: hidden; }
 
   .title-line {
@@ -129,7 +123,6 @@
     line-height: 1.55;
   }
 
-  /* ── LEFT BOTTOM ─────────────────────────────────── */
   .left-bottom { display: flex; flex-direction: column; gap: 0.25rem; }
   .contact-label {
     font-family: 'IBM Plex Mono', monospace;
@@ -155,7 +148,6 @@
     text-decoration: none;
   }
 
-  /* ── RIGHT PANEL ─────────────────────────────────── */
   .right {
     flex: 1;
     background: var(--black);
@@ -209,7 +201,6 @@
   .br  { display: block; height: 1rem; }
   .br2 { display: block; height: 2rem; }
 
-  /* ── SECTION GRID ─────────────────────────────────── */
   .col-set {
     display: grid;
     grid-template-columns: 6fr 5fr 1fr;
@@ -274,7 +265,6 @@
     padding: 1rem;
   }
 
-  /* CSS slideshow */
   .slide-deck { display: grid; width: 100%; }
   .slide-deck .slide { grid-area: 1/1; opacity: 0; animation: fslide 16s infinite; }
   .slide-deck .slide:nth-child(1) { animation-delay: 0s; }
@@ -307,9 +297,6 @@
 
 <div class="split">
 
-  <!-- ╔══════════════════════════════════════════╗ -->
-  <!-- ║  LEFT — sticky red panel                 ║ -->
-  <!-- ╚══════════════════════════════════════════╝ -->
   <div class="left">
     <div class="cm tl"></div>
     <div class="cm tr"></div>
@@ -318,17 +305,12 @@
 
     <div class="left-top">
 
-      <!-- Sak Yant yantra SVG -->
       <svg class="sak-yant" viewBox="0 0 160 230" xmlns="http://www.w3.org/2000/svg" fill="none">
         <!-- Unalome (spiral path → enlightenment) -->
         <path d="M80 4 Q73 12 80 20 Q87 28 80 35 Q76 39 80 43" stroke="#c9a84c" stroke-width="1.1" stroke-linecap="round"/>
         <line x1="80" y1="43" x2="80" y2="52" stroke="#c9a84c" stroke-width="0.8" stroke-linecap="round"/>
-
-        <!-- Outer pointed diamond (elongated) -->
         <path d="M80,54 L150,125 L80,222 L10,125 Z" stroke="#c9a84c" stroke-width="1.2" opacity="0.9"/>
-        <!-- Inner diamond -->
         <path d="M80,68 L136,125 L80,208 L24,125 Z" stroke="#c9a84c" stroke-width="0.55" opacity="0.6"/>
-        <!-- Innermost diamond -->
         <path d="M80,84 L120,125 L80,192 L40,125 Z" stroke="#c9a84c" stroke-width="0.35" opacity="0.38"/>
 
         <!-- 5 rows of Khmer-style script (Hah Taew) -->
@@ -338,13 +320,11 @@
         <line x1="38" y1="141" x2="122" y2="141" stroke="#c9a84c" stroke-width="0.65" opacity="0.72"/>
         <line x1="42" y1="152" x2="118" y2="152" stroke="#c9a84c" stroke-width="0.65" opacity="0.72"/>
 
-        <!-- Decorative dots above / below script block -->
         <circle cx="80" cy="98"  r="3.5" stroke="#c9a84c" stroke-width="0.6" opacity="0.6"/>
         <circle cx="80" cy="98"  r="1.2" fill="#c9a84c" opacity="0.8"/>
         <circle cx="80" cy="163" r="3.5" stroke="#c9a84c" stroke-width="0.6" opacity="0.6"/>
         <circle cx="80" cy="163" r="1.2" fill="#c9a84c" opacity="0.8"/>
 
-        <!-- Cardinal apex dots -->
         <circle cx="80"  cy="54"  r="2.5" fill="#c9a84c" opacity="0.9"/>
         <circle cx="150" cy="125" r="2"   fill="#c9a84c" opacity="0.7"/>
         <circle cx="80"  cy="222" r="2.5" fill="#c9a84c" opacity="0.9"/>
@@ -353,7 +333,6 @@
         <!-- 8-petalled lotus at center (8 limbs) -->
         <circle cx="80" cy="130" r="7"   stroke="#c9a84c" stroke-width="0.65" opacity="0.55"/>
         <circle cx="80" cy="130" r="2.5" fill="#c9a84c" opacity="0.8"/>
-        <!-- 8 petal marks -->
         <circle cx="80"  cy="121" r="1"   fill="#c9a84c" opacity="0.45"/>
         <circle cx="80"  cy="139" r="1"   fill="#c9a84c" opacity="0.45"/>
         <circle cx="71"  cy="130" r="1"   fill="#c9a84c" opacity="0.45"/>
@@ -364,7 +343,6 @@
         <circle cx="86.4" cy="136.4" r="1" fill="#c9a84c" opacity="0.45"/>
       </svg>
 
-      <!-- Stretched title — filled by JS -->
       <div class="title-block" id="titleBlock">
         <span class="title-line" id="lineMuay">MUAY</span>
         <span class="title-line" id="lineThai">THAI</span>
@@ -394,10 +372,6 @@
     </div>
   </div>
 
-
-  <!-- ╔══════════════════════════════════════════╗ -->
-  <!-- ║  RIGHT — scrollable black content        ║ -->
-  <!-- ╚══════════════════════════════════════════╝ -->
   <div class="right">
 
     <span class="subheading">Training Muay Thai since [year]. Based in [city]. A record of practice, technique, fighters, and the culture of the art of eight limbs.</span>
@@ -421,7 +395,6 @@
     <hr>
     <div class="br"></div>
 
-    <!-- 01 HISTORY -->
     <div class="col-set">
       <div><div class="img-box"><span class="img-label">[ image — history ]</span></div></div>
       <div>
@@ -437,7 +410,6 @@
 
     <div class="br"></div><hr class="hr-g"><div class="br"></div>
 
-    <!-- 02 TECHNIQUES -->
     <div class="col-set">
       <div>
         <div class="slide-deck">
@@ -460,7 +432,6 @@
 
     <div class="br"></div><hr class="hr-g"><div class="br"></div>
 
-    <!-- 03 TRAINING -->
     <div class="col-set">
       <div><div class="img-box"><span class="img-label">[ image — conditioning ]</span></div></div>
       <div>
@@ -476,7 +447,6 @@
 
     <div class="br"></div><hr class="hr-g"><div class="br"></div>
 
-    <!-- 04 FIGHTERS -->
     <div class="col-set">
       <div><div class="img-box"><span class="img-label">[ image — fighters ]</span></div></div>
       <div>
@@ -492,7 +462,6 @@
 
     <div class="br"></div><hr class="hr-g"><div class="br"></div>
 
-    <!-- 05 GYM -->
     <div class="col-set">
       <div><div class="img-box"><span class="img-label">[ image — the gym ]</span></div></div>
       <div>
@@ -508,7 +477,6 @@
 
     <div class="br"></div><hr class="hr-g"><div class="br"></div>
 
-    <!-- 06 ARCHIVE -->
     <div class="col-set">
       <div><div class="img-box"><span class="img-label">[ image — archive ]</span></div></div>
       <div>
@@ -526,12 +494,11 @@
     <span class="footer-txt">Last updated: [MM.YYYY]</span>
     <div style="height:3rem"></div>
 
-  </div><!-- /right -->
+  </div>
 
-</div><!-- /split -->
+</div>
 
 <script>
-  // Binary-search font size so each title line fills exactly the container width
   function fitLine(elId, containerId) {
     const el  = document.getElementById(elId);
     const box = document.getElementById(containerId);
